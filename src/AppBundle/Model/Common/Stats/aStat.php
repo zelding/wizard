@@ -8,6 +8,8 @@
 
 namespace AppBundle\Model\Common\Stats;
 
+use AppBundle\Exception\AppException;
+
 /**
  * Class aStat
  *
@@ -74,11 +76,11 @@ abstract class aStat
      * @readonly
      * @param int $originalValue
      * @return aStat
-     * @throws \DivisionByZeroError
+     * @throws AppException
      */
     public function setOriginalValue(int $originalValue) : aStat
     {
-        throw new \DivisionByZeroError("Not allowed");
+        throw new AppException("Setter called on readonly property");
     }
 
     /**
@@ -122,10 +124,16 @@ abstract class aStat
     /**
      * @param aStat $modifier
      * @return $this|aStat
+     * @throws AppException
      */
     public function addModifier(aStat $modifier) : aStat
     {
-        $this->modifiers[] = $modifier;
+        if ( $modifier::TYPE === static::TYPE ) {
+            $this->modifiers[] = $modifier;
+        }
+        else {
+            throw new AppException('Modifier type mismatch. Expected '.static::TYPE.', got '.$modifier::TYPE.'.');
+        }
 
         return $this;
     }

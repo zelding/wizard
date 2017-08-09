@@ -8,9 +8,9 @@
 
 namespace AppBundle\Model\PC;
 
-use AppBundle\Model\Common\Stats\BaseStats;
+use AppBundle\Model\Common\Character;
 
-class Player
+class Player extends Character
 {
     /** @var int|null */
     protected $id         = 0 ?? null;
@@ -18,6 +18,5 @@ class Player
     protected $firstName  = "";
     /** @var string[] */
     protected $otherNames = [];
-    /** @var null|BaseStats */
-    protected $baseStats  = null;
+
 }
