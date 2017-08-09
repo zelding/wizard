@@ -8,6 +8,7 @@
 
 namespace AppBundle\Model\PC;
 
+use AppBundle\Model\Common\Stats\BaseStats;
 
 class Player
 {
@@ -17,6 +18,6 @@ class Player
     protected $firstName  = "";
     /** @var string[] */
     protected $otherNames = [];
-
-    protected $baseStats = null;
+    /** @var null|BaseStats */
+    protected $baseStats  = null;
 }

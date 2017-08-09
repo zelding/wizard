@@ -8,7 +8,13 @@
 
 namespace AppBundle\Model\Common\Stats;
 
-
+/**
+ * Class aStat
+ *
+ * Base class for stats
+ *
+ * @package AppBundle\Model\Common\Stats
+ */
 abstract class aStat
 {
     /** @var int|string */

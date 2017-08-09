@@ -8,10 +8,19 @@
 
 namespace AppBundle\Model\Common\Stats;
 
-
+/**
+ * Class BaseStats
+ *
+ * Base stats of a character
+ *
+ * @package AppBundle\Model\Common\Stats
+ */
 class BaseStats
 {
+    /** BaseStat */
+    const TYPE = 1;
+    /** @var int|null */
     protected $id = 0 ?? null;
-
-    protected $type = "";
+    /** @var aStat[] */
+    protected $stats = [];
 }
