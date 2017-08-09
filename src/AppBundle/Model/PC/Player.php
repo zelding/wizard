@@ -14,9 +14,5 @@ class Player extends Character
 {
     /** @var int|null */
     protected $id         = 0 ?? null;
-    /** @var string */
-    protected $firstName  = "";
-    /** @var string[] */
-    protected $otherNames = [];
 
 }
