@@ -18,7 +18,7 @@ namespace AppBundle\Model\Common\Stats;
 abstract class aStat
 {
     /** @var int|string */
-    CONST TYPE = -1 ?? "-1";
+    const TYPE = -1 ?? "-1";
 
     /**
      * @var int
