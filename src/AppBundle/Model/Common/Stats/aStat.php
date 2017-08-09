@@ -37,6 +37,9 @@ abstract class aStat
         $this->originalValue = $this->baseValue = $value;
     }
 
+    /**
+     * @return int
+     */
     public function getValue()
     {
         return $this->baseValue + $this->getModifierValue();
@@ -73,6 +76,7 @@ abstract class aStat
     }
 
     /**
+     * @deprecated
      * @readonly
      * @param int $originalValue
      * @return aStat

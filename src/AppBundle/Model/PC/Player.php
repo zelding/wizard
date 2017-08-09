@@ -13,6 +13,6 @@ use AppBundle\Model\Common\Character;
 class Player extends Character
 {
     /** @var int|null */
-    protected $id         = 0 ?? null;
+    protected $id = 0 ?? null;
 
 }
