@@ -13,7 +13,7 @@ class DefaultController extends Controller
         $player = $this->get('service.character')->generateCharacter(new Elf(), new Warrior());
 
         // replace this example code with whatever you need
-        return $this->render('default/index.html.twig', [
+        return $this->render('AppBundle::character.html.twig', [
             'char' => $player,
         ]);
     }

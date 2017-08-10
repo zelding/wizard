@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <!-- left half -->
+            <div class="col-lg-6">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <dl class="dl-horizontal">
+                            <dt>Name:</dt>
+                            <dd>{{ char.fullName }}</dd>
+
+                            <dt>Race: </dt>
+                            <dd>{{ char.race.name }}</dd>
+
+                            <dt>Class: </dt>
+                            <dd>
+                                {% for class in char.classes %}
+                                    {{ class.name }}
+                                    {% if not loop.last %},&nbsp;{% endif %}
+                                {% endfor %}
+                            </dd>
+                        </dl>
+
+                        <hr>
+
+                        <ul>
+                            <li>{{ char.baseStats.getStrength.name }}: {{ char.baseStats.getStrength.value }}</li>
+                            <li>{{ char.baseStats.getStamina.name }}: {{ char.baseStats.getStamina.value }}</li>
+                            <li>{{ char.baseStats.getDexterity.name }}: {{ char.baseStats.getDexterity.value }}</li>
+                            <li>{{ char.baseStats.getSpeed.name }}: {{ char.baseStats.getSpeed.value }}</li>
+                            <li>{{ char.baseStats.getVitality.name }}: {{ char.baseStats.getVitality.value }}</li>
+                            <li>{{ char.baseStats.getBeauty.name }}: {{ char.baseStats.getBeauty.value }}</li>
+                            <li>{{ char.baseStats.getIntelligence.name }}: {{ char.baseStats.getIntelligence.value }}</li>
+                            <li>{{ char.baseStats.getWillpower.name }}: {{ char.baseStats.getWillpower.value }}</li>
+                            <li>{{ char.baseStats.getAstral.name }}: {{ char.baseStats.getAstral.value }}</li>
+                            <li>{{ char.baseStats.getPerception.name }}: {{ char.baseStats.getPerception.value }}</li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-4">
+
+                    </div>
+                    <div class="col-lg-4">
+
+                    </div>
+                </div>
+
+                <div class="row">
+
+                </div>
+            </div>
+
+            <!-- right half -->
+            <div class="col-lg-6">
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12"></div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+{% endblock %}

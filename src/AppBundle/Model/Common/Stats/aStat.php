@@ -47,6 +47,11 @@ abstract class aStat
         return $this->baseValue + $this->getModifierValue();
     }
 
+    public function getName()
+    {
+        return static::NAME;
+    }
+
     /**
      * @recursion
      * @return int
