@@ -36,7 +36,7 @@ class CharacterService
         $character = new PlayerCharacter($race, $class);
         $character->setBaseStats($str,  $spd,  $dex,  $sta,  $vit, $bea,  $int,  $wil,  $ast,  $per);
 
-        $this->raceService->setRacialBonuses($character);
+        $this->raceService->applyRacialBonuses($character);
 
         return $character;
     }

@@ -1,0 +1,27 @@
+{
+  "name": "wizard",
+  "version": "1.0.0",
+  "description": "meddling with paper-pen things",
+  "main": "gulpfile.js",
+  "directories": {
+    "test": "tests"
+  },
+  "dependencies": {
+    "bootstrap": "^4.0.0-alpha.6",
+    "requirejs": "^2.3.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zelding/wizard.git"
+  },
+  "author": "zedling",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/zelding/wizard/issues"
+  },
+  "homepage": "https://github.com/zelding/wizard#readme"
+}

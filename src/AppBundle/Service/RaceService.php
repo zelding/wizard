@@ -37,7 +37,26 @@ class RaceService
         Perception::TYPE   => Perception::NAME,
     ];
 
-    public function setRacialBonuses(Character $character)
+    /**
+     * Applies bonuses inherited from race
+     *
+     *  - statBonuses
+     *  - skills
+     *  - abilities
+     *
+     * @param Character $character
+     *
+     * @return $this
+     */
+    public function applyRacialBonuses(Character $character)
+    {
+        $this->setRacialBonuses($character)
+             ->setRacialSkills($character);
+
+        return $this;
+    }
+
+    protected function setRacialBonuses(Character $character)
     {
         $race        = $character->getRace();
         $raceBonuses = $race::getModifiers();
@@ -50,6 +69,11 @@ class RaceService
             }
         }
 
+        return $this;
+    }
+
+    protected function setRacialSkills(Character $character)
+    {
         return $this;
     }
 }
