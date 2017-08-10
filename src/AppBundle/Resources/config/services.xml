@@ -3,5 +3,14 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
 
+        <service id="service.character" class="AppBundle\Service\CharacterService">
+            <argument type="service" id="service.race" />
+            <argument type="service" id="service.class" />
+        </service>
+
+        <service id="service.race" class="AppBundle\Service\RaceService" />
+
+        <service id="service.class" class="AppBundle\Service\ClassService" />
+
     </services>
 </container>

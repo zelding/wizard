@@ -14,4 +14,6 @@ namespace AppBundle\Model\Common\Stats;
 class Willpower extends aStat
 {
     const TYPE = "WIL";
+
+    const NAME = "Willpower";
 }

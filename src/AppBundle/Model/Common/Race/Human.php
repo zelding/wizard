@@ -11,14 +11,11 @@
 namespace AppBundle\Model\Common\Race;
 
 
-use AppBundle\Model\Common\Stats\aStat;
-
 class Human extends aRace
 {
     const TYPE = "HUM";
 
-    /** @var aStat[]  */
-    protected $modifiers = [];
+    protected static $playable = true;
 
-    protected $name = "Human";
+    protected static $name = "Human";
 }

@@ -14,4 +14,6 @@ namespace AppBundle\Model\Common\Stats;
 class Stamina extends aStat
 {
     const TYPE = "STM";
+
+    const NAME = "Stamina";
 }

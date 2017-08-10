@@ -14,4 +14,6 @@ namespace AppBundle\Model\Common\Stats;
 class Dexterity extends aStat
 {
     const TYPE = "DEX";
+
+    const NAME = "Dexterity";
 }

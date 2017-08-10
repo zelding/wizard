@@ -14,4 +14,6 @@ namespace AppBundle\Model\Common\Stats;
 class Strength extends aStat
 {
     const TYPE = "STR";
+
+    const NAME = "Strength";
 }

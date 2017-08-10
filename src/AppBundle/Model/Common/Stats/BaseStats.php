@@ -53,20 +53,18 @@ use AppBundle\Exception\AppException;
 class BaseStats
 {
     public static $baseStats = [
-        "Strength"     => Strength::class,
-        "Stamina"      => Stamina::class,
-        "Dexterity"    => Dexterity::class,
-        "Speed"        => Speed::class,
-        "Vitality"     => Vitality::class,
-        "Beauty"       => Beauty::class,
-        "Intelligence" => Intelligence::class,
-        "Willpower"    => Willpower::class,
-        "Astral"       => Astral::class,
-        "Perception"   => Perception::class,
+        Strength::NAME     => Strength::class,
+        Stamina::NAME      => Stamina::class,
+        Dexterity::NAME    => Dexterity::class,
+        Speed::NAME        => Speed::class,
+        Vitality::NAME     => Vitality::class,
+        Beauty::NAME       => Beauty::class,
+        Intelligence::NAME => Intelligence::class,
+        Willpower::NAME    => Willpower::class,
+        Astral::NAME       => Astral::class,
+        Perception::NAME   => Perception::class,
     ];
 
-    /** @var int|null */
-    protected $id = 0 ?? null;
     /** @var aStat[] */
     protected $stats = [];
 
@@ -76,17 +74,17 @@ class BaseStats
      * @param int|null $str Strength
      * @param int|null $spd Stamina
      * @param int|null $dex Dexterity
-     * @param int|null $sta Speed
+     * @param int|null $stm Speed
      * @param int|null $vit Vitality
-     * @param int|null $bea Beauty
+     * @param int|null $beu Beauty
      * @param int|null $int Intelligence
      * @param int|null $wil Willpower
      * @param int|null $ast Astral
      * @param int|null $per Perception
      */
     public function __construct(
-        int $str = null, int $spd = null, int $dex = null, int $sta = null, int $vit = null,
-        int $bea = null, int $int = null, int $wil = null, int $ast = null, int $per = null)
+        int $str = null, int $spd = null, int $dex = null, int $stm = null, int $vit = null,
+        int $beu = null, int $int = null, int $wil = null, int $ast = null, int $per = null)
     {
         foreach( static::$baseStats as $name => $class) {
             /** @var aStat $class */
@@ -168,8 +166,8 @@ class BaseStats
     {
         $statClass = $this->resolveStatClass($name, $value);
 
-        if ( !in_array($statClass::TYPE, $this->stats) ) {
-            $this->stats[ Strength::TYPE ] = $statClass;
+        if ( !array_key_exists($statClass::TYPE, $this->stats) ) {
+            $this->stats[ $statClass::TYPE ] = $statClass;
         }
         else {
             throw new AppException("{$name} is already defined");
@@ -188,7 +186,7 @@ class BaseStats
     {
         $statClass = $this->resolveStatClass($name);
 
-        if ( in_array($statClass::TYPE, $this->stats) ) {
+        if ( array_key_exists($statClass::TYPE, $this->stats) ) {
             return $this->stats[ $statClass::TYPE ];
         }
         else {
@@ -209,13 +207,18 @@ class BaseStats
     {
         $statClass = $this->resolveStatClass($name, $value);
 
-        if ( !in_array($statClass::TYPE, $this->stats) ) {
-            throw new AppException("{$name} is not yet defined");
+        if ( !array_key_exists($statClass::TYPE, $this->stats) ) {
+            throw new AppException("{$name}/".$statClass::TYPE." is not yet defined");
         }
 
         $this->stats[ $statClass::TYPE ]->addModifier($statClass);
 
         return $this;
+    }
+
+    public function getAllStats()
+    {
+        return $this->stats;
     }
 
     /**

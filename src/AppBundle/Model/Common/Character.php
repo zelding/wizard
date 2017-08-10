@@ -10,6 +10,9 @@
 
 namespace AppBundle\Model\Common;
 
+use AppBundle\Model\Common\CharacterClass\aClass;
+use AppBundle\Model\Common\Race\aRace;
+use AppBundle\Model\Common\Skill\aSkill;
 use AppBundle\Model\Common\Stats\BaseStats;
 
 abstract class Character
@@ -20,6 +23,11 @@ abstract class Character
     protected $otherNames = [];
     /** @var string */
     protected $lastName  = "";
+
+    /** @var aRace */
+    protected $race;
+    /** @var aClass[] */
+    protected $classes = [];
 
     /** @var null|BaseStats */
     protected $baseStats = null;
@@ -36,9 +44,17 @@ abstract class Character
 
     protected $inventory;
 
-    public function __construct(
-        int $str, int $spd, int $dex, int $sta, int $vit,
-        int $bea, int $int, int $wil, int $ast, int $per)
+    /** @var aSkill[] */
+    protected $skills = [];
+
+    public function __construct(aRace $race, aClass $class)
+    {
+        $this->race    = $race;
+        $this->classes = [$class];
+    }
+
+    public function setBaseStats(int $str, int $spd, int $dex, int $sta, int $vit,
+                                 int $bea, int $int, int $wil, int $ast, int $per)
     {
         $this->baseStats = new BaseStats(
             $str,  $spd,  $dex,  $sta,  $vit,
@@ -57,7 +73,16 @@ abstract class Character
             $fullName .= implode(" ", $this->otherNames);
         }
 
-        return $fullName .= $this->getLastName();
+        $fullName .= $this->getLastName();
+
+        return $fullName;
+    }
+
+    public function setRacialStatBonuses()
+    {
+
+
+        return $this;
     }
 
     #region Getters/Setters
@@ -120,6 +145,54 @@ abstract class Character
         $this->lastName = $lastName;
 
         return $this;
+    }
+
+    /**
+     * @return aRace
+     */
+    public function getRace(): aRace
+    {
+        return $this->race;
+    }
+
+    /**
+     * @param aRace $race
+     *
+     * @return Character
+     */
+    public function setRace(aRace $race): Character
+    {
+        $this->race = $race;
+
+        return $this;
+    }
+
+    /**
+     * @return aClass[]
+     */
+    public function getClasses(): array
+    {
+        return $this->classes;
+    }
+
+    /**
+     * @param aClass[] $classes
+     *
+     * @return Character
+     */
+    public function setClasses(array $classes): Character
+    {
+        $this->classes = $classes;
+
+        return $this;
+    }
+
+    /**
+     * @return BaseStats|null
+     */
+    public function getBaseStats()
+    {
+        return $this->baseStats;
     }
 
     #endregion

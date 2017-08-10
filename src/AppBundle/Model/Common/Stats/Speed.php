@@ -14,4 +14,6 @@ namespace AppBundle\Model\Common\Stats;
 class Speed extends aStat
 {
     const TYPE = "SPD";
+
+    const NAME = "Speed";
 }

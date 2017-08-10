@@ -22,6 +22,8 @@ abstract class aStat
     /** @var int|string */
     const TYPE = -1 ?? "-1";
 
+    const NAME = "";
+
     /**
      * @var int
      * @readonly
@@ -73,18 +75,6 @@ abstract class aStat
     public function getOriginalValue() : int
     {
         return $this->originalValue;
-    }
-
-    /**
-     * @deprecated
-     * @readonly
-     * @param int $originalValue
-     * @return aStat
-     * @throws AppException
-     */
-    public function setOriginalValue(int $originalValue) : aStat
-    {
-        throw new AppException("Setter called on readonly property");
     }
 
     /**

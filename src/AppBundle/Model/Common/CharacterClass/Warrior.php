@@ -33,12 +33,14 @@ class Warrior extends aClass
     const SUB_TYPE = "WAR";
 
     /** @var aStat[] */
-    protected $modifiers = [
+    protected static $modifiers = [
         Sequence::TYPE =>  9,
         Attack::TYPE   => 20,
         Defense::TYPE  => 75,
         Aim::TYPE      =>  0
     ];
+
+    public static $playable = true;
 
     protected static $name = "Warrior";
 
@@ -70,7 +72,7 @@ class Warrior extends aClass
         Perception::TYPE   => [ 8, 18, 1, false]
     ];
 
-    protected $baseSkills = [
+    protected static $baseSkills = [
 
     ];
 

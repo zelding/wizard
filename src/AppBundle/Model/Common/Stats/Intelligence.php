@@ -14,4 +14,6 @@ namespace AppBundle\Model\Common\Stats;
 class Intelligence extends aStat
 {
     const TYPE = "INT";
+
+    const NAME = "Intelligence";
 }

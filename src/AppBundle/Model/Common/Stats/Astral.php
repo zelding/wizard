@@ -14,4 +14,6 @@ namespace AppBundle\Model\Common\Stats;
 class Astral extends aStat
 {
     const TYPE = "AST";
+
+    const NAME = "Astral";
 }

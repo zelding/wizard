@@ -14,4 +14,6 @@ namespace AppBundle\Model\Common\Stats;
 class Vitality extends aStat
 {
     const TYPE = "VIT";
+
+    const NAME = "Vitality";
 }

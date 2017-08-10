@@ -14,4 +14,6 @@ namespace AppBundle\Model\Common\Stats;
 class Beauty extends aStat
 {
     const TYPE = "BEU";
+
+    const NAME = "Beauty";
 }

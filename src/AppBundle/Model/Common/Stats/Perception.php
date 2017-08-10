@@ -14,4 +14,6 @@ namespace AppBundle\Model\Common\Stats;
 class Perception extends aStat
 {
     const TYPE = "PER";
+
+    const NAME = "Perception";
 }

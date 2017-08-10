@@ -26,14 +26,16 @@ use AppBundle\Model\Common\Stats\Willpower;
 abstract class aClass
 {
     /** @var int|string */
-    const TYPE = "-1" ?? -1;
+    const TYPE     = "-1" ?? -1;
     /** @var int|string */
     const SUB_TYPE = "-1" ?? -1;
+
+    public static $playable = false;
 
     /** @var string */
     protected static $name      = "";
     /** @var aStat[] */
-    protected $modifiers = [];
+    protected static $modifiers = [];
 
     /**
      * minimum, maximum, number of rolls (highest counts), allow special training
@@ -65,6 +67,89 @@ abstract class aClass
     /** @var int[] point, mandatory points */
     protected static $combatModifiersPerLevel = [0, []];
 
-    protected $baseSkills = [];
+    protected static $baseSkills = [];
 
+    #region Getters
+
+    /**
+     * @return aStat[]
+     */
+    public static function getModifiers(): array
+    {
+        return static::$modifiers;
+    }
+
+    /**
+     * @return string
+     */
+    public static function getName(): string
+    {
+        return static::$name;
+    }
+
+    /**
+     * @return int
+     */
+    public static function getSkillPointBase(): int
+    {
+        return static::$skillPointBase;
+    }
+
+    /**
+     * @return int
+     */
+    public static function getSkillPointPerLevel(): int
+    {
+        return static::$skillPointPerLevel;
+    }
+
+    /**
+     * @return int
+     */
+    public static function getHpBase(): int
+    {
+        return static::$hpBase;
+    }
+
+    /**
+     * @return int
+     */
+    public static function getPpBase(): int
+    {
+        return static::$ppBase;
+    }
+
+    /**
+     * @return array
+     */
+    public static function getPainPointsPerLevel(): array
+    {
+        return static::$painPointsPerLevel;
+    }
+
+    /**
+     * @return array
+     */
+    public static function getCombatModifiersPerLevel(): array
+    {
+        return static::$combatModifiersPerLevel;
+    }
+
+    /**
+     * @return array
+     */
+    public static function getBaseStatRanges(): array
+    {
+        return static::$baseStatRanges;
+    }
+
+    /**
+     * @return array
+     */
+    public function getBaseSkills(): array
+    {
+        return static::$baseSkills;
+    }
+
+    #endregion
 }
