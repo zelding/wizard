@@ -24,6 +24,18 @@ abstract class Character
     /** @var null|BaseStats */
     protected $baseStats = null;
 
+    protected $baseHP;
+
+    protected $basePP;
+
+    protected $baseMP;
+
+    protected $basePsy;
+
+    protected $magicResists;
+
+    protected $inventory;
+
     public function __construct(
         int $str, int $spd, int $dex, int $sta, int $vit,
         int $bea, int $int, int $wil, int $ast, int $per)

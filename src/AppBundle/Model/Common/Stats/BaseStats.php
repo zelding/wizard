@@ -107,8 +107,8 @@ class BaseStats
      */
     public function __call(string $name, array $arguments)
     {
-        $method   = substr($name, 0, 3);
-        $statName = ucfirst(substr($name, 3));
+        $method   = substr($name, 0, 3)   ?? "";
+        $statName = ucfirst(substr($name, 3) ?? "");
 
         if ( "set" === $method ) {
 
