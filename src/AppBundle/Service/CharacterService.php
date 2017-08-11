@@ -11,6 +11,7 @@
 namespace AppBundle\Service;
 
 
+use AppBundle\Model\Common\Character;
 use AppBundle\Model\Common\CharacterClass\aClass;
 use AppBundle\Model\Common\Race\aRace;
 use AppBundle\Model\PC\PlayerCharacter;
@@ -31,12 +32,14 @@ class CharacterService
 
     public function generateCharacter(aRace $race, aClass $class)
     {
-        list ($str,  $spd,  $dex,  $sta,  $vit, $bea,  $int,  $wil,  $ast,  $per) = $this->generateBaseStats($race, $class);
-
         $character = new PlayerCharacter($race, $class);
-        $character->setBaseStats($str,  $spd,  $dex,  $sta,  $vit, $bea,  $int,  $wil,  $ast,  $per);
+        $character->setBaseStats($this->generateBaseStats($race, $class))
+                  ->setBaseCombatStats($this->generateBaseCombatStats($class));
 
         $this->raceService->applyRacialBonuses($character);
+        $this->classService->applyClassBonuses($character);
+
+        $this->applyBonuses($character);
 
         return $character;
     }
@@ -48,7 +51,7 @@ class CharacterService
 
         $statValues = [];
 
-        foreach($statRanges as $statName => $range) {
+        foreach($statRanges as $statType => $range) {
             $i = 1;
 
             $statValue = mt_rand($range[0], $range[1]);
@@ -63,13 +66,54 @@ class CharacterService
                 }
             }
 
-            if ( $statValue > $statMaxValues[ $statName ] ) {
-                $statValue = $statMaxValues[ $statName ];
+            if ( $statValue > $statMaxValues[ $statType ] ) {
+                $statValue = $statMaxValues[ $statType ];
             }
 
-            $statValues[] = $statValue;
+            $statValues[ RaceService::$StatTypeToStatName[ $statType ] ] = $statValue;
         }
 
         return $statValues;
+    }
+
+    protected function generateBaseCombatStats(aClass $class)
+    {
+        $stats = [];
+
+        foreach($class->getModifiers() as $type => $value) {
+            $name = ClassService::$StatTypeToStatName[ $type ];
+
+            $stats[ $name ] = $value;
+        }
+
+        return $stats;
+    }
+
+    protected function applyBonuses(Character $character)
+    {
+        $baseStats   = $character->getBaseStats();
+        $combatStats = $character->getBaseCombatStats();
+
+        $combatStats->addSequence(
+            $baseStats->getDexterity()->getRollModifierValue() +
+            $baseStats->getSpeed()->getRollModifierValue()
+        );
+
+        $combatStats->addAttack(
+            $baseStats->getStrength()->getRollModifierValue() +
+            $baseStats->getDexterity()->getRollModifierValue() +
+            $baseStats->getSpeed()->getRollModifierValue()
+        );
+
+        $combatStats->addDefense(
+            $baseStats->getDexterity()->getRollModifierValue() +
+            $baseStats->getSpeed()->getRollModifierValue()
+        );
+
+        $combatStats->addAim(
+            $baseStats->getDexterity()->getRollModifierValue()
+        );
+
+        return $this;
     }
 }

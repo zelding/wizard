@@ -24,6 +24,8 @@ abstract class aStat
 
     const NAME = "";
 
+    const BASE_STAT = true;
+
     /**
      * @var int
      * @readonly
@@ -47,6 +49,15 @@ abstract class aStat
         return $this->baseValue + $this->getModifierValue();
     }
 
+    public function getRollModifierValue()
+    {
+        if ( static::BASE_STAT ) {
+            return $this->getValue() > 10 ? $this->getValue() - 10 : 0;
+        }
+
+        throw new AppException("Only base stats have roll modifiers");
+    }
+
     public function getName()
     {
         return static::NAME;
@@ -56,7 +67,7 @@ abstract class aStat
      * @recursion
      * @return int
      */
-    protected function getModifierValue()
+    public function getModifierValue()
     {
         if ( empty($this->modifiers) ) {
             return 0;

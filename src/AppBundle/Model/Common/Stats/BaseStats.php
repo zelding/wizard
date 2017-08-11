@@ -71,27 +71,14 @@ class BaseStats
     /**
      * BaseStats constructor.
      *
-     * @param int|null $str Strength
-     * @param int|null $spd Stamina
-     * @param int|null $dex Dexterity
-     * @param int|null $stm Speed
-     * @param int|null $vit Vitality
-     * @param int|null $beu Beauty
-     * @param int|null $int Intelligence
-     * @param int|null $wil Willpower
-     * @param int|null $ast Astral
-     * @param int|null $per Perception
+     * @param aStat[] $stats
      */
-    public function __construct(
-        int $str = null, int $spd = null, int $dex = null, int $stm = null, int $vit = null,
-        int $beu = null, int $int = null, int $wil = null, int $ast = null, int $per = null)
+    public function __construct(array $stats)
     {
-        foreach( static::$baseStats as $name => $class) {
-            /** @var aStat $class */
-            $varName = strtolower($class::TYPE);
+        foreach( $stats as $name => $value) {
 
-            if ( $$varName !== null ) {
-                $this->{"set{$name}"}($$varName);
+            if ( array_key_exists($name, static::$baseStats) ) {
+                $this->{"set{$name}"}($value);
             }
         }
     }

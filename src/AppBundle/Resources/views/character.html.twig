@@ -6,43 +6,31 @@
             <!-- left half -->
             <div class="col-lg-6">
                 <div class="row">
-                    <div class="col-lg-4">
-                        <dl class="dl-horizontal">
-                            <dt>Name:</dt>
-                            <dd>{{ char.fullName }}</dd>
-
-                            <dt>Race: </dt>
-                            <dd>{{ char.race.name }}</dd>
-
-                            <dt>Class: </dt>
-                            <dd>
-                                {% for class in char.classes %}
-                                    {{ class.name }}
-                                    {% if not loop.last %},&nbsp;{% endif %}
-                                {% endfor %}
-                            </dd>
-                        </dl>
-
-                        <hr>
+                    <div class="col-lg-6">
+                        {% set s = char.baseStats %}
+                        {% set c = char.baseCombatStats %}
 
                         <ul>
-                            <li>{{ char.baseStats.getStrength.name }}: {{ char.baseStats.getStrength.value }}</li>
-                            <li>{{ char.baseStats.getStamina.name }}: {{ char.baseStats.getStamina.value }}</li>
-                            <li>{{ char.baseStats.getDexterity.name }}: {{ char.baseStats.getDexterity.value }}</li>
-                            <li>{{ char.baseStats.getSpeed.name }}: {{ char.baseStats.getSpeed.value }}</li>
-                            <li>{{ char.baseStats.getVitality.name }}: {{ char.baseStats.getVitality.value }}</li>
-                            <li>{{ char.baseStats.getBeauty.name }}: {{ char.baseStats.getBeauty.value }}</li>
-                            <li>{{ char.baseStats.getIntelligence.name }}: {{ char.baseStats.getIntelligence.value }}</li>
-                            <li>{{ char.baseStats.getWillpower.name }}: {{ char.baseStats.getWillpower.value }}</li>
-                            <li>{{ char.baseStats.getAstral.name }}: {{ char.baseStats.getAstral.value }}</li>
-                            <li>{{ char.baseStats.getPerception.name }}: {{ char.baseStats.getPerception.value }}</li>
+                            <li>{{ s.getStrength.name }}: {{ s.getStrength.value }} = {{ s.getStrength.baseValue }} + {{ s.getStrength.modifierValue }}</li>
+                            <li>{{ s.getDexterity.name }}: {{ s.getDexterity.value }} = {{ s.getDexterity.baseValue }} + {{ s.getDexterity.modifierValue }}</li>
+                            <li>{{ s.getSpeed.name }}: {{ s.getSpeed.value }} = {{ s.getSpeed.baseValue }} + {{ s.getSpeed.modifierValue }}</li>
+                            <li>{{ s.getStamina.name }}: {{ s.getStamina.value }} = {{ s.getStamina.baseValue }} + {{ s.getStamina.modifierValue }}</li>
+                            <li>{{ s.getVitality.name }}: {{ s.getVitality.value }} = {{ s.getVitality.baseValue }} + {{ s.getVitality.modifierValue }}</li>
+                            <li>{{ s.getBeauty.name }}: {{ s.getBeauty.value }} = {{ s.getBeauty.baseValue }} + {{ s.getBeauty.modifierValue }}</li>
+                            <li>{{ s.getIntelligence.name }}: {{ s.getIntelligence.value }} = {{ s.getIntelligence.baseValue }} + {{ s.getIntelligence.modifierValue }}</li>
+                            <li>{{ s.getWillpower.name }}: {{ s.getWillpower.value }} = {{ s.getWillpower.baseValue }} + {{ s.getWillpower.modifierValue }}</li>
+                            <li>{{ s.getAstral.name }}: {{ s.getAstral.value }} = {{ s.getAstral.baseValue }} + {{ s.getAstral.modifierValue }}</li>
+                            <li>{{ s.getPerception.name }}: {{ s.getPerception.value }} = {{ s.getPerception.baseValue }} + {{ s.getPerception.modifierValue }}</li>
                         </ul>
                     </div>
-                    <div class="col-lg-4">
 
-                    </div>
-                    <div class="col-lg-4">
-
+                    <div class="col-lg-6">
+                        <ul>
+                            <li>{{ c.getSequence.name }}: {{ c.getSequence.value }} = {{ c.getSequence.baseValue }} + {{ c.getSequence.modifierValue }}</li>
+                            <li>{{ c.getAttack.name }}: {{ c.getAttack.value }} = {{ c.getAttack.baseValue }} + {{ c.getAttack.modifierValue }}</li>
+                            <li>{{ c.getDefense.name }}: {{ c.getDefense.value }} = {{ c.getDefense.baseValue }} + {{ c.getDefense.modifierValue }}</li>
+                            <li>{{ c.getAim.name }}: {{ c.getAim.value }} = {{ c.getAim.baseValue }} + {{ c.getAim.modifierValue }}</li>
+                        </ul>
                     </div>
                 </div>
 
@@ -58,9 +46,22 @@
         </div>
 
         <div class="row">
-            <div class="col-xs-12"></div>
+            <div class="col-xs-12">
+                <dl class="dl-horizontal">
+                    <dt>Name:</dt>
+                    <dd>{{ char.fullName }}</dd>
+
+                    <dt>Race: </dt>
+                    <dd>{{ char.race.name }}</dd>
+
+                    <dt>Class: </dt>
+                    <dd>{{ char.class.name }}</dd>
+                </dl>
+            </div>
         </div>
     </div>
+
+    {{ dump(char) }}
 {% endblock %}
 
 {% block javascripts %}

@@ -12,12 +12,9 @@ namespace AppBundle\Model\Common\CharacterClass;
 
 
 use AppBundle\Model\Common\Stats\aStat;
+
 use AppBundle\Model\Common\Stats\Astral;
 use AppBundle\Model\Common\Stats\Beauty;
-use AppBundle\Model\Common\Stats\Combat\Aim;
-use AppBundle\Model\Common\Stats\Combat\Attack;
-use AppBundle\Model\Common\Stats\Combat\Defense;
-use AppBundle\Model\Common\Stats\Combat\Sequence;
 use AppBundle\Model\Common\Stats\Dexterity;
 use AppBundle\Model\Common\Stats\Intelligence;
 use AppBundle\Model\Common\Stats\Perception;
@@ -26,6 +23,11 @@ use AppBundle\Model\Common\Stats\Stamina;
 use AppBundle\Model\Common\Stats\Strength;
 use AppBundle\Model\Common\Stats\Vitality;
 use AppBundle\Model\Common\Stats\Willpower;
+
+use AppBundle\Model\Common\Stats\Combat\Aim;
+use AppBundle\Model\Common\Stats\Combat\Attack;
+use AppBundle\Model\Common\Stats\Combat\Defense;
+use AppBundle\Model\Common\Stats\Combat\Sequence;
 
 class Warrior extends aClass
 {

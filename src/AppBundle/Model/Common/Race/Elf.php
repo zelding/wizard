@@ -13,6 +13,7 @@ namespace AppBundle\Model\Common\Race;
 use AppBundle\Model\Common\Stats\aStat;
 use AppBundle\Model\Common\Stats\Astral;
 use AppBundle\Model\Common\Stats\Beauty;
+use AppBundle\Model\Common\Stats\Combat\Aim;
 use AppBundle\Model\Common\Stats\Dexterity;
 use AppBundle\Model\Common\Stats\Intelligence;
 use AppBundle\Model\Common\Stats\Perception;
@@ -29,7 +30,7 @@ class Elf extends aRace
     /** @var string */
     protected static $name      = "Elf";
     /** @var aStat[]  */
-    protected static $modifiers = [
+    protected static $baseStatModifiers = [
         Strength::TYPE   => -2,
         Stamina::TYPE    => -1,
         Speed::TYPE      =>  1,
@@ -38,7 +39,11 @@ class Elf extends aRace
         Perception::TYPE =>  2
     ];
 
-    protected static $maxBaseStats = [
+    protected static $combatStatModifiers = [
+        Aim::TYPE => 30
+    ];
+
+    protected static $maxBaseStats      = [
         Strength::TYPE     => 18,
         Stamina::TYPE      => 18,
         Dexterity::TYPE    => 21,

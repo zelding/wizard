@@ -51,6 +51,7 @@ class RaceService
     public function applyRacialBonuses(Character $character)
     {
         $this->setRacialBonuses($character)
+             ->addRacialCombatBonuses($character)
              ->setRacialSkills($character);
 
         return $this;
@@ -58,14 +59,27 @@ class RaceService
 
     protected function setRacialBonuses(Character $character)
     {
-        $race        = $character->getRace();
-        $raceBonuses = $race::getModifiers();
+        $raceBonuses = $character->getRace()::getBaseStatModifiers();
 
         if ( !empty($raceBonuses) ) {
             foreach($raceBonuses as $type => $bonus) {
 
                 $method = self::$StatTypeToStatName[ $type ];
                 $character->getBaseStats()->{"add{$method}"}($bonus);
+            }
+        }
+
+        return $this;
+    }
+
+    protected function addRacialCombatBonuses(Character $character)
+    {
+        $raceBonuses = $character->getRace()::getCombatStatModifiers();
+
+        if ( !empty($raceBonuses) ) {
+            foreach($raceBonuses as $type => $bonus) {
+                $method = ClassService::$StatTypeToStatName[ $type ];
+                $character->getBaseCombatStats()->{"add{$method}"}($bonus);
             }
         }
 

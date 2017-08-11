@@ -16,4 +16,8 @@ use AppBundle\Model\Common\Stats\aStat;
 class Defense extends aStat
 {
     const TYPE = "DEF";
+
+    const NAME = "Defense";
+
+    const BASE_STAT = false;
 }

@@ -13,7 +13,7 @@ namespace AppBundle\Model\Common;
 use AppBundle\Model\Common\CharacterClass\aClass;
 use AppBundle\Model\Common\Race\aRace;
 use AppBundle\Model\Common\Skill\aSkill;
-use AppBundle\Model\Common\Stats\BaseStats;
+use AppBundle\Model\Common\Stats;
 
 abstract class Character
 {
@@ -26,11 +26,17 @@ abstract class Character
 
     /** @var aRace */
     protected $race;
-    /** @var aClass[] */
-    protected $classes = [];
+    /** @var aClass */
+    protected $class;
 
-    /** @var null|BaseStats */
+    protected $level = 1;
+
+    protected $experience = 0;
+
+    /** @var null|Stats\BaseStats */
     protected $baseStats = null;
+    /** @var Stats\Combat\BaseCombatStats */
+    protected $baseCombatStats = null;
 
     protected $baseHP;
 
@@ -49,17 +55,8 @@ abstract class Character
 
     public function __construct(aRace $race, aClass $class)
     {
-        $this->race    = $race;
-        $this->classes = [$class];
-    }
-
-    public function setBaseStats(int $str, int $spd, int $dex, int $sta, int $vit,
-                                 int $bea, int $int, int $wil, int $ast, int $per)
-    {
-        $this->baseStats = new BaseStats(
-            $str,  $spd,  $dex,  $sta,  $vit,
-            $bea,  $int,  $wil,  $ast,  $per
-        );
+        $this->race  = $race;
+        $this->class = $class;
     }
 
     /**
@@ -78,14 +75,31 @@ abstract class Character
         return $fullName;
     }
 
-    public function setRacialStatBonuses()
-    {
+    #region Getters/Setters
 
+    /**
+     * @param int[] $baseStats
+     *
+     * @return $this
+     */
+    public function setBaseStats(array $baseStats)
+    {
+        $this->baseStats = new Stats\BaseStats($baseStats);
 
         return $this;
     }
 
-    #region Getters/Setters
+    /**
+     * @param int[] $baseCombatStats
+     *
+     * @return $this
+     */
+    public function setBaseCombatStats(array $baseCombatStats)
+    {
+        $this->baseCombatStats = new Stats\Combat\BaseCombatStats($baseCombatStats);
+
+        return $this;
+    }
 
     /**
      * @return string
@@ -168,11 +182,11 @@ abstract class Character
     }
 
     /**
-     * @return aClass[]
+     * @return aClass
      */
-    public function getClasses(): array
+    public function getClass() : aClass
     {
-        return $this->classes;
+        return $this->class;
     }
 
     /**
@@ -188,11 +202,145 @@ abstract class Character
     }
 
     /**
-     * @return BaseStats|null
+     * @return Stats\BaseStats|null
      */
     public function getBaseStats()
     {
         return $this->baseStats;
+    }
+
+    /**
+     * @return Stats\Combat\BaseCombatStats
+     */
+    public function getBaseCombatStats()
+    {
+        return $this->baseCombatStats;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBaseHP()
+    {
+        return $this->baseHP;
+    }
+
+    /**
+     * @param mixed $baseHP
+     * @return Character
+     */
+    public function setBaseHP($baseHP)
+    {
+        $this->baseHP = $baseHP;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBasePP()
+    {
+        return $this->basePP;
+    }
+
+    /**
+     * @param mixed $basePP
+     * @return Character
+     */
+    public function setBasePP($basePP)
+    {
+        $this->basePP = $basePP;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBaseMP()
+    {
+        return $this->baseMP;
+    }
+
+    /**
+     * @param mixed $baseMP
+     * @return Character
+     */
+    public function setBaseMP($baseMP)
+    {
+        $this->baseMP = $baseMP;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBasePsy()
+    {
+        return $this->basePsy;
+    }
+
+    /**
+     * @param mixed $basePsy
+     * @return Character
+     */
+    public function setBasePsy($basePsy)
+    {
+        $this->basePsy = $basePsy;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMagicResists()
+    {
+        return $this->magicResists;
+    }
+
+    /**
+     * @param mixed $magicResists
+     * @return Character
+     */
+    public function setMagicResists($magicResists)
+    {
+        $this->magicResists = $magicResists;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getInventory()
+    {
+        return $this->inventory;
+    }
+
+    /**
+     * @param mixed $inventory
+     * @return Character
+     */
+    public function setInventory($inventory)
+    {
+        $this->inventory = $inventory;
+        return $this;
+    }
+
+    /**
+     * @return aSkill[]
+     */
+    public function getSkills() : array
+    {
+        return $this->skills;
+    }
+
+    /**
+     * @param aSkill[] $skills
+     * @return Character
+     */
+    public function setSkills(array $skills) : Character
+    {
+        $this->skills = $skills;
+        return $this;
     }
 
     #endregion
