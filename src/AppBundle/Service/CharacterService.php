@@ -48,11 +48,12 @@ class CharacterService
     public function generateCharacter(aRace $race, aClass $class)
     {
         $character = new PlayerCharacter($race, $class);
-        $character->setBaseStats($this->generateBaseStats($race, $class))
-                  ->setBaseCombatStats($this->generateBaseCombatStats($class));
+        $character->setBaseStats($this->generateBaseStats($race, $class));
+
+        //first set class bonuses
+        $this->classService->applyClassBonuses($character);
 
         $this->raceService->applyRacialBonuses($character);
-        $this->classService->applyClassBonuses($character);
 
         $this->applyBonuses($character);
 
@@ -97,26 +98,6 @@ class CharacterService
         }
 
         return $statValues;
-    }
-
-    /**
-     * Returns base combat stats based on the class
-     *
-     * @param aClass $class
-     *
-     * @return int[]
-     */
-    protected function generateBaseCombatStats(aClass $class)
-    {
-        $stats = [];
-
-        foreach($class->getModifiers() as $type => $value) {
-            $name = ClassService::$StatTypeToStatName[ $type ];
-
-            $stats[ $name ] = $value;
-        }
-
-        return $stats;
     }
 
     /**

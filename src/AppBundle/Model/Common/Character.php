@@ -10,6 +10,7 @@
 
 namespace AppBundle\Model\Common;
 
+use AppBundle\Exception\AppException;
 use AppBundle\Model\Common\CharacterClass\aClass;
 use AppBundle\Model\Common\Race\aRace;
 use AppBundle\Model\Common\Skill\aSkill;
@@ -38,15 +39,15 @@ abstract class Character
     /** @var Stats\Combat\BaseCombatStats */
     protected $baseCombatStats = null;
 
-    protected $baseHP;
+    protected $baseHP = 0;
 
-    protected $basePP;
+    protected $basePP = 0;
 
-    protected $baseMP;
+    protected $baseMP = 0;
 
-    protected $basePsy;
-
-    protected $magicResists;
+    protected $basePsy = 0;
+    /** @var Stats\Magic\MagicResist[] */
+    protected $magicResists = [];
 
     protected $inventory;
 
@@ -292,18 +293,20 @@ abstract class Character
     /**
      * @return mixed
      */
-    public function getMagicResists()
+    public function getMagicResist( $type = Stats\Magic\MagicResist::TYPE_ASTRAL )
     {
-        return $this->magicResists;
+        return $this->magicResists[ $type ];
     }
 
     /**
-     * @param mixed $magicResists
+     * @param Stats\Magic\MagicResist $magicResist
      * @return Character
+     * @throws AppException
      */
-    public function setMagicResists($magicResists)
+    public function setMagicResists(Stats\Magic\MagicResist $magicResist)
     {
-        $this->magicResists = $magicResists;
+        $this->magicResists[ $magicResist->getType() ] = $magicResist;
+
         return $this;
     }
 
