@@ -11,11 +11,17 @@
 namespace AppBundle\Service;
 
 
+use AppBundle\Exception\AppException;
 use AppBundle\Model\Common\Character;
 use AppBundle\Model\Common\CharacterClass\aClass;
 use AppBundle\Model\Common\Race\aRace;
 use AppBundle\Model\PC\PlayerCharacter;
 
+/**
+ * Class CharacterService
+ *
+ * @package AppBundle\Service
+ */
 class CharacterService
 {
     /** @var RaceService */
@@ -30,6 +36,15 @@ class CharacterService
         $this->classService = $classService;
     }
 
+    /**
+     * Generates a character with random stats
+     *
+     * @param aRace  $race
+     * @param aClass $class
+     *
+     * @return PlayerCharacter
+     * @throws AppException
+     */
     public function generateCharacter(aRace $race, aClass $class)
     {
         $character = new PlayerCharacter($race, $class);
@@ -44,6 +59,14 @@ class CharacterService
         return $character;
     }
 
+    /**
+     * Rolls base stats
+     *
+     * @param aRace  $race
+     * @param aClass $class
+     *
+     * @return int[]
+     */
     protected function generateBaseStats(aRace $race, aClass $class)
     {
         $statRanges    = $class::getBaseStatRanges();
@@ -76,6 +99,13 @@ class CharacterService
         return $statValues;
     }
 
+    /**
+     * Returns base combat stats based on the class
+     *
+     * @param aClass $class
+     *
+     * @return int[]
+     */
     protected function generateBaseCombatStats(aClass $class)
     {
         $stats = [];
@@ -89,6 +119,14 @@ class CharacterService
         return $stats;
     }
 
+    /**
+     * Adds combat stat modifiers based on base stats
+     *
+     * @param Character $character
+     *
+     * @return $this
+     * @throws AppException
+     */
     protected function applyBonuses(Character $character)
     {
         $baseStats   = $character->getBaseStats();
