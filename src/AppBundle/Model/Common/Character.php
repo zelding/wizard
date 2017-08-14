@@ -291,7 +291,7 @@ abstract class Character
     }
 
     /**
-     * @return mixed
+     * @return Stats\Magic\MagicResist
      */
     public function getMagicResist( $type = Stats\Magic\MagicResist::TYPE_ASTRAL )
     {

@@ -139,4 +139,39 @@ class MagicResist extends aStat
     }
 
     #endregion
+
+
+    /**
+     * @return int
+     */
+    public function getStatic() : int
+    {
+        return $this->static;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDynamic() : int
+    {
+        return $this->dynamic;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSubConscious() : int
+    {
+        return $this->subConscious;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMagic() : int
+    {
+        return $this->magic;
+    }
+
+
 }

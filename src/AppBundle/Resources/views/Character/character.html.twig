@@ -1,0 +1,95 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Base stats</h3>
+                            </div>
+
+                            <div class="panel-body">
+                                <ul class="list-unstyled">
+                                    {% for stat in char.baseStats.allStats %}
+                                        {# @var stat \AppBundle\Model\Common\Stats\aStat #}
+                                        {% set mod = stat.modifierValue != 0 %}
+                                        <li>
+                                            <div class="row">
+                                                <div class="col-md-3">{{ stat.name }} :</div>
+                                                <div class="col-md-1 text-right">{{ stat.baseValue }}</div>
+                                                {% if mod %}
+                                                    <div class="col-md-1 text-right">+</div>
+                                                    <div class="col-md-1 text-right">{{ stat.modifierValue }}</div>
+                                                {% else %}
+                                                    <div class="col-md-2">&nbsp;</div>
+                                                {% endif %}
+                                                <div class="col-md-1 text-right">=</div>
+                                                <div class="col-md-1 text-right">{{ stat.value }}</div>
+                                                {% if stat.rollModifierValue %}
+                                                    <div class="col-md-1 text-right">+ {{ stat.rollModifierValue }}</div>
+                                                {% endif %}
+                                            </div>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Magic resists</h3>
+                            </div>
+
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-xs-4">
+                                        <ul class="list-unstyled">
+                                            <li>&nbsp;</li>
+                                            <li>Static</li>
+                                            <li>Dynamic</li>
+                                            <li>Magic</li>
+                                            <li>Sub-conscious</li>
+                                            <li>Total</li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="col-xs-4">
+                                        <ul class="list-unstyled">
+                                            <li>Mental</li>
+                                            <li>{{ char.magicResist('Mental').static  }}</li>
+                                            <li>{{ char.magicResist('Mental').dynamic }}</li>
+                                            <li>{{ char.magicResist('Mental').magic  }}</li>
+                                            <li>{{ char.magicResist('Mental').subConscious  }}</li>
+                                            <li>{{ char.magicResist('Mental').currentTotal  }}</li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="col-xs-4">
+                                        <ul class="list-unstyled">
+                                            <li>Astral</li>
+                                            <li>{{ char.magicResist.static  }}</li>
+                                            <li>{{ char.magicResist.dynamic }}</li>
+                                            <li>{{ char.magicResist.magic  }}</li>
+                                            <li>{{ char.magicResist.subConscious  }}</li>
+                                            <li>{{ char.magicResist.currentTotal  }}</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="panel-footer">Panel footer</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{ dump(char) }}
+{% endblock %}
