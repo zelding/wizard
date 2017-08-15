@@ -13,7 +13,6 @@ namespace AppBundle\Service;
 
 use AppBundle\Model\Common\Character;
 
-use AppBundle\Model\Common\CharacterClass\aClass;
 use AppBundle\Model\Common\Stats\Combat\Aim;
 use AppBundle\Model\Common\Stats\Combat\Attack;
 use AppBundle\Model\Common\Stats\Combat\Defense;

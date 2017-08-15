@@ -132,13 +132,13 @@ abstract class aStat
     #endregion
 
     /**
-     * @param aStat $modifier
+     * @param Modifier $modifier
      * @return $this|aStat
      * @throws AppException
      */
-    public function addModifier(aStat $modifier) : aStat
+    public function addModifier(Modifier $modifier) : aStat
     {
-        if ( $modifier::TYPE === static::TYPE ) {
+        if ( $modifier->getModifies() === static::TYPE ) {
             $this->modifiers[] = $modifier;
         }
         else {

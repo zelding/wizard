@@ -39,16 +39,16 @@ use AppBundle\Exception\AppException;
  * @method aStat getAstral()
  * @method aStat getPerception()
  *
- * @method BaseStats addStrength(int $str)
- * @method BaseStats addStamina(int $sta)
- * @method BaseStats addDexterity(int $dex)
- * @method BaseStats addSpeed(int $spd)
- * @method BaseStats addVitality(int $vit)
- * @method BaseStats addBeauty(int $bea)
- * @method BaseStats addIntelligence(int $int)
- * @method BaseStats addWillpower(int $wil)
- * @method BaseStats addAstral(int $ast)
- * @method BaseStats addPerception(int $per)
+ * @method BaseStats addStrength(int $str, string $description = "")
+ * @method BaseStats addStamina(int $sta, string $description = "")
+ * @method BaseStats addDexterity(int $dex, string $description = "")
+ * @method BaseStats addSpeed(int $spd, string $description = "")
+ * @method BaseStats addVitality(int $vit, string $description = "")
+ * @method BaseStats addBeauty(int $bea, string $description = "")
+ * @method BaseStats addIntelligence(int $int, string $description = "")
+ * @method BaseStats addWillpower(int $wil, string $description = "")
+ * @method BaseStats addAstral(int $ast, string $description = "")
+ * @method BaseStats addPerception(int $per, string $description = "")
  */
 class BaseStats
 {
@@ -125,14 +125,15 @@ class BaseStats
         }
 
         if ( "add" == $method ) {
-            if ( empty($arguments) || count($arguments) > 1 ) {
-                throw new AppException("Only one argument is allowed for statAdders");
+            if ( empty($arguments) || count($arguments) > 2 ) {
+                throw new AppException("Max two argument is allowed for statAdders");
             }
 
             $value = reset($arguments);
+            $desc  = empty($arguments[1]) ? "" : $arguments[1];
 
             if( in_array($statName, array_keys(static::$baseStats)) ) {
-                return $this->addStat($statName, $value);
+                return $this->addModifier($statName, $value, $desc);
             }
             else {
                 throw new AppException("Invalid stat type: {$statName}");
@@ -186,19 +187,20 @@ class BaseStats
      *
      * @param string $name
      * @param int    $value
+     * @param string $description
      *
      * @return $this
      * @throws AppException
      */
-    protected function addStat(string $name, int $value)
+    protected function addModifier(string $name, int $value, $description = "")
     {
-        $statClass = $this->resolveStatClass($name, $value);
+        $modifierClass = $this->resolveModifierClass($name, $value, $description);
 
-        if ( !array_key_exists($statClass::TYPE, $this->stats) ) {
-            throw new AppException("{$name}/".$statClass::TYPE." is not yet defined");
+        if ( !array_key_exists($modifierClass->getModifies(), $this->stats) ) {
+            throw new AppException("{$name}/".$modifierClass::TYPE." is not yet defined");
         }
 
-        $this->stats[ $statClass::TYPE ]->addModifier($statClass);
+        $this->stats[ $modifierClass->getModifies() ]->addModifier($modifierClass);
 
         return $this;
     }
@@ -220,7 +222,24 @@ class BaseStats
     {
         $statClassName = static::$baseStats[ $name ];
 
-        /** @var aStat $statClass */
         return new $statClassName($value);
+    }
+
+    /**
+     * @param string $name
+     * @param int    $value
+     * @param string $description
+     *
+     * @return Modifier
+     */
+    protected function resolveModifierClass(string $name, int $value = 0, $description = "") : Modifier
+    {
+        /** @var aStat $statClassName */
+        $statClassName = static::$baseStats[ $name ];
+
+        $modifier = new Modifier($value, $description);
+        $modifier->setModifies($statClassName::TYPE);
+
+        return $modifier;
     }
 }

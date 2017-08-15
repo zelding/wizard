@@ -114,23 +114,21 @@ class CharacterService
         $combatStats = $character->getBaseCombatStats();
 
         $combatStats->addSequence(
-            $baseStats->getDexterity()->getRollModifierValue() +
-            $baseStats->getSpeed()->getRollModifierValue()
-        );
-
-        $combatStats->addAttack(
-            $baseStats->getStrength()->getRollModifierValue() +
-            $baseStats->getDexterity()->getRollModifierValue() +
-            $baseStats->getSpeed()->getRollModifierValue()
-        );
-
-        $combatStats->addDefense(
-            $baseStats->getDexterity()->getRollModifierValue() +
-            $baseStats->getSpeed()->getRollModifierValue()
-        );
-
-        $combatStats->addAim(
-            $baseStats->getDexterity()->getRollModifierValue()
+            $baseStats->getDexterity()->getRollModifierValue(), "Base Dexterity bonus"
+        )->addSequence(
+            $baseStats->getSpeed()->getRollModifierValue(), "Base Speed bonus"
+        )->addAttack(
+            $baseStats->getStrength()->getRollModifierValue(), "Base Strength bonus"
+        )->addAttack(
+            $baseStats->getDexterity()->getRollModifierValue(), "Base Dexterity bonus"
+        )->addAttack(
+            $baseStats->getSpeed()->getRollModifierValue(), "Base Speed bonus"
+        )->addDefense(
+            $baseStats->getDexterity()->getRollModifierValue(), "Base Dexterity bonus"
+        )->addDefense(
+            $baseStats->getSpeed()->getRollModifierValue(), "Base Speed bonus"
+        )->addAim(
+            $baseStats->getDexterity()->getRollModifierValue(), "Base Dexterity bonus"
         );
 
         return $this;

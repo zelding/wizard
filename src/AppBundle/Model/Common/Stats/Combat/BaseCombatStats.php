@@ -19,16 +19,16 @@ use AppBundle\Model\Common\Stats\aStat;
  *
  * @package AppBundle\Model\Common\Stats\Combat
  *
- * @method BaseCombatStats addSequence(int $seq)
+ * @method BaseCombatStats addSequence(int $seq, string $description = "")
  * @method aStat getSequence()
  *
- * @method BaseCombatStats addAttack(int $atk)
+ * @method BaseCombatStats addAttack(int $atk, string $description = "")
  * @method aStat getAttack()
  *
- * @method BaseCombatStats addDefense(int $def)
+ * @method BaseCombatStats addDefense(int $def, string $description = "")
  * @method aStat getDefense()
  *
- * @method BaseCombatStats addAim(int $aim)
+ * @method BaseCombatStats addAim(int $aim, string $description = "")
  * @method aStat getAim()
  */
 class BaseCombatStats extends BaseStats
