@@ -109,7 +109,7 @@ class RaceService
         if ( !empty($raceBonuses) ) {
             foreach($raceBonuses as $type => $bonus) {
                 $method = ClassService::$StatTypeToStatName[ $type ];
-                $character->getBaseCombatStats()->{"add{$method}"}($bonus);
+                $character->getBaseCombatStats()->{"add{$method}"}($bonus, "Racial bonus");
             }
         }
 
