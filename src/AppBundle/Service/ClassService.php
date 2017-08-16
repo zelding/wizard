@@ -13,6 +13,7 @@ namespace AppBundle\Service;
 
 use AppBundle\Model\Common\Character;
 
+use AppBundle\Model\Common\Skill\aSkill;
 use AppBundle\Model\Common\Stats\Combat\Aim;
 use AppBundle\Model\Common\Stats\Combat\Attack;
 use AppBundle\Model\Common\Stats\Combat\Defense;
@@ -32,9 +33,51 @@ class ClassService
     public function applyClassBonuses(Character $character)
     {
         $character->setBaseCombatStats($this->generateBaseCombatStats($character));
+
         $this->setUpMagicResists($character);
 
         return $this;
+    }
+
+    /**
+     * @param Character $character
+     *
+     * @return aSkill[]
+     */
+    public function getClassSkills(Character $character)
+    {
+        $skills = $character->getClass()::getBaseProfessions();
+
+        $classSkills = [];
+
+        foreach( $skills as $class => $skillData ) {
+            if ( is_array($skillData) ) {
+                // If multiple of the same type are present like weapon handling or language
+                for($i = 0; $i < count($skillData["relations"]); $i++) {
+                    /** @var aSkill $skill */
+                    $skill = new $class($skillData["mastery"]);
+                    $skill->setRelatesTo($skillData["relations"][ $i ]);
+
+                    $classSkills[] = $skill;
+                }
+            }
+            else {
+                $classSkills[] = new $class($skillData);
+            }
+        }
+
+        if ( $character->getLevel() > 1 ) {
+            $laterSkills = $character->getClass()::getLateProfessions();
+            foreach( $laterSkills as $lvl => $skills ) {
+                if ( $lvl <= $character->getLevel() ) {
+                    foreach( $skills as $class => $mastery ) {
+                        $classSkills[] = new $class($mastery);
+                    }
+                }
+            }
+        }
+
+        return $classSkills;
     }
 
     /**
@@ -58,6 +101,12 @@ class ClassService
         return $stats;
     }
 
+    /**
+     * @param Character $character
+     *
+     * @return $this
+     * @throws \AppBundle\Exception\AppException
+     */
     protected function setUpMagicResists(Character $character)
     {
         $astral = new AstralMagicResist(0);
@@ -78,5 +127,4 @@ class ClassService
 
         return $this;
     }
-
 }

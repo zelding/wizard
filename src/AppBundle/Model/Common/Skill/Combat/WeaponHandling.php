@@ -23,8 +23,9 @@ class WeaponHandling extends aSkill
 
     public static $category = self::SKILL_TYPE_COMBAT;
 
-    public static $baseCost    =  3;
-    public static $masteryCost = 30;
+    public static $baseCost      =  3;
+    public static $masteryCost   = 30;
+    public static $allowMultiple = true;
 
     protected static $modifiers = [
         self::MASTERY_BASIC  => [],
@@ -36,6 +37,9 @@ class WeaponHandling extends aSkill
         ]
     ];
 
-    protected static $name = "Weapon handling";
+    protected static $otherRelations = [
+        "Item\Weapon"
+    ];
 
+    protected static $name = "Weapon handling";
 }

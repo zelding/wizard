@@ -11,6 +11,7 @@
 namespace AppBundle\Service;
 
 use AppBundle\Model\Common\Character;
+use AppBundle\Model\Common\Skill\aSkill;
 use AppBundle\Model\Common\Stats\Astral;
 use AppBundle\Model\Common\Stats\Beauty;
 use AppBundle\Model\Common\Stats\Dexterity;
@@ -51,12 +52,36 @@ class RaceService
     public function applyRacialBonuses(Character $character)
     {
         $this->setRacialBonuses($character)
-             ->addRacialCombatBonuses($character)
-             ->setRacialSkills($character);
+             ->addRacialCombatBonuses($character);
 
         return $this;
     }
 
+    /**
+     * @param Character $character
+     *
+     * @return aSkill[]
+     */
+    public function getRacialSkills(Character $character)
+    {
+        $skills = $character->getRace()::getBaseProfessions();
+
+        $racialSkills = [];
+
+        if ( !empty($skills) ) {
+            foreach ($skills as $class => $mastery) {
+                $racialSkills[] = new $class($mastery);
+            }
+        }
+
+        return $racialSkills;
+    }
+
+    /**
+     * @param Character $character
+     *
+     * @return $this
+     */
     protected function setRacialBonuses(Character $character)
     {
         $raceBonuses = $character->getRace()::getBaseStatModifiers();
@@ -72,6 +97,11 @@ class RaceService
         return $this;
     }
 
+    /**
+     * @param Character $character
+     *
+     * @return $this
+     */
     protected function addRacialCombatBonuses(Character $character)
     {
         $raceBonuses = $character->getRace()::getCombatStatModifiers();
@@ -83,11 +113,6 @@ class RaceService
             }
         }
 
-        return $this;
-    }
-
-    protected function setRacialSkills(Character $character)
-    {
         return $this;
     }
 }

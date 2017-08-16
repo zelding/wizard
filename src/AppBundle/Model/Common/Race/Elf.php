@@ -10,6 +10,8 @@
 
 namespace AppBundle\Model\Common\Race;
 
+use AppBundle\Model\Common\Skill\aSkill;
+use AppBundle\Model\Common\Skill\Social\HorsebackRiding;
 use AppBundle\Model\Common\Stats\aStat;
 use AppBundle\Model\Common\Stats\Astral;
 use AppBundle\Model\Common\Stats\Beauty;
@@ -43,7 +45,7 @@ class Elf extends aRace
         Aim::TYPE => 30
     ];
 
-    protected static $maxBaseStats      = [
+    protected static $maxBaseStats        = [
         Strength::TYPE     => 18,
         Stamina::TYPE      => 18,
         Dexterity::TYPE    => 21,
@@ -56,7 +58,9 @@ class Elf extends aRace
         Perception::TYPE   => 20
     ];
 
-    protected static $playable = true;
+    protected static $playable            = true;
 
-    protected static $baseSkills = [];
+    protected static $baseProfessions     = [
+        HorsebackRiding::class => aSkill::MASTERY_MASTER
+    ];
 }

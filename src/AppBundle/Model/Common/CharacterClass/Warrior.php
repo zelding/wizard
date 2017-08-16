@@ -11,6 +11,10 @@
 namespace AppBundle\Model\Common\CharacterClass;
 
 
+use AppBundle\Model\Common\Skill\aSkill;
+use AppBundle\Model\Common\Skill\Combat\Leadership;
+use AppBundle\Model\Common\Skill\Combat\WeaponHandling;
+use AppBundle\Model\Common\Skill\Social\HorsebackRiding;
 use AppBundle\Model\Common\Stats\aStat;
 
 use AppBundle\Model\Common\Stats\Astral;
@@ -58,10 +62,10 @@ class Warrior extends aClass
 
     protected static $combatModifiersPerLevel = [11, [
         Attack::TYPE  => 3,
-        Defense::TYPE => 3,
+        Defense::TYPE => 3
     ]];
 
-    protected static $baseStatRanges = [
+    protected static $baseStatRanges  = [
         Strength::TYPE     => [13, 18, 1, true],
         Stamina::TYPE      => [ 9, 18, 1, true],
         Dexterity::TYPE    => [ 8, 18, 1, true],
@@ -74,9 +78,39 @@ class Warrior extends aClass
         Perception::TYPE   => [ 8, 18, 1, false]
     ];
 
-    protected static $baseSkills = [
-
+    protected static $baseProfessions = [
+        WeaponHandling::class  => [
+            "relations" => [
+                "Short sword",
+                "Long sword",
+                "Pike"
+            ],
+            "mastery"   => aSkill::MASTERY_BASIC
+        ],
+        HorsebackRiding::class => aSkill::MASTERY_BASIC,
     ];
+
+    protected static $lateProfessions = [
+        6 => [Leadership::class => aSkill::MASTERY_BASIC]
+    ];
+
+    protected static $experienceTable = [
+             0,
+           161,
+           321,
+           641,
+          1441,
+          2801,
+          6501,
+         10001,
+         20001,
+         40001,
+         60001,
+         80001,
+        112001
+    ];
+
+    protected static $xpAfter12       = 31200;
 
     public function __construct()
     {

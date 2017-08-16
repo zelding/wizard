@@ -51,6 +51,8 @@ abstract class Character
 
     protected $inventory;
 
+    protected $equipment;
+
     /** @var aSkill[] */
     protected $skills = [];
 
@@ -74,6 +76,16 @@ abstract class Character
         $fullName .= $this->getLastName();
 
         return $fullName;
+    }
+
+    public function knowsPsy()
+    {
+
+    }
+
+    public function knowsMagic()
+    {
+
     }
 
     #region Getters/Setters
@@ -254,6 +266,12 @@ abstract class Character
         return $this;
     }
 
+    public function addPP($value) {
+        $this->basePP += $value;
+
+        return $this;
+    }
+
     /**
      * @return mixed
      */
@@ -343,6 +361,51 @@ abstract class Character
     public function setSkills(array $skills) : Character
     {
         $this->skills = $skills;
+        return $this;
+    }
+
+    public function addSkill(aSkill $skill)
+    {
+        $this->skills[] = $skill;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLevel(): int
+    {
+        return $this->level;
+    }
+
+    /**
+     * @param int $level
+     *
+     * @return Character
+     */
+    public function setLevel(int $level): Character
+    {
+        $this->level = $level;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getExperience(): int
+    {
+        return $this->experience;
+    }
+
+    /**
+     * @param int $experience
+     *
+     * @return Character
+     */
+    public function setExperience(int $experience): Character
+    {
+        $this->experience = $experience;
+
         return $this;
     }
 

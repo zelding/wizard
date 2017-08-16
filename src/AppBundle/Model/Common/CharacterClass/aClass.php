@@ -11,6 +11,7 @@
 namespace AppBundle\Model\Common\CharacterClass;
 
 
+use AppBundle\Model\Common\Skill\aSkill;
 use AppBundle\Model\Common\Stats\aStat;
 use AppBundle\Model\Common\Stats\Astral;
 use AppBundle\Model\Common\Stats\Beauty;
@@ -66,8 +67,14 @@ abstract class aClass
     protected static $painPointsPerLevel = [0, 0];
     /** @var int[] point, mandatory points */
     protected static $combatModifiersPerLevel = [0, []];
-
-    protected static $baseSkills = [];
+    /** @var aSkill[] starting professions */
+    protected static $baseProfessions    = [];
+    /** @var aSkill[] later professions: level => aSkill|aSkill[] */
+    protected static $lateProfessions    = [];
+    /** @var int[] experience limit for a given level */
+    protected static $experienceTable = [];
+    /** @var int experience needed after level 12 */
+    protected static $xpAfter12 = 30000;
 
     #region Getters
 
@@ -146,9 +153,33 @@ abstract class aClass
     /**
      * @return array
      */
-    public function getBaseSkills(): array
+    public static function getBaseProfessions(): array
     {
-        return static::$baseSkills;
+        return static::$baseProfessions;
+    }
+
+    /**
+     * @return aSkill[]
+     */
+    public static function getLateProfessions(): array
+    {
+        return static::$lateProfessions;
+    }
+
+    /**
+     * @return int[]
+     */
+    public static function getExperienceTable(): array
+    {
+        return static::$experienceTable;
+    }
+
+    /**
+     * @return int
+     */
+    public static function getXpAfter12(): int
+    {
+        return static::$xpAfter12;
     }
 
     #endregion

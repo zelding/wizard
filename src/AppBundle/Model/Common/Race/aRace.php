@@ -54,7 +54,7 @@ abstract class aRace
      *
      * @var array
      */
-    protected static $baseSkills = [];
+    protected static $baseProfessions = [];
 
     #region Getters
 
@@ -93,9 +93,9 @@ abstract class aRace
     /**
      * @return array
      */
-    public static function getBaseSkills(): array
+    public static function getBaseProfessions(): array
     {
-        return static::$baseSkills;
+        return static::$baseProfessions;
     }
 
     /**
