@@ -52,26 +52,6 @@ abstract class aSkill
      */
     protected static $statRelations  = [];
 
-    /**
-     * @return string
-     */
-    public function getRelatesTo(): string
-    {
-        return $this->relatesTo;
-    }
-
-    /**
-     * @param string $relatesTo
-     *
-     * @return aSkill
-     */
-    public function setRelatesTo(string $relatesTo): aSkill
-    {
-        $this->relatesTo = $relatesTo;
-
-        return $this;
-    }
-
     protected static $otherRelations = [];
 
     /** @var string */
@@ -81,6 +61,8 @@ abstract class aSkill
 
     /** @var string only used if $allowMultiple */
     protected $relatesTo = "";
+
+    protected $origin = "";
 
     /**
      * aSkill constructor.
@@ -142,6 +124,53 @@ abstract class aSkill
     public function setMastery(string $mastery): aSkill
     {
         $this->mastery = $mastery;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRelatesTo(): string
+    {
+        return $this->relatesTo;
+    }
+
+    /**
+     * @param string $relatesTo
+     *
+     * @return aSkill
+     */
+    public function setRelatesTo(string $relatesTo): aSkill
+    {
+        $this->relatesTo = $relatesTo;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOrigin(): string
+    {
+        return $this->origin;
+    }
+
+    /**
+     * @param string $origin
+     *
+     * @return aSkill
+     */
+    public function setOrigin(string $origin): aSkill
+    {
+        $this->origin = $origin;
+
+        return $this;
+    }
+
+    public function updateOrigin(string $origin) : aSkill
+    {
+        $this->origin = trim($this->origin.$origin);
 
         return $this;
     }

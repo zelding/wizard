@@ -86,7 +86,9 @@ class ClassService
             foreach( $laterSkills as $lvl => $skills ) {
                 if ( $lvl <= $character->getLevel() ) {
                     foreach( $skills as $class => $mastery ) {
-                        $classSkills[] = new $class($mastery);
+                        $skill = new $class($mastery);
+
+                        $classSkills[] = $skill->setOrigin("unlocked at lvl {$lvl}");
                     }
                 }
             }
