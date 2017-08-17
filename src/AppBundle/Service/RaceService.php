@@ -12,6 +12,7 @@ namespace AppBundle\Service;
 
 use AppBundle\Model\Common\Character;
 use AppBundle\Model\Common\Skill\aSkill;
+use AppBundle\Model\Common\Skill\Social\Language;
 use AppBundle\Model\Common\Stats\Astral;
 use AppBundle\Model\Common\Stats\Beauty;
 use AppBundle\Model\Common\Stats\Dexterity;
@@ -64,13 +65,29 @@ class RaceService
      */
     public function getRacialSkills(Character $character)
     {
-        $skills = $character->getRace()::getBaseProfessions();
+        $skills = $character->getRace()::getBaseSkills();
 
         $racialSkills = [];
 
         if ( !empty($skills) ) {
             foreach ($skills as $class => $mastery) {
-                $racialSkills[] = new $class($mastery);
+                /** @var aSkill $skill */
+                $skill = new $class();
+
+                if ( $skill instanceof Language ) {
+                    foreach($mastery as $langData) {
+                        /** @var Language $lang */
+                        $lang = new $class($langData["mastery"]);
+                        $lang->setLevel($langData["level"]);
+                        $lang->setRelatesTo($langData["for"]);
+
+                        $racialSkills[] = $lang;
+                    }
+                }
+                else {
+                    $skill->setMastery($mastery);
+                    $racialSkills[] = $skill;
+                }
             }
         }
 

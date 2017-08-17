@@ -68,9 +68,9 @@ abstract class aClass
     /** @var int[] point, mandatory points */
     protected static $combatModifiersPerLevel = [0, []];
     /** @var aSkill[] starting professions */
-    protected static $baseProfessions    = [];
+    protected static $baseSkills = [];
     /** @var aSkill[] later professions: level => aSkill|aSkill[] */
-    protected static $lateProfessions    = [];
+    protected static $lateSkills = [];
     /** @var int[] experience limit for a given level */
     protected static $experienceTable = [];
     /** @var int experience needed after level 12 */
@@ -153,17 +153,17 @@ abstract class aClass
     /**
      * @return array
      */
-    public static function getBaseProfessions(): array
+    public static function getBaseSkills(): array
     {
-        return static::$baseProfessions;
+        return static::$baseSkills;
     }
 
     /**
      * @return aSkill[]
      */
-    public static function getLateProfessions(): array
+    public static function getLateSkills(): array
     {
-        return static::$lateProfessions;
+        return static::$lateSkills;
     }
 
     /**

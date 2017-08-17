@@ -78,8 +78,7 @@ abstract class aSkill
     protected static $name  = "";
     /** @var int */
     protected $mastery = self::MASTERY_BASIC ?? self::MASTERY_MASTER;
-    /** @var int */
-    protected $level   = 1;
+
     /** @var string only used if $allowMultiple */
     protected $relatesTo = "";
 
@@ -87,12 +86,10 @@ abstract class aSkill
      * aSkill constructor.
      *
      * @param string $mastery
-     * @param int    $level
      */
-    public function __construct(string $mastery = self::MASTERY_BASIC, int $level = 1)
+    public function __construct(string $mastery = self::MASTERY_BASIC)
     {
         $this->mastery = $mastery;
-        $this->level   = $level;
     }
 
     #region Getters/Setters
@@ -102,7 +99,7 @@ abstract class aSkill
      */
     public static function getModifiers(): array
     {
-        return self::$modifiers;
+        return static::$modifiers;
     }
 
     /**
@@ -110,7 +107,7 @@ abstract class aSkill
      */
     public static function getStatRelations(): array
     {
-        return self::$statRelations;
+        return static::$statRelations;
     }
 
     /**
@@ -118,15 +115,15 @@ abstract class aSkill
      */
     public static function getOtherRelations(): array
     {
-        return self::$otherRelations;
+        return static::$otherRelations;
     }
 
     /**
      * @return string
      */
-    public static function getName(): string
+    public function getName(): string
     {
-        return self::$name;
+        return static::$name;
     }
 
     /**
@@ -138,14 +135,6 @@ abstract class aSkill
     }
 
     /**
-     * @return int
-     */
-    public function getLevel(): int
-    {
-        return $this->level;
-    }
-
-    /**
      * @param string $mastery
      *
      * @return aSkill
@@ -153,18 +142,6 @@ abstract class aSkill
     public function setMastery(string $mastery): aSkill
     {
         $this->mastery = $mastery;
-
-        return $this;
-    }
-
-    /**
-     * @param int $level
-     *
-     * @return aSkill
-     */
-    public function setLevel(int $level): aSkill
-    {
-        $this->level = $level;
 
         return $this;
     }

@@ -14,6 +14,7 @@ namespace AppBundle\Service;
 use AppBundle\Model\Common\Character;
 
 use AppBundle\Model\Common\Skill\aSkill;
+use AppBundle\Model\Common\Skill\Social\Language;
 use AppBundle\Model\Common\Stats\Combat\Aim;
 use AppBundle\Model\Common\Stats\Combat\Attack;
 use AppBundle\Model\Common\Stats\Combat\Defense;
@@ -46,28 +47,42 @@ class ClassService
      */
     public function getClassSkills(Character $character)
     {
-        $skills = $character->getClass()::getBaseProfessions();
+        $skills = $character->getClass()::getBaseSkills();
 
         $classSkills = [];
 
         foreach( $skills as $class => $skillData ) {
-            if ( is_array($skillData) ) {
+            /** @var aSkill $skill */
+            $skill = new $class();
+
+            if ( $skill instanceof Language ) {
+                foreach($skillData as $langData) {
+                    /** @var Language $lang */
+                    $lang = new $class($langData["mastery"]);
+                    $lang->setLevel($langData["level"]);
+                    $lang->setRelatesTo($langData["for"]);
+
+                    $classSkills[] = $lang;
+                }
+            }
+            //probably weapon handling
+            elseif ( is_array($skillData) && is_array($skillData["relations"]) ) {
                 // If multiple of the same type are present like weapon handling or language
                 for($i = 0; $i < count($skillData["relations"]); $i++) {
-                    /** @var aSkill $skill */
                     $skill = new $class($skillData["mastery"]);
                     $skill->setRelatesTo($skillData["relations"][ $i ]);
-
                     $classSkills[] = $skill;
                 }
             }
             else {
-                $classSkills[] = new $class($skillData);
+                /** @var string $skillData */
+                $skill->setMastery($skillData);
+                $classSkills[] = $skill;
             }
         }
 
         if ( $character->getLevel() > 1 ) {
-            $laterSkills = $character->getClass()::getLateProfessions();
+            $laterSkills = $character->getClass()::getLateSkills();
             foreach( $laterSkills as $lvl => $skills ) {
                 if ( $lvl <= $character->getLevel() ) {
                     foreach( $skills as $class => $mastery ) {

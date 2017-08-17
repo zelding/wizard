@@ -12,6 +12,7 @@ namespace AppBundle\Model\Common\Race;
 
 use AppBundle\Model\Common\Skill\aSkill;
 use AppBundle\Model\Common\Skill\Social\HorsebackRiding;
+use AppBundle\Model\Common\Skill\Social\Language;
 use AppBundle\Model\Common\Stats\aStat;
 use AppBundle\Model\Common\Stats\Astral;
 use AppBundle\Model\Common\Stats\Beauty;
@@ -60,7 +61,12 @@ class Elf extends aRace
 
     protected static $playable            = true;
 
-    protected static $baseProfessions     = [
-        HorsebackRiding::class => aSkill::MASTERY_MASTER
+    protected static $baseSkills          = [
+        HorsebackRiding::class => aSkill::MASTERY_MASTER,
+        Language::class        => [[
+            "for"     => "Elvish",
+            "mastery" => aSkill::MASTERY_BASIC,
+            "level"   => 5
+        ]]
     ];
 }

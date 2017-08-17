@@ -15,6 +15,7 @@ use AppBundle\Model\Common\Skill\aSkill;
 use AppBundle\Model\Common\Skill\Combat\Leadership;
 use AppBundle\Model\Common\Skill\Combat\WeaponHandling;
 use AppBundle\Model\Common\Skill\Social\HorsebackRiding;
+use AppBundle\Model\Common\Skill\Social\Language;
 use AppBundle\Model\Common\Stats\aStat;
 
 use AppBundle\Model\Common\Stats\Astral;
@@ -78,7 +79,7 @@ class Warrior extends aClass
         Perception::TYPE   => [ 8, 18, 1, false]
     ];
 
-    protected static $baseProfessions = [
+    protected static $baseSkills      = [
         WeaponHandling::class  => [
             "relations" => [
                 "Short sword",
@@ -88,9 +89,14 @@ class Warrior extends aClass
             "mastery"   => aSkill::MASTERY_BASIC
         ],
         HorsebackRiding::class => aSkill::MASTERY_BASIC,
+        Language::class        => [[
+            "for"     => "Common",
+            "mastery" => aSkill::MASTERY_BASIC,
+            "level"   => 3
+        ]]
     ];
 
-    protected static $lateProfessions = [
+    protected static $lateSkills      = [
         6 => [Leadership::class => aSkill::MASTERY_BASIC]
     ];
 

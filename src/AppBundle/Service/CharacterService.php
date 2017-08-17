@@ -246,17 +246,19 @@ class CharacterService
         $skills = $character->getSkills();
 
         if ( !empty($skills) ) {
-            foreach ($skills as $skill) {
-                /** @var aSkill $skill */
-                if ( get_class($skill) === get_class($newSkill) ) {
+            foreach ($skills as $cat => $skillGroup) {
+                foreach($skillGroup as $skill) {
+                    /** @var aSkill $skill */
+                    if (get_class($skill) === get_class($newSkill)) {
 
-                    if ( $skill::$allowMultiple ) {
-                        if( $newSkill->getRelatesTo() === $skill->getRelatesTo() ) {
+                        if ($skill::$allowMultiple) {
+                            if ($newSkill->getRelatesTo() === $skill->getRelatesTo()) {
+                                return $skill;
+                            }
+                        }
+                        else {
                             return $skill;
                         }
-                    }
-                    else {
-                        return $skill;
                     }
                 }
             }
