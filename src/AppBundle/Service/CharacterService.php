@@ -201,13 +201,19 @@ class CharacterService
         $classSkills  = $this->classService->getClassSkills($character);
 
         foreach($classSkills as $skill) {
-            $skill->updateOrigin(" from class: ".$character->getClass()::getName());
+            if ( empty($skill->getOrigin()) ) {
+                $skill->updateOrigin("from class: ".$character->getClass()::getName());
+            }
+
             $this->addCharacterSkill($character, $skill);
         }
 
         if ( !empty($racialSkills) ) {
             foreach( $racialSkills as $skill ) {
-                $skill->setOrigin("from race: ".$character->getRace()::getName());
+                if ( empty($skill->getOrigin()) ) {
+                    $skill->setOrigin("from race: ".$character->getRace()::getName());
+                }
+
                 $this->addCharacterSkill($character, $skill);
             }
         }
@@ -226,7 +232,7 @@ class CharacterService
     protected function addCharacterSkill(Character $character, aSkill $skill)
     {
         if ( $oldSkill = $this->getSkill($character, $skill) ) {
-            $oldSkill->updateOrigin( " updated by: ".$skill->getOrigin() );
+            $oldSkill->updateOrigin( "updated by: ".$skill->getOrigin()[0] );
             $oldSkill->setMastery($skill->getMastery());
         }
         else {

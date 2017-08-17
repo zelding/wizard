@@ -61,8 +61,8 @@ abstract class aSkill
 
     /** @var string only used if $allowMultiple */
     protected $relatesTo = "";
-
-    protected $origin = "";
+    /** @var string[]  */
+    protected $origin = [];
 
     /**
      * aSkill constructor.
@@ -149,9 +149,9 @@ abstract class aSkill
     }
 
     /**
-     * @return string
+     * @return string[]
      */
-    public function getOrigin(): string
+    public function getOrigin(): array
     {
         return $this->origin;
     }
@@ -163,14 +163,14 @@ abstract class aSkill
      */
     public function setOrigin(string $origin): aSkill
     {
-        $this->origin = $origin;
+        $this->origin = [$origin];
 
         return $this;
     }
 
     public function updateOrigin(string $origin) : aSkill
     {
-        $this->origin = trim($this->origin.$origin);
+        $this->origin[] = $origin;
 
         return $this;
     }

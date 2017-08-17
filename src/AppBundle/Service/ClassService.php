@@ -88,7 +88,7 @@ class ClassService
                     foreach( $skills as $class => $mastery ) {
                         $skill = new $class($mastery);
 
-                        $classSkills[] = $skill->setOrigin("unlocked at lvl {$lvl}");
+                        $classSkills[] = $skill->setOrigin("from class: ".$character->getClass()::getName().", unlocked at lvl {$lvl}");
                     }
                 }
             }
