@@ -15,8 +15,6 @@ class PyarronPsy extends Psy
 {
     const TYPE = "PSY-PY";
 
-    public static $category = self::SKILL_TYPE_SCIENCE;
-
     public static $baseCost    = 20;
     public static $masteryCost = 55;
 
