@@ -42,4 +42,10 @@ class WeaponHandling extends aSkill
     ];
 
     protected static $name = "Weapon handling";
+
+    public function getName(): string
+    {
+        return $this->getRelatesTo()." handling";
+    }
+
 }

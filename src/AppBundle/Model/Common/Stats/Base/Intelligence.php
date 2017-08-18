@@ -8,8 +8,8 @@
  * Date: 8/9/17 9:10 AM
  */
 
-namespace AppBundle\Model\Common\Stats;
-
+namespace AppBundle\Model\Common\Stats\Base;
+use AppBundle\Model\Common\Stats\aStat;
 
 class Intelligence extends aStat
 {

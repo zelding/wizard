@@ -14,7 +14,11 @@ use AppBundle\Exception\AppException;
 use AppBundle\Model\Common\CharacterClass\aClass;
 use AppBundle\Model\Common\Race\aRace;
 use AppBundle\Model\Common\Skill\aSkill;
-use AppBundle\Model\Common\Stats;
+use AppBundle\Model\Common\Skill\Science\Magic;
+use AppBundle\Model\Common\Skill\Science\Psy;
+use AppBundle\Model\Common\Stats\Base\BaseStats;
+use AppBundle\Model\Common\Stats\Combat\BaseCombatStats;
+use AppBundle\Model\Common\Stats\General\GeneralStats;
 
 abstract class Character
 {
@@ -34,18 +38,18 @@ abstract class Character
 
     protected $experience = 0;
 
-    /** @var null|Stats\BaseStats */
+    /** @var BaseStats */
     protected $baseStats = null;
     /** @var Stats\Combat\BaseCombatStats */
     protected $baseCombatStats = null;
+    /** @var GeneralStats  */
+    protected $generalStats = null;
 
-    protected $baseHP = 0;
+    protected $currentHP  = 0;
+    protected $currentPP  = 0;
+    protected $currentMP  = 0;
+    protected $currentPsy = 0;
 
-    protected $basePP = 0;
-
-    protected $baseMP = 0;
-
-    protected $basePsy = 0;
     /** @var Stats\Magic\MagicResist[] */
     protected $magicResists = [];
 
@@ -53,7 +57,7 @@ abstract class Character
 
     protected $equipment;
 
-    /** @var aSkill[] */
+    /** @var aSkill[[]] */
     protected $skills = [];
 
     public function __construct(aRace $race, aClass $class)
@@ -70,7 +74,7 @@ abstract class Character
         $fullName = $this->getFirstName()." ";
 
         if ( !empty($this->otherNames) ) {
-            $fullName .= implode(" ", $this->otherNames);
+            $fullName .= implode(" ", $this->otherNames)." ";
         }
 
         $fullName .= $this->getLastName();
@@ -78,14 +82,47 @@ abstract class Character
         return $fullName;
     }
 
-    public function knowsPsy()
+    public function getXpToNextLevel()
     {
+        if ( $this->class instanceof aClass) {
+            $table = $this->class::getExperienceTable();
 
+            return $table[ $this->level ] - $this->experience;
+        }
+
+        return -1;
     }
 
-    public function knowsMagic()
+    /**
+     * @return bool|Psy
+     */
+    public function getPsySkill()
     {
+        if ( !empty($this->skills[ aSkill::SKILL_TYPE_SCIENCE ]) ) {
+            $a = array_filter($this->skills[ aSkill::SKILL_TYPE_SCIENCE ], function ($skill) {
+                return is_a($skill, Psy::class);
+            });
 
+            return !empty($a) ? reset($a) : false;
+        }
+
+        return false;
+    }
+
+    /**
+     * @return bool|Magic
+     */
+    public function getMagicSkill()
+    {
+        if ( !empty($this->skills[ aSkill::SKILL_TYPE_SCIENCE ]) ) {
+            $a = array_filter($this->skills[ aSkill::SKILL_TYPE_SCIENCE ], function ($skill) {
+                return is_a($skill, Magic::class);
+            });
+
+            return !empty($a) ? reset($a) : false;
+        }
+
+        return false;
     }
 
     #region Getters/Setters
@@ -97,7 +134,7 @@ abstract class Character
      */
     public function setBaseStats(array $baseStats)
     {
-        $this->baseStats = new Stats\BaseStats($baseStats);
+        $this->baseStats = new BaseStats($baseStats);
 
         return $this;
     }
@@ -109,10 +146,23 @@ abstract class Character
      */
     public function setBaseCombatStats(array $baseCombatStats)
     {
-        $this->baseCombatStats = new Stats\Combat\BaseCombatStats($baseCombatStats);
+        $this->baseCombatStats = new BaseCombatStats($baseCombatStats);
 
         return $this;
     }
+
+    /**
+     * @param int[] $generalStats
+     *
+     * @return Character
+     */
+    public function setGeneralStats(array $generalStats): Character
+    {
+        $this->generalStats = new GeneralStats($generalStats);
+
+        return $this;
+    }
+
 
     /**
      * @return string
@@ -203,19 +253,19 @@ abstract class Character
     }
 
     /**
-     * @param aClass[] $classes
+     * @param aClass $class
      *
      * @return Character
      */
-    public function setClasses(array $classes): Character
+    public function setClass(aClass $class): Character
     {
-        $this->classes = $classes;
+        $this->class = $class;
 
         return $this;
     }
 
     /**
-     * @return Stats\BaseStats|null
+     * @return BaseStats
      */
     public function getBaseStats()
     {
@@ -231,84 +281,15 @@ abstract class Character
     }
 
     /**
-     * @return mixed
+     * @return GeneralStats
      */
-    public function getBaseHP()
+    public function getGeneralStats()
     {
-        return $this->baseHP;
+        return $this->generalStats;
     }
 
     /**
-     * @param mixed $baseHP
-     * @return Character
-     */
-    public function setBaseHP($baseHP)
-    {
-        $this->baseHP = $baseHP;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getBasePP()
-    {
-        return $this->basePP;
-    }
-
-    /**
-     * @param mixed $basePP
-     * @return Character
-     */
-    public function setBasePP($basePP)
-    {
-        $this->basePP = $basePP;
-        return $this;
-    }
-
-    public function addPP($value) {
-        $this->basePP += $value;
-
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getBaseMP()
-    {
-        return $this->baseMP;
-    }
-
-    /**
-     * @param mixed $baseMP
-     * @return Character
-     */
-    public function setBaseMP($baseMP)
-    {
-        $this->baseMP = $baseMP;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getBasePsy()
-    {
-        return $this->basePsy;
-    }
-
-    /**
-     * @param mixed $basePsy
-     * @return Character
-     */
-    public function setBasePsy($basePsy)
-    {
-        $this->basePsy = $basePsy;
-        return $this;
-    }
-
-    /**
+     * @param string $type
      * @return Stats\Magic\MagicResist
      */
     public function getMagicResist( $type = Stats\Magic\MagicResist::TYPE_ASTRAL )
@@ -347,7 +328,7 @@ abstract class Character
     }
 
     /**
-     * @return aSkill[]
+     * @return aSkill[[]]
      */
     public function getSkills() : array
     {
@@ -405,6 +386,86 @@ abstract class Character
     public function setExperience(int $experience): Character
     {
         $this->experience = $experience;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCurrentHP(): int
+    {
+        return $this->currentHP;
+    }
+
+    /**
+     * @param int $currentHP
+     *
+     * @return Character
+     */
+    public function setCurrentHP(int $currentHP): Character
+    {
+        $this->currentHP = $currentHP;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCurrentPP(): int
+    {
+        return $this->currentPP;
+    }
+
+    /**
+     * @param int $currentPP
+     *
+     * @return Character
+     */
+    public function setCurrentPP(int $currentPP): Character
+    {
+        $this->currentPP = $currentPP;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCurrentMP(): int
+    {
+        return $this->currentMP;
+    }
+
+    /**
+     * @param int $currentMP
+     *
+     * @return Character
+     */
+    public function setCurrentMP(int $currentMP): Character
+    {
+        $this->currentMP = $currentMP;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCurrentPsy(): int
+    {
+        return $this->currentPsy;
+    }
+
+    /**
+     * @param int $currentPsy
+     *
+     * @return Character
+     */
+    public function setCurrentPsy(int $currentPsy): Character
+    {
+        $this->currentPsy = $currentPsy;
 
         return $this;
     }

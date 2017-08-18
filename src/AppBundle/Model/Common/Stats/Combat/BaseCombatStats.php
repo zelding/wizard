@@ -11,7 +11,7 @@
 namespace AppBundle\Model\Common\Stats\Combat;
 
 
-use AppBundle\Model\Common\Stats\BaseStats;
+use AppBundle\Model\Common\Stats\Base\BaseStats;
 use AppBundle\Model\Common\Stats\aStat;
 
 /**

@@ -8,8 +8,8 @@
  * Date: 8/9/17 9:09 AM
  */
 
-namespace AppBundle\Model\Common\Stats;
-
+namespace AppBundle\Model\Common\Stats\Base;
+use AppBundle\Model\Common\Stats\aStat;
 
 class Beauty extends aStat
 {

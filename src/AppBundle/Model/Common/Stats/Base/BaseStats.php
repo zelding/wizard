@@ -6,9 +6,11 @@
  * Time: 18:42
  */
 
-namespace AppBundle\Model\Common\Stats;
+namespace AppBundle\Model\Common\Stats\Base;
 
 use AppBundle\Exception\AppException;
+use AppBundle\Model\Common\Stats\aStat;
+use AppBundle\Model\Common\Stats\Modifier;
 
 /**
  * Class BaseStats

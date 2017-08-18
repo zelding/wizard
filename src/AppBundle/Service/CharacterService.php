@@ -16,6 +16,11 @@ use AppBundle\Model\Common\Character;
 use AppBundle\Model\Common\CharacterClass\aClass;
 use AppBundle\Model\Common\Race\aRace;
 use AppBundle\Model\Common\Skill\aSkill;
+use AppBundle\Model\Common\Skill\Science\Magic;
+use AppBundle\Model\Common\Skill\Science\Psy;
+use AppBundle\Model\Common\Skill\Science\PyarronPsy;
+use AppBundle\Model\Common\Stats\Magic\AstralMagicResist;
+use AppBundle\Model\Common\Stats\Magic\MentalMagicResist;
 use AppBundle\Model\PC\PlayerCharacter;
 
 /**
@@ -51,9 +56,11 @@ class CharacterService
     {
         $character = new PlayerCharacter($race, $class);
         $character->setBaseStats($this->generateBaseStats($race, $class));
+        $character->setFirstName("Allento");
+        $character->setLastName("Al'amall");
+        $character->setOtherNames(["Ly"]);
 
         $this->setCharacterLevel($character, $level)
-             ->calculateOtherStats($character)
              ->setSkills($character);
 
         //first set class bonuses
@@ -61,9 +68,28 @@ class CharacterService
 
         $this->raceService->applyRacialBonuses($character);
 
-        $this->applyBonuses($character);
+        $this->applyBonuses($character)
+             ->calculateOtherStats($character)
+             ->setUpMagicResists($character)
+             ->regenerateCharacter($character);
 
         return $character;
+    }
+
+    public function regenerateCharacter(Character $character)
+    {
+        $character->setCurrentHP($character->getGeneralStats()->getHealth()->getValue())
+                  ->setCurrentPP($character->getGeneralStats()->getPainPoint()->getValue());
+
+        if ( $character->getPsySkill() ) {
+            $character->setCurrentPsy($character->getGeneralStats()->getPsyPoints()->getValue());
+        }
+
+        if ( $character->getMagicSkill() ) {
+            $character->setCurrentMP($character->getGeneralStats()->getMana()->getValue());
+        }
+
+        return $this;
     }
 
     /**
@@ -150,23 +176,86 @@ class CharacterService
 
     protected function calculateOtherStats(Character $character)
     {
-        $character->setBaseHP(
-            $character->getClass()::getHpBase() +
-            $character->getBaseStats()->getVitality()->getRollModifierValue()
-        )->setBasePP(
-            $character->getClass()::getPpBase() +
-            $character->getBaseStats()->getStamina()->getRollModifierValue() +
-            $character->getBaseStats()->getWillpower()->getRollModifierValue() +
-            $character->getClass()::getPainPointsPerLevel()[1] //on level 1 they get the max
+        $generalStats = $character->getGeneralStats();
+
+        $generalStats->addHealth(
+            $character->getBaseStats()->getVitality()->getRollModifierValue(),
+            "Vitality bonus"
+        )->addPainPoint(
+            $character->getBaseStats()->getStamina()->getRollModifierValue(),
+            "Stamina bonus"
+        )->addPainPoint(
+            $character->getBaseStats()->getWillpower()->getRollModifierValue(),
+            "Willpower bonus"
+        )->addPainPoint(
+            $character->getClass()::getPainPointsPerLevel()[1], //on level 1 they get the max
+            "First level bonus"
         );
+
+        $psySkill   = $character->getPsySkill();
+        $magicSkill = $character->getMagicSkill();
+
+        if ( $psySkill instanceof Psy ) {
+            if ( $psySkill instanceof PyarronPsy) {
+                $generalStats->setPsyPoints(
+                    // if it was upgraded, then we need to just use the basic mastery stats
+                    $psySkill->getUpgradedAt() === 0 ?
+                        $psySkill->getBasePoints() :
+                        $psySkill::$basePoints
+                );
+            }
+            else {
+                $generalStats->setPsyPoints($psySkill->getBasePoints());
+            }
+        }
+
+        if ( $magicSkill instanceof Magic) {
+            $generalStats->setMana($magicSkill->getBasePoints());
+        }
 
         if ( $character->getLevel() > 1 ) {
             list($min, $max) = $character->getClass()::getPainPointsPerLevel();
 
             for( $i = 1; $i < $character->getLevel(); $i++ ) {
-                $character->addPP(mt_rand($min, $max));
+                $generalStats->addPainPoint(mt_rand($min, $max), "Extra PainPoint on lvl {$i}");
+
+                if ( $psySkill instanceof PyarronPsy ) {
+                    if ( $i + 1 < $psySkill->getUpgradedAt() ) {
+                        $generalStats->addPsyPoints( $psySkill::$pointsPerLevel, "Extra psy on lvl {$i}" );
+                    }
+                    else {
+                        $generalStats->addPsyPoints($psySkill->getPointsPerLevel(), "Extra psy on lvl {$i}");
+                    }
+                }
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @param Character $character
+     *
+     * @return $this
+     * @throws \AppBundle\Exception\AppException
+     */
+    protected function setUpMagicResists(Character $character)
+    {
+        $astral = new AstralMagicResist(0);
+        $astral->setStatic($character->getGeneralStats()->getPsyPoints()->getValue())
+               ->setDynamic(0)
+               ->setSubConscious($character->getBaseStats()->getAstral()->getRollModifierValue())
+               ->setMagic(0);
+
+        $character->setMagicResists($astral);
+
+        $mental = new MentalMagicResist(0);
+        $mental->setStatic($character->getGeneralStats()->getPsyPoints()->getValue())
+               ->setDynamic(0)
+               ->setSubConscious($character->getBaseStats()->getWillpower()->getRollModifierValue())
+               ->setMagic(0);
+
+        $character->setMagicResists($mental);
 
         return $this;
     }
@@ -234,6 +323,11 @@ class CharacterService
         if ( $oldSkill = $this->getSkill($character, $skill) ) {
             $oldSkill->updateOrigin( "updated by: ".$skill->getOrigin()[0] );
             $oldSkill->setMastery($skill->getMastery());
+
+            if ( $oldSkill instanceof PyarronPsy ) {
+                /** @var $skill PyarronPsy */
+                $oldSkill->setUpgradedAt($skill->getUpgradedAt());
+            }
         }
         else {
             $character->addSkill($skill);

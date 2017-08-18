@@ -5,7 +5,7 @@
  * @author    lyozsi (kristof.dekany@apex-it-services.eu)
  * @copyright internal usage
  *
- * Date: 8/16/17 12:43 PM
+ * Date: 8/18/17 11:45 AM
  */
 
 namespace AppBundle\Model\Common\Skill\Science;
@@ -13,21 +13,19 @@ namespace AppBundle\Model\Common\Skill\Science;
 
 use AppBundle\Model\Common\Skill\aSkill;
 
-abstract class Psy extends aSkill
+abstract class Magic extends aSkill
 {
-    const TYPE = "PSY";
+    const TYPE = "Magic";
 
     public static $category = self::SKILL_TYPE_SCIENCE;
 
     public static $baseCost    =  5;
     public static $masteryCost = 20;
 
-    /** @var int points on lvl 1 */
     public static $basePoints     = 0;
-    /** @var int extra points after lvl 1 */
     public static $pointsPerLevel = 0;
 
-    protected static $name = "Psy";
+    protected static $name = "magic";
 
     public function getBasePoints()
     {

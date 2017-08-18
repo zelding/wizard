@@ -14,13 +14,14 @@ namespace AppBundle\Service;
 use AppBundle\Model\Common\Character;
 
 use AppBundle\Model\Common\Skill\aSkill;
+use AppBundle\Model\Common\Skill\Science\PyarronPsy;
 use AppBundle\Model\Common\Skill\Social\Language;
 use AppBundle\Model\Common\Stats\Combat\Aim;
 use AppBundle\Model\Common\Stats\Combat\Attack;
 use AppBundle\Model\Common\Stats\Combat\Defense;
 use AppBundle\Model\Common\Stats\Combat\Sequence;
-use AppBundle\Model\Common\Stats\Magic\AstralMagicResist;
-use AppBundle\Model\Common\Stats\Magic\MentalMagicResist;
+use AppBundle\Model\Common\Stats\General\Health;
+use AppBundle\Model\Common\Stats\General\PainPoint;
 
 class ClassService
 {
@@ -33,9 +34,8 @@ class ClassService
 
     public function applyClassBonuses(Character $character)
     {
-        $character->setBaseCombatStats($this->generateBaseCombatStats($character));
-
-        $this->setUpMagicResists($character);
+        $character->setBaseCombatStats($this->generateBaseCombatStats($character))
+                  ->setGeneralStats($this->generateGeneralStats($character));
 
         return $this;
     }
@@ -88,6 +88,11 @@ class ClassService
                     foreach( $skills as $class => $mastery ) {
                         $skill = new $class($mastery);
 
+                        //in case of Pyarron Psy we need to set the level when it was upgraded
+                        if ( $skill instanceof PyarronPsy ) {
+                            $skill->setUpgradedAt($lvl);
+                        }
+
                         $classSkills[] = $skill->setOrigin("from class: ".$character->getClass()::getName().", unlocked at lvl {$lvl}");
                     }
                 }
@@ -118,30 +123,14 @@ class ClassService
         return $stats;
     }
 
-    /**
-     * @param Character $character
-     *
-     * @return $this
-     * @throws \AppBundle\Exception\AppException
-     */
-    protected function setUpMagicResists(Character $character)
+    protected function generateGeneralStats(Character $character)
     {
-        $astral = new AstralMagicResist(0);
-        $astral->setStatic($character->getBasePsy())
-               ->setDynamic(0)
-               ->setSubConscious($character->getBaseStats()->getAstral()->getRollModifierValue())
-               ->setMagic(0);
+        $class = $character->getClass();
+        $stats = [
+            Health::NAME    => $class::getHpBase(),
+            PainPoint::NAME => $class::getPpBase()
+        ];
 
-        $character->setMagicResists($astral);
-
-        $mental = new MentalMagicResist(0);
-        $mental->setStatic($character->getBasePsy())
-               ->setDynamic(0)
-               ->setSubConscious($character->getBaseStats()->getWillpower()->getRollModifierValue())
-               ->setMagic(0);
-
-        $character->setMagicResists($mental);
-
-        return $this;
+        return $stats;
     }
 }

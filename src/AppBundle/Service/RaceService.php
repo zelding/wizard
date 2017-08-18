@@ -13,16 +13,16 @@ namespace AppBundle\Service;
 use AppBundle\Model\Common\Character;
 use AppBundle\Model\Common\Skill\aSkill;
 use AppBundle\Model\Common\Skill\Social\Language;
-use AppBundle\Model\Common\Stats\Astral;
-use AppBundle\Model\Common\Stats\Beauty;
-use AppBundle\Model\Common\Stats\Dexterity;
-use AppBundle\Model\Common\Stats\Intelligence;
-use AppBundle\Model\Common\Stats\Perception;
-use AppBundle\Model\Common\Stats\Speed;
-use AppBundle\Model\Common\Stats\Stamina;
-use AppBundle\Model\Common\Stats\Strength;
-use AppBundle\Model\Common\Stats\Vitality;
-use AppBundle\Model\Common\Stats\Willpower;
+use AppBundle\Model\Common\Stats\Base\Astral;
+use AppBundle\Model\Common\Stats\Base\Beauty;
+use AppBundle\Model\Common\Stats\Base\Dexterity;
+use AppBundle\Model\Common\Stats\Base\Intelligence;
+use AppBundle\Model\Common\Stats\Base\Perception;
+use AppBundle\Model\Common\Stats\Base\Speed;
+use AppBundle\Model\Common\Stats\Base\Stamina;
+use AppBundle\Model\Common\Stats\Base\Strength;
+use AppBundle\Model\Common\Stats\Base\Vitality;
+use AppBundle\Model\Common\Stats\Base\Willpower;
 
 class RaceService
 {

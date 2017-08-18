@@ -74,6 +74,11 @@ abstract class aSkill
         $this->mastery = $mastery;
     }
 
+    public function isMaster()
+    {
+        return $this->mastery === self::MASTERY_MASTER;
+    }
+
     #region Getters/Setters
 
     /**
