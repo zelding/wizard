@@ -32,6 +32,9 @@ use AppBundle\Model\Common\Stats\aStat;
  * @method aStat getMana()
  * @method GeneralStats addMana(int $mp, $description = "")
  * @method GeneralStats setMana(int $mp)
+ *
+ * @method aStat getSkillPoint()
+ * @method GeneralStats addSkillPoint(int $sp, $description = "")
  */
 class GeneralStats extends BaseStats
 {
@@ -39,6 +42,8 @@ class GeneralStats extends BaseStats
         Health::NAME    => Health::class,
         PainPoint::NAME => PainPoint::class,
         PsyPoints::NAME => PsyPoints::class,
-        Mana::NAME      => Mana::class
+        Mana::NAME      => Mana::class,
+
+        SkillPoint::NAME => SkillPoint::class
     ];
 }

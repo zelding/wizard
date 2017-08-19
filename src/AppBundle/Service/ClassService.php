@@ -22,6 +22,7 @@ use AppBundle\Model\Common\Stats\Combat\Defense;
 use AppBundle\Model\Common\Stats\Combat\Sequence;
 use AppBundle\Model\Common\Stats\General\Health;
 use AppBundle\Model\Common\Stats\General\PainPoint;
+use AppBundle\Model\Common\Stats\General\SkillPoint;
 
 class ClassService
 {
@@ -127,8 +128,9 @@ class ClassService
     {
         $class = $character->getClass();
         $stats = [
-            Health::NAME    => $class::getHpBase(),
-            PainPoint::NAME => $class::getPpBase()
+            Health::NAME     => $class::getHpBase(),
+            PainPoint::NAME  => $class::getPpBase(),
+            SkillPoint::NAME => $class::getSkillPointBase()
         ];
 
         return $stats;

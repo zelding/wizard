@@ -232,7 +232,21 @@
                                 {% endfor %}
                             </div>
 
-                            <div class="panel-footer">Panel footer</div>
+                            <div class="panel-footer">
+                                <div class="row">
+                                    <div class="col-xs-4">
+                                        <ul class="list-unstyled">
+                                            <li>Skill points:<span class="pull-right">{{ char.currentSp }}/<strong>{{ char.generalStats.getSkillPoint.value }}</strong></span></li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="col-xs-4 col-xs-offset-4">
+                                        <ul class="list-unstyled">
+                                            <li>Per level<span class="pull-right">{{ char.class.skillPointPerLevel }}</span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -49,6 +49,7 @@ abstract class Character
     protected $currentPP  = 0;
     protected $currentMP  = 0;
     protected $currentPsy = 0;
+    protected $currentSp  = 0;
 
     /** @var Stats\Magic\MagicResist[] */
     protected $magicResists = [];
@@ -467,6 +468,24 @@ abstract class Character
     {
         $this->currentPsy = $currentPsy;
 
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCurrentSp() : int
+    {
+        return $this->currentSp;
+    }
+
+    /**
+     * @param int $currentSp
+     * @return Character
+     */
+    public function setCurrentSp(int $currentSp) : Character
+    {
+        $this->currentSp = $currentSp;
         return $this;
     }
 

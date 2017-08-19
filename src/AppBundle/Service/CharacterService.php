@@ -73,6 +73,8 @@ class CharacterService
              ->setUpMagicResists($character)
              ->regenerateCharacter($character);
 
+        $character->setCurrentSp($character->getGeneralStats()->getSkillPoint()->getValue());
+
         return $character;
     }
 
@@ -190,6 +192,12 @@ class CharacterService
         )->addPainPoint(
             $character->getClass()::getPainPointsPerLevel()[1], //on level 1 they get the max
             "First level bonus"
+        )->addSkillPoint(
+            $character->getBaseStats()->getDexterity()->getRollModifierValue(),
+            "Dexterity bonus"
+        )->addSkillPoint(
+            $character->getBaseStats()->getIntelligence()->getRollModifierValue(),
+            "Intelligence bonus"
         );
 
         $psySkill   = $character->getPsySkill();
@@ -218,6 +226,12 @@ class CharacterService
 
             for( $i = 1; $i < $character->getLevel(); $i++ ) {
                 $generalStats->addPainPoint(mt_rand($min, $max), "Extra PainPoint on lvl {$i}");
+
+                if ($i > 1)
+                $generalStats->addSkillPoint(
+                    $character->getClass()::getSkillPointPerLevel(),
+                    "Extra on lvl {$i}"
+                );
 
                 if ( $psySkill instanceof PyarronPsy ) {
                     if ( $i + 1 < $psySkill->getUpgradedAt() ) {
