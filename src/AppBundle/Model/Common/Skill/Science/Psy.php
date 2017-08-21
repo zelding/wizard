@@ -19,13 +19,11 @@ abstract class Psy extends aSkill
 
     public static $category = self::SKILL_TYPE_SCIENCE;
 
-    public static $baseCost    =  5;
-    public static $masteryCost = 20;
-
     /** @var int points on lvl 1 */
     public static $basePoints     = 0;
     /** @var int extra points after lvl 1 */
     public static $pointsPerLevel = 0;
+
     /** @var int The character level when when skill was learned */
     protected $learnedAt = 1;
 

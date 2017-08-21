@@ -105,7 +105,9 @@ class ClassService
                             }
                         }
 
-                        $classSkills[] = $skill->setOrigin("from class: ".$character->getClass()::getName().", unlocked at lvl {$lvl}");
+                        $classSkills[] = $skill->setOrigin(
+                            "from class: ".$character->getClass()::getName().", unlocked at lvl {$lvl}"
+                        );
                     }
                 }
             }
@@ -135,6 +137,13 @@ class ClassService
         return $stats;
     }
 
+    /**
+     * Generates basic stats like health and pain points
+     *
+     * @param Character $character
+     *
+     * @return array
+     */
     protected function generateGeneralStats(Character $character)
     {
         $class = $character->getClass();

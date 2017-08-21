@@ -25,7 +25,7 @@ class PyarronPsy extends Psy
 
     protected static $name = "Psy (Pyarron)";
     /** @var int The character level when when skill was learned */
-    protected $learnedAt = 1;
+    protected $learnedAt  = 1;
     /** @var int The level when the mastery was updated */
     protected $upgradedAt = 0;
 

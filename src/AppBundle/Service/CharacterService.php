@@ -10,7 +10,6 @@
 
 namespace AppBundle\Service;
 
-
 use AppBundle\Exception\AppException;
 use AppBundle\Model\Common\Character;
 use AppBundle\Model\Common\CharacterClass\aClass;
@@ -70,7 +69,7 @@ class CharacterService
 
         $this->applyBonuses($character)
              ->calculateOtherStats($character)
-             ->setUpMagicResists($character)
+             ->setUpStaticMagicResists($character)
              ->regenerateCharacter($character);
 
         $character->setCurrentSp($character->getGeneralStats()->getSkillPoint()->getValue());
@@ -253,7 +252,7 @@ class CharacterService
      * @return $this
      * @throws \AppBundle\Exception\AppException
      */
-    protected function setUpMagicResists(Character $character)
+    protected function setUpStaticMagicResists(Character $character)
     {
         $astral = new AstralMagicResist(0);
         $astral->setStatic($character->getGeneralStats()->getPsyPoints()->getValue())
