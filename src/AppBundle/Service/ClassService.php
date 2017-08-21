@@ -14,6 +14,7 @@ namespace AppBundle\Service;
 use AppBundle\Model\Common\Character;
 
 use AppBundle\Model\Common\Skill\aSkill;
+use AppBundle\Model\Common\Skill\Science\Psy;
 use AppBundle\Model\Common\Skill\Science\PyarronPsy;
 use AppBundle\Model\Common\Skill\Social\Language;
 use AppBundle\Model\Common\Stats\Combat\Aim;
@@ -76,6 +77,11 @@ class ClassService
                 }
             }
             else {
+                if ( $skill instanceof Psy) {
+                    /** @var Psy $skill */
+                    $skill->setLearnedAt(1);
+                }
+
                 /** @var string $skillData */
                 $skill->setMastery($skillData);
                 $classSkills[] = $skill;
@@ -91,7 +97,12 @@ class ClassService
 
                         //in case of Pyarron Psy we need to set the level when it was upgraded
                         if ( $skill instanceof PyarronPsy ) {
-                            $skill->setUpgradedAt($lvl);
+                            if ($skill->getMastery() === aSkill::MASTERY_BASIC) {
+                                $skill->setLearnedAt($lvl);
+                            }
+                            else {
+                                $skill->setUpgradedAt($lvl);
+                            }
                         }
 
                         $classSkills[] = $skill->setOrigin("from class: ".$character->getClass()::getName().", unlocked at lvl {$lvl}");

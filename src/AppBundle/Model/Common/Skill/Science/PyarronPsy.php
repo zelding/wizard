@@ -55,26 +55,6 @@ class PyarronPsy extends Psy
     /**
      * @return int
      */
-    public function getLearnedAt(): int
-    {
-        return $this->learnedAt;
-    }
-
-    /**
-     * @param int $learnedAt
-     *
-     * @return PyarronPsy
-     */
-    public function setLearnedAt(int $learnedAt): PyarronPsy
-    {
-        $this->learnedAt = $learnedAt;
-
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
     public function getUpgradedAt(): int
     {
         return $this->upgradedAt;

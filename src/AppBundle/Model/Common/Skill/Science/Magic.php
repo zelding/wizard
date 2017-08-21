@@ -19,11 +19,11 @@ abstract class Magic extends aSkill
 
     public static $category = self::SKILL_TYPE_SCIENCE;
 
-    public static $baseCost    = 15;
-    public static $masteryCost = 45;
-
+    public static $baseCost       = 15;
+    public static $masteryCost    = 45;
     public static $basePoints     = 0;
     public static $pointsPerLevel = 0;
+    public static $magicType      = "generic";
 
     protected static $name = "magic";
 
