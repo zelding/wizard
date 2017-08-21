@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Model\Common\CharacterClass\Warrior;
 use AppBundle\Model\Common\Race\Elf;
+use AppBundle\Model\Mechanics\Price;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class DefaultController extends Controller
@@ -14,7 +15,7 @@ class DefaultController extends Controller
 
         // replace this example code with whatever you need
         return $this->render('AppBundle:Character:character.html.twig', [
-            'char' => $player,
+            'char' => $player
         ]);
     }
 }

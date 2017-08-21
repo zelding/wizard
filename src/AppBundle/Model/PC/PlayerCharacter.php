@@ -15,15 +15,5 @@ use AppBundle\Model\Common\Character;
 
 class PlayerCharacter extends Character
 {
-    public function __toString()
-    {
-        $stats = $this->baseStats->getAllStats();
-        $string = "";
 
-        foreach($stats as $type => $stat) {
-            $string .= "{$type}: ".$stat->getValue().", ";
-        }
-
-        return $string;
-    }
 }
