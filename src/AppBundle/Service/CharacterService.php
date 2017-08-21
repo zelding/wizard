@@ -203,7 +203,7 @@ class CharacterService
         $magicSkill = $character->getMagicSkill();
 
         if ( $psySkill instanceof Psy ) {
-            if ( $psySkill instanceof PyarronPsy) {
+            if ( $psySkill instanceof PyarronPsy && $psySkill->getLearnedAt() === 1 ) {
                 $generalStats->setPsyPoints(
                     // if it was upgraded, then we need to just use the basic mastery stats
                     $psySkill->getUpgradedAt() === 0 ?
@@ -255,19 +255,22 @@ class CharacterService
     protected function setUpStaticMagicResists(Character $character)
     {
         $astral = new AstralMagicResist(0);
-        $astral->setStatic($character->getGeneralStats()->getPsyPoints()->getValue())
-               ->setDynamic(0)
+        $mental = new MentalMagicResist(0);
+
+        if ( $character->getPsySkill() !== false) {
+            $astral->setStatic($character->getGeneralStats()->getPsyPoints()->getValue());
+            $mental->setStatic($character->getGeneralStats()->getPsyPoints()->getValue());
+        }
+
+        $astral->setDynamic(0)
                ->setSubConscious($character->getBaseStats()->getAstral()->getRollModifierValue())
                ->setMagic(0);
 
-        $character->setMagicResists($astral);
-
-        $mental = new MentalMagicResist(0);
-        $mental->setStatic($character->getGeneralStats()->getPsyPoints()->getValue())
-               ->setDynamic(0)
+        $mental->setDynamic(0)
                ->setSubConscious($character->getBaseStats()->getWillpower()->getRollModifierValue())
                ->setMagic(0);
 
+        $character->setMagicResists($astral);
         $character->setMagicResists($mental);
 
         return $this;

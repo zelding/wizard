@@ -14,7 +14,6 @@ namespace AppBundle\Model\Common\CharacterClass;
 use AppBundle\Model\Common\Skill\aSkill;
 use AppBundle\Model\Common\Skill\Combat\Leadership;
 use AppBundle\Model\Common\Skill\Combat\WeaponHandling;
-use AppBundle\Model\Common\Skill\Science\PyarronPsy;
 use AppBundle\Model\Common\Skill\Social\HorsebackRiding;
 use AppBundle\Model\Common\Skill\Social\Language;
 use AppBundle\Model\Common\Stats\aStat;
@@ -94,12 +93,10 @@ class Warrior extends aClass
             "for"     => "Common",
             "mastery" => aSkill::MASTERY_BASIC,
             "level"   => 3
-        ]],
-        PyarronPsy::class => aSkill::MASTERY_BASIC
+        ]]
     ];
 
     protected static $lateSkills      = [
-        5 => [PyarronPsy::class => aSkill::MASTERY_MASTER],
         6 => [Leadership::class => aSkill::MASTERY_BASIC]
     ];
 
