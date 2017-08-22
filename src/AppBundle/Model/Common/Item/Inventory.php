@@ -18,10 +18,74 @@ class Inventory
     const INV_TYPE_POCKET   = "pocket";
     const INV_TYPE_BELT     = "belt";
 
-    protected $type = "";
+    protected $type = self::INV_TYPE_BACKPACK;
 
-    /** @var array */
+    /** @var Item[][] */
     protected $items = [];
 
     protected static $maxWeight = 0;
+
+    /**
+     * @return string
+     */
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    /**
+     * @return Item[]
+     */
+    public function getItems(): array
+    {
+        return $this->items;
+    }
+
+    /**
+     * @return int
+     */
+    public static function getMaxWeight(): int
+    {
+        return self::$maxWeight;
+    }
+
+    public function getTotalWeight()
+    {
+        if ( empty($this->items) ) {
+            return 0.0;
+        }
+
+        $sum = 0.0;
+
+        foreach($this->items as $cat => $categories) {
+            foreach($categories as $sCat => $subCategories) {
+                foreach($subCategories as $item) {
+                    /** @var Item $item */
+                    $sum += $item::getWeight();
+                }
+            }
+        }
+
+        return $sum;
+    }
+
+    /**
+     * @param Item $item
+     *
+     * @return $this
+     */
+    public function addItem(Item $item)
+    {
+        if ( !array_key_exists($item::$category, $this->items) ) {
+            $this->items[ $item::$category ] = [];
+        }
+
+        if ( !array_key_exists($item::$subCategory, $this->items[ $item::$category ]) ) {
+            $this->items[ $item::$category ][ $item::$subCategory ] = [];
+        }
+
+        $this->items[ $item::$category ][ $item::$subCategory ][] = $item;
+
+        return $this;
+    }
 }

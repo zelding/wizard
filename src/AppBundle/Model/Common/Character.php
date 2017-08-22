@@ -12,6 +12,7 @@ namespace AppBundle\Model\Common;
 
 use AppBundle\Exception\AppException;
 use AppBundle\Model\Common\CharacterClass\aClass;
+use AppBundle\Model\Common\Item\Inventory;
 use AppBundle\Model\Common\Race\aRace;
 use AppBundle\Model\Common\Skill\aSkill;
 use AppBundle\Model\Common\Skill\Science\Magic;
@@ -53,7 +54,7 @@ abstract class Character
 
     /** @var Stats\Magic\MagicResist[] */
     protected $magicResists = [];
-
+    /** @var Inventory */
     protected $inventory;
 
     protected $equipment;
@@ -65,6 +66,8 @@ abstract class Character
     {
         $this->race  = $race;
         $this->class = $class;
+
+        $this->inventory = new Inventory();
     }
 
     /**
