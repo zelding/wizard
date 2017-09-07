@@ -13,32 +13,11 @@ namespace AppBundle\Service;
 use AppBundle\Model\Common\Character;
 use AppBundle\Model\Common\Skill\aSkill;
 use AppBundle\Model\Common\Skill\Social\Language;
-use AppBundle\Model\Common\Stats\Base\Astral;
-use AppBundle\Model\Common\Stats\Base\Beauty;
-use AppBundle\Model\Common\Stats\Base\Dexterity;
-use AppBundle\Model\Common\Stats\Base\Intelligence;
-use AppBundle\Model\Common\Stats\Base\Perception;
-use AppBundle\Model\Common\Stats\Base\Speed;
-use AppBundle\Model\Common\Stats\Base\Stamina;
-use AppBundle\Model\Common\Stats\Base\Strength;
-use AppBundle\Model\Common\Stats\Base\Vitality;
-use AppBundle\Model\Common\Stats\Base\Willpower;
+
+use AppBundle\Helper\Stats as StatsHelper;
 
 class RaceService
 {
-    public static $StatTypeToStatName = [
-        Strength::TYPE     => Strength::NAME,
-        Stamina::TYPE      => Stamina::NAME,
-        Dexterity::TYPE    => Dexterity::NAME,
-        Speed::TYPE        => Speed::NAME,
-        Vitality::TYPE     => Vitality::NAME,
-        Beauty::TYPE       => Beauty::NAME,
-        Intelligence::TYPE => Intelligence::NAME,
-        Willpower::TYPE    => Willpower::NAME,
-        Astral::TYPE       => Astral::NAME,
-        Perception::TYPE   => Perception::NAME,
-    ];
-
     /**
      * Applies bonuses inherited from race
      *
@@ -106,7 +85,7 @@ class RaceService
         if ( !empty($raceBonuses) ) {
             foreach($raceBonuses as $type => $bonus) {
 
-                $method = self::$StatTypeToStatName[ $type ];
+                $method = StatsHelper::$BaseStatTypeToStatName[ $type ];
                 $character->getBaseStats()->{"add{$method}"}($bonus);
             }
         }
@@ -125,7 +104,7 @@ class RaceService
 
         if ( !empty($raceBonuses) ) {
             foreach($raceBonuses as $type => $bonus) {
-                $method = ClassService::$StatTypeToStatName[ $type ];
+                $method = StatsHelper::$CombatStatTypeToStatName[ $type ];
                 $character->getBaseCombatStats()->{"add{$method}"}($bonus, "Racial bonus");
             }
         }

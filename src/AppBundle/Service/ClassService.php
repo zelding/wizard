@@ -17,23 +17,14 @@ use AppBundle\Model\Common\Skill\aSkill;
 use AppBundle\Model\Common\Skill\Science\Psy;
 use AppBundle\Model\Common\Skill\Science\PyarronPsy;
 use AppBundle\Model\Common\Skill\Social\Language;
-use AppBundle\Model\Common\Stats\Combat\Aim;
-use AppBundle\Model\Common\Stats\Combat\Attack;
-use AppBundle\Model\Common\Stats\Combat\Defense;
-use AppBundle\Model\Common\Stats\Combat\Sequence;
 use AppBundle\Model\Common\Stats\General\Health;
 use AppBundle\Model\Common\Stats\General\PainPoint;
 use AppBundle\Model\Common\Stats\General\SkillPoint;
 
+use AppBundle\Helper\Stats as StatsHelper;
+
 class ClassService
 {
-    public static $StatTypeToStatName = [
-        Sequence::TYPE => Sequence::NAME,
-        Attack::TYPE   => Attack::NAME,
-        Defense::TYPE  => Defense::NAME,
-        Aim::TYPE      => Aim::NAME
-    ];
-
     public function applyClassBonuses(Character $character)
     {
         $character->setBaseCombatStats($this->generateBaseCombatStats($character))
@@ -129,7 +120,7 @@ class ClassService
         $stats = [];
 
         foreach($class->getModifiers() as $type => $value) {
-            $name = ClassService::$StatTypeToStatName[ $type ];
+            $name = StatsHelper::$CombatStatTypeToStatName[ $type ];
 
             $stats[ $name ] = $value;
         }

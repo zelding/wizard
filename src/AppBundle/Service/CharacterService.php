@@ -22,6 +22,8 @@ use AppBundle\Model\Common\Stats\Magic\AstralMagicResist;
 use AppBundle\Model\Common\Stats\Magic\MentalMagicResist;
 use AppBundle\Model\PC\PlayerCharacter;
 
+use AppBundle\Helper\Stats as StatsHelper;
+
 /**
  * Class CharacterService
  *
@@ -127,7 +129,7 @@ class CharacterService
                 $statValue = $statMaxValues[ $statType ];
             }
 
-            $statValues[ RaceService::$StatTypeToStatName[ $statType ] ] = $statValue;
+            $statValues[ StatsHelper::$BaseStatTypeToStatName[ $statType ] ] = $statValue;
         }
 
         return $statValues;
