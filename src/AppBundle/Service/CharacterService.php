@@ -177,6 +177,14 @@ class CharacterService
         return $this;
     }
 
+    /**
+     * Sets health-, pain, mana- and psypoints
+     *
+     * @param Character $character
+     *
+     * @return $this
+     * @throws AppException
+     */
     protected function calculateOtherStats(Character $character)
     {
         $generalStats = $character->getGeneralStats();
@@ -226,7 +234,10 @@ class CharacterService
             list($min, $max) = $character->getClass()::getPainPointsPerLevel();
 
             for( $i = 1; $i < $character->getLevel(); $i++ ) {
-                $generalStats->addPainPoint(mt_rand($min, $max), "Extra PainPoint on lvl {$i}");
+                if ($i !== 1) {
+                    //the first level pp is already given
+                    $generalStats->addPainPoint(mt_rand($min, $max), "Extra PainPoint on lvl {$i}");
+                }
 
                 if ($i > 1)
                 $generalStats->addSkillPoint(
