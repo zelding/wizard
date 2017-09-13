@@ -230,6 +230,8 @@ class CharacterService
             $generalStats->setMana($magicSkill->getBasePoints());
         }
 
+        $this->classService->setCombatModifiers($character, 1);
+
         if ( $character->getLevel() > 1 ) {
             list($min, $max) = $character->getClass()::getPainPointsPerLevel();
 
@@ -253,6 +255,8 @@ class CharacterService
                         $generalStats->addPsyPoints($psySkill->getPointsPerLevel(), "Extra psy on lvl {$i}");
                     }
                 }
+
+                $this->classService->setCombatModifiers($character, ($i+1));
             }
         }
 

@@ -117,8 +117,4 @@ class Warrior extends aClass
     ];
 
     protected static $xpAfter12       = 31200;
-
-    public function __construct()
-    {
-    }
 }

@@ -52,6 +52,8 @@ abstract class Character
     protected $currentPsy = 0;
     protected $currentSp  = 0;
 
+    protected $availableCombatModifiers = 0;
+
     /** @var Stats\Magic\MagicResist[] */
     protected $magicResists = [];
     /** @var Inventory */
@@ -127,6 +129,27 @@ abstract class Character
         }
 
         return false;
+    }
+
+    public function addAvailableCombatModifier(int $amount)
+    {
+        $this->availableCombatModifiers += $amount;
+
+        return $this;
+    }
+
+    public function useAvailableCombatModifier(int $amount)
+    {
+        $this->availableCombatModifiers -= $amount;
+
+        return $this;
+    }
+
+    public function getMaxCombatModifier()
+    {
+        list($perLvl, $stats) = $this->class::getCombatModifiersPerLevel();
+
+        return ($perLvl - array_sum($stats));
     }
 
     #region Getters/Setters
@@ -490,6 +513,11 @@ abstract class Character
     {
         $this->currentSp = $currentSp;
         return $this;
+    }
+
+    public function getAvailableCombatModifier()
+    {
+        return $this->availableCombatModifiers;
     }
 
     #endregion

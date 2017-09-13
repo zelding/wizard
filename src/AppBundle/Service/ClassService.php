@@ -11,6 +11,7 @@
 namespace AppBundle\Service;
 
 
+use AppBundle\Helper\Stats;
 use AppBundle\Model\Common\Character;
 
 use AppBundle\Model\Common\Skill\aSkill;
@@ -105,6 +106,28 @@ class ClassService
         }
 
         return $classSkills;
+    }
+
+    public function setCombatModifiers(Character $character, int $lvl = 1)
+    {
+        $class       = $character->getClass();
+        $combatStats = $character->getBaseCombatStats();
+
+        list($combatStatModifiersPerLevel, $requiredStats) = $class::getCombatModifiersPerLevel();
+
+        $character->addAvailableCombatModifier($combatStatModifiersPerLevel);
+
+        foreach($requiredStats as $statType => $requiredAmount) {
+
+            $combatStatName = Stats::$CombatStatTypeToStatName[ $statType ];
+
+            $combatStats->{"add{$combatStatName}"}(
+                $requiredAmount,
+                "Mandatory Combat modifier bonus in level {$lvl}"
+            );
+
+            $character->useAvailableCombatModifier($requiredAmount);
+        }
     }
 
     /**

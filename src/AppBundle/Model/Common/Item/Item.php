@@ -11,24 +11,41 @@
 namespace AppBundle\Model\Common\Item;
 
 
+use AppBundle\Model\Common\Stats\Modifier;
 use AppBundle\Model\Mechanics\Price;
 
 abstract class Item
 {
     const TYPE = "ITM";
 
-    public static $category    = "misc";
+    const CATEGORY_MISC     = "misc";
+    const CATEGORY_ANIMALS  = "animals";
+    const CATEGORY_SERVICE  = "service";
+    const CATEGORY_CLOTHING = "clothing";
+    const CATEGORY_FOOD     = "food";
+    const CATEGORY_WEAPON   = "weapon";
+    const CATEGORY_ARMOR    = "armor";
 
-    public static $subCategory = "default";
+    const SUB_CATEGORY_MISC = "misc";
 
-    protected static $weight = 0.0;
+    public static $category    = self::CATEGORY_MISC;
 
-    protected static $quantity = 1;
+    public static $subCategory = self::SUB_CATEGORY_MISC;
 
+    /** @var float */
+    protected static $weight    = 0.0;
+
+    /** @var int */
+    protected static $quantity  = 1;
+
+    /** @var Modifier[]  */
     protected static $modifiers = [];
 
+    /** @var int */
+    protected static $basePrice = 0;
+
     /** @var Price */
-    protected $basePrice;
+    protected $price;
 
     /**
      * @return float
@@ -47,7 +64,7 @@ abstract class Item
     }
 
     /**
-     * @return array
+     * @return Modifier[]
      */
     public static function getModifiers(): array
     {
@@ -57,9 +74,9 @@ abstract class Item
     /**
      * @return Price
      */
-    public function getBasePrice(): Price
+    public static function getBasePrice(): Price
     {
-        return $this->basePrice;
+        return (new Price())->setLowestCountPrice(static::$basePrice);
     }
 
     /**
@@ -67,9 +84,9 @@ abstract class Item
      *
      * @return Item
      */
-    public function setBasePrice(Price $basePrice): Item
+    public function setPrice(Price $basePrice): Item
     {
-        $this->basePrice = $basePrice;
+        $this->price = $basePrice;
 
         return $this;
     }
