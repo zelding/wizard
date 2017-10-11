@@ -47,6 +47,12 @@ abstract class Item
     /** @var Price */
     protected $price;
 
+    public function __construct($category = self::CATEGORY_MISC, $subCategory = self::SUB_CATEGORY_MISC)
+    {
+        static::$category    = $category;
+        static::$subCategory = $subCategory;
+    }
+
     /**
      * @return float
      */
@@ -91,5 +97,27 @@ abstract class Item
         return $this;
     }
 
+    /**
+     * @return string
+     */
+    public static function getCategory(): string
+    {
+        return static::$category;
+    }
 
+    /**
+     * @return string
+     */
+    public static function getSubCategory(): string
+    {
+        return static::$subCategory;
+    }
+
+    /**
+     * @return Price
+     */
+    public function getPrice(): Price
+    {
+        return $this->price;
+    }
 }

@@ -59,6 +59,7 @@ abstract class Character
     /** @var Inventory */
     protected $inventory;
 
+    /** @var  */
     protected $equipment;
 
     /** @var aSkill[[]] */
@@ -337,7 +338,7 @@ abstract class Character
     }
 
     /**
-     * @return mixed
+     * @return Inventory
      */
     public function getInventory()
     {
@@ -345,10 +346,10 @@ abstract class Character
     }
 
     /**
-     * @param mixed $inventory
+     * @param Inventory $inventory
      * @return Character
      */
-    public function setInventory($inventory)
+    public function setInventory(Inventory $inventory)
     {
         $this->inventory = $inventory;
         return $this;
@@ -520,5 +521,11 @@ abstract class Character
         return $this->availableCombatModifiers;
     }
 
+    public function getEquipment()
+    {
+        return $this->equipment;
+    }
+
     #endregion
+
 }

@@ -13,6 +13,7 @@ namespace AppBundle\Service;
 use AppBundle\Exception\AppException;
 use AppBundle\Model\Common\Character;
 use AppBundle\Model\Common\CharacterClass\aClass;
+use AppBundle\Model\Common\Item\Weapon\Weapon;
 use AppBundle\Model\Common\Race\aRace;
 use AppBundle\Model\Common\Skill\aSkill;
 use AppBundle\Model\Common\Skill\Science\Magic;
@@ -36,11 +37,15 @@ class CharacterService
     /** @var ClassService */
     protected $classService;
 
-    public function __construct(RaceService $raceService, ClassService $classService)
+    protected $itemService;
+
+    public function __construct(RaceService $raceService, ClassService $classService, ItemService $itemService)
     {
         $this->raceService  = $raceService;
 
         $this->classService = $classService;
+
+        $this->itemService  = $itemService;
     }
 
     /**
@@ -75,6 +80,11 @@ class CharacterService
              ->regenerateCharacter($character);
 
         $character->setCurrentSp($character->getGeneralStats()->getSkillPoint()->getValue());
+
+        $longSw = new Weapon(Weapon::SUB_CATEGORY_LONG);
+        $longSw->setName("Long sword");
+
+        $character->getInventory()->addItem($longSw);
 
         return $character;
     }

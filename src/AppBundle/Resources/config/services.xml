@@ -6,11 +6,15 @@
         <service id="service.character" class="AppBundle\Service\CharacterService">
             <argument type="service" id="service.race" />
             <argument type="service" id="service.class" />
+            <argument type="service" id="service.item"/>
         </service>
 
         <service id="service.race" class="AppBundle\Service\RaceService" />
 
         <service id="service.class" class="AppBundle\Service\ClassService" />
 
+        <service id="service.item" class="AppBundle\Service\ItemService"/>
+
+        <service id="service.inventory" class="AppBundle\Service\InventoryService"/>
     </services>
 </container>

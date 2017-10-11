@@ -51,6 +51,14 @@ class Weapon extends Item
     /** @var int Amount of armor ignored */
     protected static $basePierce          = 0;
 
+    /** @var string name */
+    protected $name;
+
+    public function __construct($subCategory = self::SUB_CATEGORY_BLADE)
+    {
+        parent::__construct(static::CATEGORY_WEAPON, $subCategory);
+    }
+
     /**
      * Return true if one of the modifiers made it magical (runes, gems)
      *
@@ -62,4 +70,97 @@ class Weapon extends Item
     {
         return false;
     }
+
+    public function isTwoHanded()
+    {
+        return false;
+    }
+
+    #region getters
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return Weapon
+     */
+    public function setName(string $name): Weapon
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public static function getCategory(): string
+    {
+        return self::$category;
+    }
+
+    /**
+     * @return string
+     */
+    public static function getSubCategory(): string
+    {
+        return self::$subCategory;
+    }
+
+    /**
+     * @return float
+     */
+    public static function getBaseAttacksPerRound(): float
+    {
+        return self::$baseAttacksPerRound;
+    }
+
+    /**
+     * @return int
+     */
+    public static function getBaseSequence(): int
+    {
+        return self::$baseSequence;
+    }
+
+    /**
+     * @return int
+     */
+    public static function getBaseAttack(): int
+    {
+        return self::$baseAttack;
+    }
+
+    /**
+     * @return int
+     */
+    public static function getBaseDefense(): int
+    {
+        return self::$baseDefense;
+    }
+
+    /**
+     * @return int[]
+     */
+    public static function getBaseDamage(): array
+    {
+        return self::$baseDamage;
+    }
+
+    /**
+     * @return int
+     */
+    public static function getBasePierce(): int
+    {
+        return static::$basePierce;
+    }
+
+    #endregion
 }
