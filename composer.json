@@ -15,10 +15,14 @@
     },
     "require": {
         "php": ">=7.4",
-        "doctrine/doctrine-bundle": "^2.2",
+        "composer/package-versions-deprecated": "1.x-dev",
+        "doctrine/doctrine-bundle": "2.3.x-dev",
+        "doctrine/doctrine-migrations-bundle": "3.1.x-dev",
         "doctrine/orm": "^2.8",
         "incenteev/composer-parameter-handler": "^2.1",
+        "symfony/flex": "^1.11",
         "symfony/monolog-bundle": "^3.6",
+        "symfony/proxy-manager-bridge": "*",
         "symfony/symfony": "^5.2",
         "twig/twig": "^3.1"
     },
@@ -54,5 +58,6 @@
         "incenteev-parameters": {
             "file": "app/config/parameters.yml"
         }
-    }
+    },
+    "minimum-stability": "dev"
 }

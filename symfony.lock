@@ -1,0 +1,72 @@
+{
+    "composer/package-versions-deprecated": {
+        "version": "1.x-dev"
+    },
+    "doctrine/common": {
+        "version": "3.1.x-dev"
+    },
+    "doctrine/dbal": {
+        "version": "2.12.x-dev"
+    },
+    "doctrine/doctrine-bundle": {
+        "version": "2.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "2.0",
+            "ref": "368794356c1fb634e58b38ad2addb36933f2e73e"
+        },
+        "files": [
+            "config/packages/doctrine.yaml",
+            "config/packages/prod/doctrine.yaml",
+            "src/Entity/.gitignore",
+            "src/Repository/.gitignore"
+        ]
+    },
+    "doctrine/doctrine-migrations-bundle": {
+        "version": "2.2",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "2.2",
+            "ref": "baaa439e3e3179e69e3da84b671f0a3e4a2f56ad"
+        },
+        "files": [
+            "config/packages/doctrine_migrations.yaml",
+            "migrations/.gitignore"
+        ]
+    },
+    "doctrine/inflector": {
+        "version": "2.1.x-dev"
+    },
+    "doctrine/instantiator": {
+        "version": "1.5.x-dev"
+    },
+    "doctrine/migrations": {
+        "version": "3.1.x-dev"
+    },
+    "doctrine/orm": {
+        "version": "2.9.x-dev"
+    },
+    "doctrine/sql-formatter": {
+        "version": "1.x-dev"
+    },
+    "php": {
+        "version": "7.4"
+    },
+    "symfony/flex": {
+        "version": "1.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "1.0",
+            "ref": "c0eeb50665f0f77226616b6038a9b06c03752d8e"
+        },
+        "files": [
+            ".env"
+        ]
+    },
+    "symfony/orm-pack": {
+        "version": "v2.1.0"
+    }
+}
