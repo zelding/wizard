@@ -54,7 +54,7 @@ class Weapon extends Item
     /** @var string name */
     protected string $name;
 
-    public function __construct($subCategory = self::SUB_CATEGORY_BLADE)
+    public function __construct($subCategory = self::SUB_CATEGORY_MISC)
     {
         parent::__construct(static::CATEGORY_WEAPON, $subCategory);
     }
