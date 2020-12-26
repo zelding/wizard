@@ -28,24 +28,23 @@ abstract class Item
 
     const SUB_CATEGORY_MISC = "misc";
 
-    public static $category    = self::CATEGORY_MISC;
+    public static string $category    = self::CATEGORY_MISC;
 
-    public static $subCategory = self::SUB_CATEGORY_MISC;
+    public static string $subCategory = self::SUB_CATEGORY_MISC;
 
     /** @var float */
-    protected static $weight    = 0.0;
+    protected static float $weight    = 0.0;
 
     /** @var int */
-    protected static $quantity  = 1;
+    protected static int $quantity  = 1;
 
     /** @var Modifier[]  */
-    protected static $modifiers = [];
+    protected static array $modifiers = [];
 
     /** @var int */
-    protected static $basePrice = 0;
+    protected static int $basePrice = 0;
 
-    /** @var Price */
-    protected $price;
+    protected Price $price;
 
     public function __construct($category = self::CATEGORY_MISC, $subCategory = self::SUB_CATEGORY_MISC)
     {

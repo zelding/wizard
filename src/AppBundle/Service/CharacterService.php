@@ -19,6 +19,7 @@ use AppBundle\Model\Common\Skill\aSkill;
 use AppBundle\Model\Common\Skill\Science\Magic;
 use AppBundle\Model\Common\Skill\Science\Psy;
 use AppBundle\Model\Common\Skill\Science\PyarronPsy;
+use AppBundle\Model\Common\Stats\aStat;
 use AppBundle\Model\Common\Stats\Magic\AstralMagicResist;
 use AppBundle\Model\Common\Stats\Magic\MentalMagicResist;
 use AppBundle\Model\PC\PlayerCharacter;
@@ -32,12 +33,11 @@ use AppBundle\Helper\Stats as StatsHelper;
  */
 class CharacterService
 {
-    /** @var RaceService */
-    protected $raceService;
-    /** @var ClassService */
-    protected $classService;
+    protected RaceService $raceService;
 
-    protected $itemService;
+    protected ClassService $classService;
+
+    protected ItemService $itemService;
 
     public function __construct(RaceService $raceService, ClassService $classService, ItemService $itemService)
     {
@@ -58,7 +58,7 @@ class CharacterService
      * @return PlayerCharacter
      * @throws AppException
      */
-    public function generateCharacter(aRace $race, aClass $class, int $level = 7)
+    public function generateCharacter(aRace $race, aClass $class, int $level = 7) : PlayerCharacter
     {
         $character = new PlayerCharacter($race, $class);
         $character->setBaseStats($this->generateBaseStats($race, $class));
@@ -89,7 +89,7 @@ class CharacterService
         return $character;
     }
 
-    public function regenerateCharacter(Character $character)
+    public function regenerateCharacter(Character $character) : self
     {
         $character->setCurrentHP($character->getGeneralStats()->getHealth()->getValue())
                   ->setCurrentPP($character->getGeneralStats()->getPainPoint()->getValue());
@@ -111,9 +111,9 @@ class CharacterService
      * @param aRace  $race
      * @param aClass $class
      *
-     * @return int[]
+     * @return aStat[]
      */
-    protected function generateBaseStats(aRace $race, aClass $class)
+    protected function generateBaseStats(aRace $race, aClass $class) : array
     {
         $statRanges    = $class::getBaseStatRanges();
         $statMaxValues = $race::getMaxBaseStats();
@@ -153,7 +153,7 @@ class CharacterService
      * @return $this
      * @throws AppException
      */
-    protected function applyBonuses(Character $character)
+    protected function applyBonuses(Character $character) : self
     {
         $baseStats   = $character->getBaseStats();
         $combatStats = $character->getBaseCombatStats();
@@ -195,7 +195,7 @@ class CharacterService
      * @return $this
      * @throws AppException
      */
-    protected function calculateOtherStats(Character $character)
+    protected function calculateOtherStats(Character $character) : self
     {
         $generalStats = $character->getGeneralStats();
 
@@ -277,9 +277,9 @@ class CharacterService
      * @param Character $character
      *
      * @return $this
-     * @throws \AppBundle\Exception\AppException
+     * @throws AppException
      */
-    protected function setUpStaticMagicResists(Character $character)
+    protected function setUpStaticMagicResists(Character $character) : self
     {
         $astral = new AstralMagicResist(0);
         $mental = new MentalMagicResist(0);
@@ -303,7 +303,7 @@ class CharacterService
         return $this;
     }
 
-    protected function setCharacterLevel(Character $character, int $level = 1)
+    protected function setCharacterLevel(Character $character, int $level = 1) : self
     {
         $xpTable = $character->getClass()::getExperienceTable();
 
@@ -327,7 +327,7 @@ class CharacterService
         return $this;
     }
 
-    protected function setSkills(Character $character)
+    protected function setSkills(Character $character) : self
     {
         $racialSkills = $this->raceService->getRacialSkills($character);
         $classSkills  = $this->classService->getClassSkills($character);
@@ -361,7 +361,7 @@ class CharacterService
      *
      * @return $this
      */
-    protected function addCharacterSkill(Character $character, aSkill $skill)
+    protected function addCharacterSkill(Character $character, aSkill $skill) : self
     {
         if ( $oldSkill = $this->getSkill($character, $skill) ) {
             $oldSkill->updateOrigin( "updated by: ".$skill->getOrigin()[0] );
@@ -385,9 +385,9 @@ class CharacterService
      * @param Character $character
      * @param aSkill    $newSkill
      *
-     * @return aSkill|bool
+     * @return aSkill|null
      */
-    protected function getSkill(Character $character, aSkill $newSkill)
+    protected function getSkill(Character $character, aSkill $newSkill) : ?aSkill
     {
         $skills = $character->getSkills();
 
@@ -410,6 +410,6 @@ class CharacterService
             }
         }
 
-        return false;
+        return null;
     }
 }

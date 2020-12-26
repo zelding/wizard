@@ -30,11 +30,11 @@ abstract class aStat
      * @var int
      * @readonly
      */
-    protected $originalValue = 0;
+    protected int $originalValue = 0;
     /** @var int */
-    protected $baseValue     = 0;
+    protected int $baseValue     = 0;
     /** @var aStat[]  */
-    protected $modifiers     = [];
+    protected array $modifiers     = [];
 
     public function __construct(int $value)
     {
@@ -44,12 +44,12 @@ abstract class aStat
     /**
      * @return int
      */
-    public function getValue()
+    public function getValue() : int
     {
         return $this->baseValue + $this->getModifierValue();
     }
 
-    public function getRollModifierValue()
+    public function getRollModifierValue() : int
     {
         if ( static::BASE_STAT ) {
             return $this->getValue() > 10 ? $this->getValue() - 10 : 0;
@@ -58,7 +58,7 @@ abstract class aStat
         throw new AppException("Only base stats have roll modifiers");
     }
 
-    public function getName()
+    public function getName() : string
     {
         return static::NAME;
     }
@@ -67,7 +67,7 @@ abstract class aStat
      * @recursion
      * @return int
      */
-    public function getModifierValue()
+    public function getModifierValue() : int
     {
         if ( empty($this->modifiers) ) {
             return 0;

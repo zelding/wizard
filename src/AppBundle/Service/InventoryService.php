@@ -16,7 +16,7 @@ use AppBundle\Model\Common\Item\Item;
 
 class InventoryService
 {
-    public static $defaultInventorySlots = [
+    public static array $defaultInventorySlots = [
         ItemService::SLOT_HEAD    =>  1,
         ItemService::SLOT_NECK    =>  1,
         ItemService::SLOT_TORSO   =>  1,
@@ -27,11 +27,13 @@ class InventoryService
         ItemService::SLOT_FEET    =>  2,
     ];
 
-    public function equipItem(Character $character, Item $item)
+    public function equipItem(Character $character, Item $item) : self
     {
         $inventory = $character->getInventory();
         $equipment = $character->getEquipment();
 
         //TODO equip
+
+        return $this;
     }
 }

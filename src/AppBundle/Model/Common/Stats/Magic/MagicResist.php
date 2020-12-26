@@ -33,12 +33,12 @@ class MagicResist extends aStat
 
     protected $magic        = 0;
 
-    public function getName()
+    public function getName() : string
     {
         return static::NAME;
     }
 
-    public function getType()
+    public function getType() : string
     {
         if ( !($this instanceof AstralMagicResist && $this instanceof MentalMagicResist) ) {
             throw new AppException("invalid resist type");
@@ -47,7 +47,7 @@ class MagicResist extends aStat
         return "";
     }
 
-    public function getCurrentTotal($conscious = true)
+    public function getCurrentTotal($conscious = true) : int
     {
         if ( $conscious ) {
             return $this->static +

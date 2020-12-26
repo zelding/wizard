@@ -18,6 +18,7 @@ use AppBundle\Model\Common\Skill\aSkill;
 use AppBundle\Model\Common\Skill\Science\Psy;
 use AppBundle\Model\Common\Skill\Science\PyarronPsy;
 use AppBundle\Model\Common\Skill\Social\Language;
+use AppBundle\Model\Common\Stats\aStat;
 use AppBundle\Model\Common\Stats\General\Health;
 use AppBundle\Model\Common\Stats\General\PainPoint;
 use AppBundle\Model\Common\Stats\General\SkillPoint;
@@ -26,7 +27,7 @@ use AppBundle\Helper\Stats as StatsHelper;
 
 class ClassService
 {
-    public function applyClassBonuses(Character $character)
+    public function applyClassBonuses(Character $character) : self
     {
         $character->setBaseCombatStats($this->generateBaseCombatStats($character))
                   ->setGeneralStats($this->generateGeneralStats($character));
@@ -39,7 +40,7 @@ class ClassService
      *
      * @return aSkill[]
      */
-    public function getClassSkills(Character $character)
+    public function getClassSkills(Character $character) : array
     {
         $skills = $character->getClass()::getBaseSkills();
 
@@ -108,11 +109,13 @@ class ClassService
         return $classSkills;
     }
 
-    public function setCombatModifiers(Character $character, int $lvl = 1)
+    public function setCombatModifiers(Character $character, int $lvl = 1) : self
     {
         $class       = $character->getClass();
         $combatStats = $character->getBaseCombatStats();
 
+        /** @var int $combatStatModifiersPerLevel */
+        /** @var aStat[] $requiredStats */
         list($combatStatModifiersPerLevel, $requiredStats) = $class::getCombatModifiersPerLevel();
 
         $character->addAvailableCombatModifier($combatStatModifiersPerLevel);
@@ -128,6 +131,8 @@ class ClassService
 
             $character->useAvailableCombatModifier($requiredAmount);
         }
+
+        return $this;
     }
 
     /**
@@ -135,9 +140,9 @@ class ClassService
      *
      * @param Character $character
      *
-     * @return int[]
+     * @return aStat[]
      */
-    protected function generateBaseCombatStats(Character $character)
+    protected function generateBaseCombatStats(Character $character) : array
     {
         $class = $character->getClass();
         $stats = [];
@@ -158,15 +163,14 @@ class ClassService
      *
      * @return array
      */
-    protected function generateGeneralStats(Character $character)
+    protected function generateGeneralStats(Character $character) : array
     {
         $class = $character->getClass();
-        $stats = [
+
+        return [
             Health::NAME     => $class::getHpBase(),
             PainPoint::NAME  => $class::getPpBase(),
             SkillPoint::NAME => $class::getSkillPointBase()
         ];
-
-        return $stats;
     }
 }

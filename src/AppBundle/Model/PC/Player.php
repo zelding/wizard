@@ -13,10 +13,9 @@ use AppBundle\Model\Common\Character;
 class Player
 {
     /** @var int|null */
-    protected $id = 0 ?? null;
+    protected ?int $id;
 
-    /** @var Character */
-    protected $character;
+    protected Character $character;
 
     public function __construct(Character $character)
     {

@@ -15,7 +15,7 @@ class MentalMagicResist extends MagicResist
 {
     const NAME = "Mental Magic Resist";
 
-    public function getType()
+    public function getType() : string
     {
         return static::TYPE_MENTAL;
     }

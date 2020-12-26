@@ -28,13 +28,13 @@ abstract class aRace
     const TYPE = "-1" ?? -1;
 
     /** @var string */
-    protected static $name      = "";
+    protected static string $name      = "";
     /** @var aStat[] */
-    protected static $baseStatModifiers = [];
+    protected static array $baseStatModifiers = [];
     /** @var aStat[] */
-    protected static $combatStatModifiers = [];
+    protected static array $combatStatModifiers = [];
 
-    protected static $maxBaseStats      = [
+    protected static array $maxBaseStats      = [
         Strength::TYPE     => 18,
         Stamina::TYPE      => 18,
         Dexterity::TYPE    => 18,
@@ -47,14 +47,14 @@ abstract class aRace
         Perception::TYPE   => 18
     ];
 
-    protected static $playable          = false;
+    protected static bool $playable          = false;
 
     /**
      * list of skills that the race has naturally
      *
      * @var array
      */
-    protected static $baseSkills = [];
+    protected static array $baseSkills = [];
 
     #region Getters
 

@@ -33,7 +33,7 @@ use AppBundle\Model\Common\Stats\aStat;
  */
 class BaseCombatStats extends BaseStats
 {
-    public static $baseStats = [
+    public static array $baseStats = [
         Sequence::NAME => Sequence::class,
         Attack::NAME   => Attack::class,
         Defense::NAME  => Defense::class,

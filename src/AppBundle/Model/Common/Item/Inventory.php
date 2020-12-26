@@ -18,12 +18,12 @@ class Inventory
     const INV_TYPE_POCKET   = "pocket";
     const INV_TYPE_BELT     = "belt";
 
-    protected $type = self::INV_TYPE_BACKPACK;
+    protected string $type = self::INV_TYPE_BACKPACK;
 
     /** @var Item[][] */
-    protected $items = [];
+    protected array $items = [];
 
-    protected static $maxWeight = 0;
+    protected static int $maxWeight = 0;
 
     /**
      * @return string
@@ -49,7 +49,7 @@ class Inventory
         return self::$maxWeight;
     }
 
-    public function getTotalWeight()
+    public function getTotalWeight() : float
     {
         if ( empty($this->items) ) {
             return 0.0;
@@ -74,7 +74,7 @@ class Inventory
      *
      * @return $this
      */
-    public function addItem(Item $item)
+    public function addItem(Item $item) : self
     {
         if ( !array_key_exists($item::$category, $this->items) ) {
             $this->items[ $item::$category ] = [];

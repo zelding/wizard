@@ -21,13 +21,13 @@ class WeaponHandling extends aSkill
 {
     const TYPE = "WPH";
 
-    public static $category = self::SKILL_TYPE_COMBAT;
+    public static string $category = self::SKILL_TYPE_COMBAT;
 
-    public static $baseCost      =  3;
-    public static $masteryCost   = 30;
-    public static $allowMultiple = true;
+    public static int $baseCost      =  3;
+    public static int $masteryCost   = 30;
+    public static bool $allowMultiple = true;
 
-    protected static $modifiers = [
+    protected static array $modifiers = [
         self::MASTERY_BASIC  => [],
         self::MASTERY_MASTER => [
             Sequence::TYPE => 5,
@@ -37,11 +37,11 @@ class WeaponHandling extends aSkill
         ]
     ];
 
-    protected static $otherRelations = [
+    protected static array $otherRelations = [
         "Item\Weapon"
     ];
 
-    protected static $name = "Weapon handling";
+    protected static string $name = "Weapon handling";
 
     public function getName(): string
     {

@@ -29,7 +29,7 @@ class RaceService
      *
      * @return $this
      */
-    public function applyRacialBonuses(Character $character)
+    public function applyRacialBonuses(Character $character) : self
     {
         $this->setRacialBonuses($character)
              ->addRacialCombatBonuses($character);
@@ -42,7 +42,7 @@ class RaceService
      *
      * @return aSkill[]
      */
-    public function getRacialSkills(Character $character)
+    public function getRacialSkills(Character $character) : array
     {
         $skills = $character->getRace()::getBaseSkills();
 
@@ -78,7 +78,7 @@ class RaceService
      *
      * @return $this
      */
-    protected function setRacialBonuses(Character $character)
+    protected function setRacialBonuses(Character $character) : self
     {
         $raceBonuses = $character->getRace()::getBaseStatModifiers();
 
@@ -98,7 +98,7 @@ class RaceService
      *
      * @return $this
      */
-    protected function addRacialCombatBonuses(Character $character)
+    protected function addRacialCombatBonuses(Character $character) : self
     {
         $raceBonuses = $character->getRace()::getCombatStatModifiers();
 

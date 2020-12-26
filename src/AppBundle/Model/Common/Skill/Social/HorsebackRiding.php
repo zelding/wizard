@@ -17,10 +17,10 @@ class HorsebackRiding extends aSkill
 {
     const TYPE = "HBR";
 
-    public static $category = self::SKILL_TYPE_SOCIAL;
+    public static string $category = self::SKILL_TYPE_SOCIAL;
 
-    public static $baseCost    =  1;
-    public static $masteryCost = 15;
+    public static int $baseCost    =  1;
+    public static int $masteryCost = 15;
 
-    protected static $name = "Horseback riding";
+    protected static string $name = "Horseback riding";
 }

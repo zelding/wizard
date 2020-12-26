@@ -17,24 +17,24 @@ abstract class Psy extends aSkill
 {
     const TYPE = "PSY";
 
-    public static $category = self::SKILL_TYPE_SCIENCE;
+    public static string $category = self::SKILL_TYPE_SCIENCE;
 
     /** @var int points on lvl 1 */
-    public static $basePoints     = 0;
+    public static int $basePoints     = 0;
     /** @var int extra points after lvl 1 */
-    public static $pointsPerLevel = 0;
+    public static int $pointsPerLevel = 0;
 
     /** @var int The character level when when skill was learned */
-    protected $learnedAt = 1;
+    protected int $learnedAt = 1;
 
-    protected static $name = "Psy";
+    protected static string $name = "Psy";
 
-    public function getBasePoints()
+    public function getBasePoints() : int
     {
         return static::$basePoints;
     }
 
-    public function getPointsPerLevel()
+    public function getPointsPerLevel() : int
     {
         return static::$pointsPerLevel;
     }

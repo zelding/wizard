@@ -31,19 +31,18 @@ abstract class aClass
     /** @var int|string */
     const SUB_TYPE = "-1" ?? -1;
 
-    public static $playable = false;
+    public static bool $playable = false;
 
-    /** @var string */
-    protected static $name      = "";
+    protected static string $name      = "";
     /** @var aStat[] */
-    protected static $modifiers = [];
+    protected static array $modifiers = [];
 
     /**
      * minimum, maximum, number of rolls (highest counts), allow special training
      *
      * @var array[]
      */
-    protected static $baseStatRanges = [
+    protected static array $baseStatRanges = [
         Strength::TYPE     => [0, 0, 1, false],
         Stamina::TYPE      => [0, 0, 1, false],
         Dexterity::TYPE    => [0, 0, 1, false],
@@ -56,25 +55,25 @@ abstract class aClass
         Perception::TYPE   => [0, 0, 1, false]
     ];
     /** @var int */
-    protected static $skillPointBase     = 0;
+    protected static int $skillPointBase     = 0;
     /** @var int */
-    protected static $skillPointPerLevel = 0;
+    protected static int $skillPointPerLevel = 0;
     /** @var int */
-    protected static $hpBase             = 1;
+    protected static int $hpBase             = 1;
     /** @var int */
-    protected static $ppBase             = 1;
+    protected static int $ppBase             = 1;
     /** @var int[] min, max */
-    protected static $painPointsPerLevel = [0, 0];
-    /** @var int[] point, mandatory points */
-    protected static $combatModifiersPerLevel = [0, []];
+    protected static array $painPointsPerLevel = [0, 0];
+    /** @var array[] point, mandatory points */
+    protected static array $combatModifiersPerLevel = [0, []];
     /** @var aSkill[] starting professions */
-    protected static $baseSkills = [];
+    protected static array $baseSkills = [];
     /** @var aSkill[] later professions: level => aSkill|aSkill[] */
-    protected static $lateSkills = [];
+    protected static array $lateSkills = [];
     /** @var int[] experience limit for a given level */
-    protected static $experienceTable = [];
+    protected static array $experienceTable = [];
     /** @var int experience needed after level 12 */
-    protected static $xpAfter12 = 30000;
+    protected static int $xpAfter12 = 30000;
 
     #region Getters
 

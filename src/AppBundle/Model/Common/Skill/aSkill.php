@@ -23,24 +23,24 @@ abstract class aSkill
     const MASTERY_BASIC  = "Basic";
     const MASTERY_MASTER = "Master";
     /** @var string */
-    public static $category      = self::SKILL_TYPE_COMBAT;
+    public static string $category      = self::SKILL_TYPE_COMBAT;
     /** @var int cost of SP to learn the basics*/
-    public static $baseCost      = 0;
+    public static int $baseCost      = 0;
     /** @var int cost of SP to master the skill */
-    public static $masteryCost   = 0;
+    public static int $masteryCost   = 0;
     /** @var bool is percent based */
-    public static $isPercent     = false;
+    public static bool $isPercent     = false;
     /** @var bool is a hard to learn skill */
-    public static $isSecret      = false;
+    public static bool $isSecret      = false;
     /** @var bool */
-    public static $allowMultiple = false;
+    public static bool $allowMultiple = false;
 
     /**
      * Various bonuses that the skill might give
      *
      * @var array
      */
-    protected static $modifiers = [
+    protected static array $modifiers = [
         self::MASTERY_BASIC  => [],
         self::MASTERY_MASTER => []
     ];
@@ -50,19 +50,19 @@ abstract class aSkill
      *
      * @var array
      */
-    protected static $statRelations  = [];
+    protected static array $statRelations  = [];
 
-    protected static $otherRelations = [];
+    protected static array $otherRelations = [];
 
     /** @var string */
-    protected static $name  = "";
-    /** @var int */
-    protected $mastery = self::MASTERY_BASIC ?? self::MASTERY_MASTER;
+    protected static string $name  = "";
+    /** @var string */
+    protected string $mastery = self::MASTERY_BASIC ?? self::MASTERY_MASTER;
 
     /** @var string only used if $allowMultiple */
-    protected $relatesTo = "";
+    protected string $relatesTo = "";
     /** @var string[]  */
-    protected $origin = [];
+    protected array $origin = [];
 
     /**
      * aSkill constructor.
@@ -74,7 +74,7 @@ abstract class aSkill
         $this->mastery = $mastery;
     }
 
-    public function isMaster()
+    public function isMaster() : bool
     {
         return $this->mastery === self::MASTERY_MASTER;
     }

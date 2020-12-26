@@ -13,10 +13,10 @@ namespace AppBundle\Model\Common\Stats;
 
 class Modifier extends aStat
 {
-    /** @var int|string */
-    protected $modifies = self::TYPE;
     /** @var string */
-    protected $description = "";
+    protected string $modifies = self::TYPE;
+    /** @var string */
+    protected string $description = "";
 
     public function __construct($value, $description = "")
     {
@@ -38,7 +38,7 @@ class Modifier extends aStat
      *
      * @return $this
      */
-    public function setDescription(string $description)
+    public function setDescription(string $description) : self
     {
         $this->description = $description;
 
@@ -46,19 +46,19 @@ class Modifier extends aStat
     }
 
     /**
-     * @return int|string
+     * @return string
      */
-    public function getModifies()
+    public function getModifies() : string
     {
         return $this->modifies;
     }
 
     /**
-     * @param int|string $modifies
+     * @param string $modifies
      *
      * @return Modifier
      */
-    public function setModifies(string $modifies)
+    public function setModifies(string $modifies) : self
     {
         $this->modifies = $modifies;
 

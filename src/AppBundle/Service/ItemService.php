@@ -30,7 +30,7 @@ class ItemService
      *
      * @return string[]|null
      */
-    public function getItemSlot(Item $item)
+    public function getItemSlot(Item $item) : ?array
     {
         switch( $item::$category ) {
 
@@ -45,7 +45,6 @@ class ItemService
 
             case Item::CATEGORY_ARMOR:
                 return [self::SLOT_TORSO, 1];
-            break;
         }
 
         return null;

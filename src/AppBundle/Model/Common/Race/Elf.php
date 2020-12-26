@@ -31,9 +31,9 @@ class Elf extends aRace
     const TYPE = "ELF";
 
     /** @var string */
-    protected static $name      = "Elf";
+    protected static string $name      = "Elf";
     /** @var aStat[]  */
-    protected static $baseStatModifiers = [
+    protected static array $baseStatModifiers = [
         Strength::TYPE   => -2,
         Stamina::TYPE    => -1,
         Speed::TYPE      =>  1,
@@ -42,11 +42,11 @@ class Elf extends aRace
         Perception::TYPE =>  2
     ];
 
-    protected static $combatStatModifiers = [
+    protected static array $combatStatModifiers = [
         Aim::TYPE => 30
     ];
 
-    protected static $maxBaseStats        = [
+    protected static array $maxBaseStats        = [
         Strength::TYPE     => 18,
         Stamina::TYPE      => 18,
         Dexterity::TYPE    => 21,
@@ -59,9 +59,9 @@ class Elf extends aRace
         Perception::TYPE   => 20
     ];
 
-    protected static $playable            = true;
+    protected static bool $playable            = true;
 
-    protected static $baseSkills          = [
+    protected static array $baseSkills          = [
         HorsebackRiding::class => aSkill::MASTERY_MASTER,
         Language::class        => [[
             "for"     => "Elvish",

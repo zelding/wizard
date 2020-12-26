@@ -54,7 +54,7 @@ use AppBundle\Model\Common\Stats\Modifier;
  */
 class BaseStats
 {
-    public static $baseStats = [
+    public static array $baseStats = [
         Strength::NAME     => Strength::class,
         Stamina::NAME      => Stamina::class,
         Dexterity::NAME    => Dexterity::class,
@@ -68,7 +68,7 @@ class BaseStats
     ];
 
     /** @var aStat[] */
-    protected $stats = [];
+    protected array $stats = [];
 
     /**
      * BaseStats constructor.
@@ -152,7 +152,7 @@ class BaseStats
      * @return $this
      * @throws AppException
      */
-    protected function setStat(string $name, int $value)
+    protected function setStat(string $name, int $value) : self
     {
         $statClass = $this->resolveStatClass($name, $value);
 
@@ -194,7 +194,7 @@ class BaseStats
      * @return $this
      * @throws AppException
      */
-    protected function addModifier(string $name, int $value, $description = "")
+    protected function addModifier(string $name, int $value, $description = "") : self
     {
         $modifierClass = $this->resolveModifierClass($name, $value, $description);
 
@@ -207,7 +207,7 @@ class BaseStats
         return $this;
     }
 
-    public function getAllStats()
+    public function getAllStats() : array
     {
         return $this->stats;
     }

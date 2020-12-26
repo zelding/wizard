@@ -15,7 +15,7 @@ class Human extends aRace
 {
     const TYPE = "HUM";
 
-    protected static $playable = true;
+    protected static bool $playable = true;
 
-    protected static $name = "Human";
+    protected static string $name = "Human";
 }

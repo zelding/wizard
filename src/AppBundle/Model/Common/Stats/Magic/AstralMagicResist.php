@@ -15,7 +15,7 @@ class AstralMagicResist extends MagicResist
 {
     const NAME = "Astral Magic Resist";
 
-    public function getType()
+    public function getType() : string
     {
         return static::TYPE_ASTRAL;
     }

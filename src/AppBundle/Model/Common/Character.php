@@ -10,60 +10,57 @@
 
 namespace AppBundle\Model\Common;
 
-use AppBundle\Exception\AppException;
 use AppBundle\Model\Common\CharacterClass\aClass;
 use AppBundle\Model\Common\Item\Inventory;
 use AppBundle\Model\Common\Race\aRace;
 use AppBundle\Model\Common\Skill\aSkill;
 use AppBundle\Model\Common\Skill\Science\Magic;
 use AppBundle\Model\Common\Skill\Science\Psy;
+use AppBundle\Model\Common\Stats\aStat;
 use AppBundle\Model\Common\Stats\Base\BaseStats;
 use AppBundle\Model\Common\Stats\Combat\BaseCombatStats;
 use AppBundle\Model\Common\Stats\General\GeneralStats;
+use AppBundle\Model\Common\Stats\Magic\MagicResist;
 
 abstract class Character
 {
     /** @var string */
-    protected $firstName  = "";
+    protected string $firstName  = "";
     /** @var string[] */
-    protected $otherNames = [];
+    protected array $otherNames = [];
     /** @var string */
-    protected $lastName  = "";
+    protected string $lastName  = "";
 
     /** @var aRace */
-    protected $race;
+    protected aRace $race;
     /** @var aClass */
-    protected $class;
+    protected aClass $class;
 
-    protected $level = 1;
+    protected int $level = 1;
 
-    protected $experience = 0;
+    protected int $experience = 0;
 
-    /** @var BaseStats */
-    protected $baseStats = null;
-    /** @var Stats\Combat\BaseCombatStats */
-    protected $baseCombatStats = null;
-    /** @var GeneralStats  */
-    protected $generalStats = null;
+    protected BaseStats $baseStats;
+    protected BaseCombatStats $baseCombatStats;
+    protected GeneralStats $generalStats;
+    protected Inventory $inventory;
 
-    protected $currentHP  = 0;
-    protected $currentPP  = 0;
-    protected $currentMP  = 0;
-    protected $currentPsy = 0;
-    protected $currentSp  = 0;
+    protected int $currentHP  = 0;
+    protected int $currentPP  = 0;
+    protected int $currentMP  = 0;
+    protected int $currentPsy = 0;
+    protected int $currentSp  = 0;
 
-    protected $availableCombatModifiers = 0;
+    protected int $availableCombatModifiers = 0;
 
     /** @var Stats\Magic\MagicResist[] */
-    protected $magicResists = [];
-    /** @var Inventory */
-    protected $inventory;
+    protected array $magicResists = [];
 
     /** @var  */
     protected $equipment;
 
-    /** @var aSkill[[]] */
-    protected $skills = [];
+    /** @var aSkill[][] */
+    protected array $skills = [];
 
     public function __construct(aRace $race, aClass $class)
     {
@@ -89,7 +86,7 @@ abstract class Character
         return $fullName;
     }
 
-    public function getXpToNextLevel()
+    public function getXpToNextLevel() : int
     {
         if ( $this->class instanceof aClass) {
             $table = $this->class::getExperienceTable();
@@ -100,67 +97,62 @@ abstract class Character
         return -1;
     }
 
-    /**
-     * @return bool|Psy
-     */
-    public function getPsySkill()
+    public function getPsySkill() : ?Psy
     {
         if ( !empty($this->skills[ aSkill::SKILL_TYPE_SCIENCE ]) ) {
             $a = array_filter($this->skills[ aSkill::SKILL_TYPE_SCIENCE ], function ($skill) {
                 return is_a($skill, Psy::class);
             });
 
-            return !empty($a) ? reset($a) : false;
+            return !empty($a) ? reset($a) : null;
         }
 
-        return false;
+        return null;
     }
 
-    /**
-     * @return bool|Magic
-     */
-    public function getMagicSkill()
+    public function getMagicSkill() : ?Magic
     {
         if ( !empty($this->skills[ aSkill::SKILL_TYPE_SCIENCE ]) ) {
             $a = array_filter($this->skills[ aSkill::SKILL_TYPE_SCIENCE ], function ($skill) {
                 return is_a($skill, Magic::class);
             });
 
-            return !empty($a) ? reset($a) : false;
+            return !empty($a) ? reset($a) : null;
         }
 
-        return false;
+        return null;
     }
 
-    public function addAvailableCombatModifier(int $amount)
+    public function addAvailableCombatModifier(int $amount) : self
     {
         $this->availableCombatModifiers += $amount;
 
         return $this;
     }
 
-    public function useAvailableCombatModifier(int $amount)
+    public function useAvailableCombatModifier(int $amount) : self
     {
         $this->availableCombatModifiers -= $amount;
 
         return $this;
     }
 
-    public function getMaxCombatModifier()
+    public function getMaxCombatModifier() : int
     {
         list($perLvl, $stats) = $this->class::getCombatModifiersPerLevel();
 
-        return ($perLvl - array_sum($stats));
+        // negated the operation so the ide will shut up about operations on arrays
+        return array_sum($stats) * -1 + $perLvl;
     }
 
     #region Getters/Setters
 
     /**
-     * @param int[] $baseStats
+     * @param aStat[] $baseStats
      *
      * @return $this
      */
-    public function setBaseStats(array $baseStats)
+    public function setBaseStats(array $baseStats) : self
     {
         $this->baseStats = new BaseStats($baseStats);
 
@@ -168,11 +160,11 @@ abstract class Character
     }
 
     /**
-     * @param int[] $baseCombatStats
+     * @param aStat[] $baseCombatStats
      *
      * @return $this
      */
-    public function setBaseCombatStats(array $baseCombatStats)
+    public function setBaseCombatStats(array $baseCombatStats) : self
     {
         $this->baseCombatStats = new BaseCombatStats($baseCombatStats);
 
@@ -180,7 +172,7 @@ abstract class Character
     }
 
     /**
-     * @param int[] $generalStats
+     * @param aStat[] $generalStats
      *
      * @return Character
      */
@@ -292,45 +284,27 @@ abstract class Character
         return $this;
     }
 
-    /**
-     * @return BaseStats
-     */
-    public function getBaseStats()
+    public function getBaseStats() : BaseStats
     {
         return $this->baseStats;
     }
 
-    /**
-     * @return Stats\Combat\BaseCombatStats
-     */
-    public function getBaseCombatStats()
+    public function getBaseCombatStats() : BaseCombatStats
     {
         return $this->baseCombatStats;
     }
 
-    /**
-     * @return GeneralStats
-     */
-    public function getGeneralStats()
+    public function getGeneralStats() : GeneralStats
     {
         return $this->generalStats;
     }
 
-    /**
-     * @param string $type
-     * @return Stats\Magic\MagicResist
-     */
-    public function getMagicResist( $type = Stats\Magic\MagicResist::TYPE_ASTRAL )
+    public function getMagicResist( $type = Stats\Magic\MagicResist::TYPE_ASTRAL ) : MagicResist
     {
         return $this->magicResists[ $type ];
     }
 
-    /**
-     * @param Stats\Magic\MagicResist $magicResist
-     * @return Character
-     * @throws AppException
-     */
-    public function setMagicResists(Stats\Magic\MagicResist $magicResist)
+    public function setMagicResists(Stats\Magic\MagicResist $magicResist) : self
     {
         $this->magicResists[ $magicResist->getType() ] = $magicResist;
 
@@ -340,7 +314,7 @@ abstract class Character
     /**
      * @return Inventory
      */
-    public function getInventory()
+    public function getInventory() : Inventory
     {
         return $this->inventory;
     }
@@ -349,14 +323,14 @@ abstract class Character
      * @param Inventory $inventory
      * @return Character
      */
-    public function setInventory(Inventory $inventory)
+    public function setInventory(Inventory $inventory) : self
     {
         $this->inventory = $inventory;
         return $this;
     }
 
     /**
-     * @return aSkill[[]]
+     * @return aSkill[]
      */
     public function getSkills() : array
     {
@@ -367,7 +341,7 @@ abstract class Character
      * @param aSkill[] $skills
      * @return Character
      */
-    public function setSkills(array $skills) : Character
+    public function setSkills(array $skills) : self
     {
         $this->skills = $skills;
         return $this;
@@ -391,7 +365,7 @@ abstract class Character
      *
      * @return Character
      */
-    public function setLevel(int $level): Character
+    public function setLevel(int $level): self
     {
         $this->level = $level;
 
@@ -411,7 +385,7 @@ abstract class Character
      *
      * @return Character
      */
-    public function setExperience(int $experience): Character
+    public function setExperience(int $experience): self
     {
         $this->experience = $experience;
 
@@ -431,7 +405,7 @@ abstract class Character
      *
      * @return Character
      */
-    public function setCurrentHP(int $currentHP): Character
+    public function setCurrentHP(int $currentHP): self
     {
         $this->currentHP = $currentHP;
 
@@ -451,7 +425,7 @@ abstract class Character
      *
      * @return Character
      */
-    public function setCurrentPP(int $currentPP): Character
+    public function setCurrentPP(int $currentPP): self
     {
         $this->currentPP = $currentPP;
 
@@ -471,7 +445,7 @@ abstract class Character
      *
      * @return Character
      */
-    public function setCurrentMP(int $currentMP): Character
+    public function setCurrentMP(int $currentMP): self
     {
         $this->currentMP = $currentMP;
 
@@ -491,7 +465,7 @@ abstract class Character
      *
      * @return Character
      */
-    public function setCurrentPsy(int $currentPsy): Character
+    public function setCurrentPsy(int $currentPsy): self
     {
         $this->currentPsy = $currentPsy;
 
@@ -510,13 +484,13 @@ abstract class Character
      * @param int $currentSp
      * @return Character
      */
-    public function setCurrentSp(int $currentSp) : Character
+    public function setCurrentSp(int $currentSp) : self
     {
         $this->currentSp = $currentSp;
         return $this;
     }
 
-    public function getAvailableCombatModifier()
+    public function getAvailableCombatModifier() : int
     {
         return $this->availableCombatModifiers;
     }

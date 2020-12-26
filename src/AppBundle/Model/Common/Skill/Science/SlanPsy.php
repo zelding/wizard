@@ -17,15 +17,15 @@ class SlanPsy extends Psy
 {
     const TYPE = "PSY-SL";
 
-    public static $category = self::SKILL_TYPE_SCIENCE;
+    public static string $category = self::SKILL_TYPE_SCIENCE;
 
-    public static $baseCost    = 0;
-    public static $masteryCost = 0;
+    public static int $baseCost    = 0;
+    public static int $masteryCost = 0;
 
-    public static $basePoints     = 6;
-    public static $pointsPerLevel = 5;
+    public static int $basePoints     = 6;
+    public static int $pointsPerLevel = 5;
 
-    protected static $name = "Psy (Slan)";
+    protected static string $name = "Psy (Slan)";
 
     public function getMastery(): string
     {

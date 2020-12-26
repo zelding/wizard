@@ -19,19 +19,19 @@ class Price
     const COPPER  =      1;
 
     /** @var int base value */
-    protected $copper  = 0;
+    protected int $copper  = 0;
 
     /** @var int 100 copper = 1 silver */
-    protected $silver  = 0;
+    protected int $silver  = 0;
 
     /** @var int 10 silver = 1 gold */
-    protected $gold    = 0;
+    protected int $gold    = 0;
 
     /** @var int 100 gold = 1 mithril */
-    protected $mithril = 0;
+    protected int $mithril = 0;
 
-    protected $allowMithril = false;
-    protected $allowGold    = true;
+    protected bool $allowMithril = false;
+    protected bool $allowGold    = true;
 
     /**
      * if you set the value by this, it will be reduced to minimal coins
@@ -46,7 +46,7 @@ class Price
         $this->allowGold    = $allowGold;
     }
 
-    public function getFullValue()
+    public function getFullValue() : int
     {
         return $this->mithril * self::MITHRIL +
                $this->gold    * self::GOLD    +
@@ -54,7 +54,7 @@ class Price
                $this->copper;
     }
 
-    public function setLowestCountPrice(int $value = 0)
+    public function setLowestCountPrice(int $value = 0) : self
     {
         if ( $this->allowMithril ) {
             $this->mithril = floor($value / self::MITHRIL);

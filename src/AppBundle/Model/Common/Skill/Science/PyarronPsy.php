@@ -15,26 +15,26 @@ class PyarronPsy extends Psy
 {
     const TYPE = "PSY-PY";
 
-    public static $baseCost    = 20;
-    public static $masteryCost = 55;
+    public static int $baseCost    = 20;
+    public static int $masteryCost = 55;
 
     /** @var int at mastery_basic */
-    public static $basePoints     = 4;
+    public static int $basePoints     = 4;
     /** @var int at mastery_basic */
-    public static $pointsPerLevel = 3;
+    public static int $pointsPerLevel = 3;
 
-    protected static $name = "Psy (Pyarron)";
+    protected static string $name = "Psy (Pyarron)";
     /** @var int The character level when when skill was learned */
-    protected $learnedAt  = 1;
+    protected int $learnedAt  = 1;
     /** @var int The level when the mastery was updated */
-    protected $upgradedAt = 0;
+    protected int $upgradedAt = 0;
 
     public function getName(): string
     {
         return self::$name;
     }
 
-    public function getBasePoints()
+    public function getBasePoints() : int
     {
         if ( $this->mastery === self::MASTERY_BASIC ) {
             return 4;
@@ -43,7 +43,7 @@ class PyarronPsy extends Psy
         return 5;
     }
 
-    public function getPointsPerLevel()
+    public function getPointsPerLevel() : int
     {
         if ( $this->mastery === self::MASTERY_BASIC ) {
             return 3;

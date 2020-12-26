@@ -38,7 +38,7 @@ use AppBundle\Model\Common\Stats\aStat;
  */
 class GeneralStats extends BaseStats
 {
-    public static $baseStats = [
+    public static array $baseStats = [
         Health::NAME    => Health::class,
         PainPoint::NAME => PainPoint::class,
         PsyPoints::NAME => PsyPoints::class,

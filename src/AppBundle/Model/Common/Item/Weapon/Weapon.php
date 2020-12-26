@@ -29,30 +29,30 @@ class Weapon extends Item
     const SUB_CATEGORY_THROWING = "throwing";
     const SUB_CATEGORY_SHIELD   = "shield";
 
-    public static $category    = self::CATEGORY_WEAPON;
+    public static string $category    = self::CATEGORY_WEAPON;
 
-    public static $subCategory = self::SUB_CATEGORY_MISC;
+    public static string $subCategory = self::SUB_CATEGORY_MISC;
 
     /** @var float attacks per round */
-    protected static $baseAttacksPerRound = self::ATTACK_ONCE;
+    protected static float $baseAttacksPerRound = self::ATTACK_ONCE;
 
     /** @var int base sequence bonus */
-    protected static $baseSequence        = 0;
+    protected static int $baseSequence        = 0;
 
     /** @var int base attack bonus */
-    protected static $baseAttack          = 0;
+    protected static int $baseAttack          = 0;
 
     /** @var int base defense bonus */
-    protected static $baseDefense         = 0;
+    protected static int $baseDefense         = 0;
 
     /** @var int[] base damage range */
-    protected static $baseDamage          = [1, 1];
+    protected static array $baseDamage          = [1, 1];
 
     /** @var int Amount of armor ignored */
-    protected static $basePierce          = 0;
+    protected static int $basePierce          = 0;
 
     /** @var string name */
-    protected $name;
+    protected string $name;
 
     public function __construct($subCategory = self::SUB_CATEGORY_BLADE)
     {
@@ -66,12 +66,12 @@ class Weapon extends Item
      *
      * @return bool
      */
-    public function isMagical()
+    public function isMagical() : bool
     {
         return false;
     }
 
-    public function isTwoHanded()
+    public function isTwoHanded() : bool
     {
         return false;
     }

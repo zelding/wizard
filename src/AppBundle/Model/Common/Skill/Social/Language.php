@@ -17,19 +17,19 @@ class Language extends aSkill
 {
     const TYPE = "LNG";
 
-    public static $allowMultiple = true;
+    public static bool $allowMultiple = true;
 
-    public static $name = "Language";
+    public static string $name = "Language";
 
     /** @var string */
-    public static $category      = self::SKILL_TYPE_SCIENCE;
+    public static string $category      = self::SKILL_TYPE_SCIENCE;
     /** @var int cost of SP to learn the basics*/
-    public static $baseCost      = 1;
+    public static int $baseCost      = 1;
     /** @var int cost of SP to master the skill */
-    public static $masteryCost   = 20;
+    public static int $masteryCost   = 20;
 
     /** @var int */
-    protected $level   = 1;
+    protected int $level   = 1;
 
     public function getName() : string
     {

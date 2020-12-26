@@ -17,22 +17,22 @@ abstract class Magic extends aSkill
 {
     const TYPE = "Magic";
 
-    public static $category = self::SKILL_TYPE_SCIENCE;
+    public static string $category = self::SKILL_TYPE_SCIENCE;
 
-    public static $baseCost       = 15;
-    public static $masteryCost    = 45;
-    public static $basePoints     = 0;
-    public static $pointsPerLevel = 0;
-    public static $magicType      = "generic";
+    public static int $baseCost       = 15;
+    public static int $masteryCost    = 45;
+    public static int $basePoints     = 0;
+    public static array $pointsPerLevel = [0,0];
+    public static string $magicType      = "generic";
 
-    protected static $name = "magic";
+    protected static string $name = "magic";
 
-    public function getBasePoints()
+    public function getBasePoints() : int
     {
         return static::$basePoints;
     }
 
-    public function getPointsPerLevel()
+    public function getPointsPerLevel() : array
     {
         return static::$pointsPerLevel;
     }

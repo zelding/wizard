@@ -17,10 +17,10 @@ class Leadership extends aSkill
 {
     const TYPE = "LDS";
 
-    public static $category = self::SKILL_TYPE_COMBAT;
+    public static string $category = self::SKILL_TYPE_COMBAT;
 
-    public static $baseCost    =  5;
-    public static $masteryCost = 20;
+    public static int $baseCost    =  5;
+    public static int $masteryCost = 20;
 
-    protected static $name = "Horseback riding";
+    protected static string $name = "Horseback riding";
 }

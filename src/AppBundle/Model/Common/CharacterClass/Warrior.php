@@ -40,33 +40,33 @@ class Warrior extends aClass
     const SUB_TYPE = "WAR";
 
     /** @var aStat[] */
-    protected static $modifiers = [
+    protected static array $modifiers = [
         Sequence::TYPE =>  9,
         Attack::TYPE   => 20,
         Defense::TYPE  => 75,
         Aim::TYPE      =>  0
     ];
 
-    public static $playable = true;
+    public static bool $playable = true;
 
-    protected static $name = "Warrior";
+    protected static string $name = "Warrior";
 
-    protected static $skillPointBase     = 10;
+    protected static int $skillPointBase     = 10;
 
-    protected static $skillPointPerLevel = 14;
+    protected static int $skillPointPerLevel = 14;
 
-    protected static $hpBase             = 7;
+    protected static int $hpBase             = 7;
 
-    protected static $ppBase             = 6;
+    protected static int $ppBase             = 6;
 
-    protected static $painPointsPerLevel = [5, 10];
+    protected static array $painPointsPerLevel = [5, 10];
 
-    protected static $combatModifiersPerLevel = [11, [
+    protected static array $combatModifiersPerLevel = [11, [
         Attack::TYPE  => 3,
         Defense::TYPE => 3
     ]];
 
-    protected static $baseStatRanges  = [
+    protected static array $baseStatRanges  = [
         Strength::TYPE     => [13, 18, 1, true],
         Stamina::TYPE      => [ 9, 18, 1, true],
         Dexterity::TYPE    => [ 8, 18, 1, true],
@@ -79,7 +79,7 @@ class Warrior extends aClass
         Perception::TYPE   => [ 8, 18, 1, false]
     ];
 
-    protected static $baseSkills      = [
+    protected static array $baseSkills      = [
         WeaponHandling::class  => [
             "relations" => [
                 "Short sword",
@@ -96,11 +96,11 @@ class Warrior extends aClass
         ]]
     ];
 
-    protected static $lateSkills      = [
+    protected static array $lateSkills      = [
         6 => [Leadership::class => aSkill::MASTERY_BASIC]
     ];
 
-    protected static $experienceTable = [
+    protected static array $experienceTable = [
              0,
            161,
            321,
@@ -116,5 +116,5 @@ class Warrior extends aClass
         112001
     ];
 
-    protected static $xpAfter12       = 31200;
+    protected static int $xpAfter12       = 31200;
 }
