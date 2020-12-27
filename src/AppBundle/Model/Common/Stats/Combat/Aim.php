@@ -15,9 +15,9 @@ use AppBundle\Model\Common\Stats\aStat;
 
 class Aim extends aStat
 {
-    const TYPE = "AIM";
+    public  const TYPE = "AIM";
 
-    const NAME = "Aim";
+    public  const NAME = "Aim";
 
-    const BASE_STAT = false;
+    public  const BASE_STAT = false;
 }

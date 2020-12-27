@@ -13,7 +13,7 @@ use AppBundle\Model\Common\Stats\aStat;
 
 class Willpower extends aStat
 {
-    const TYPE = "WIL";
+    public  const TYPE = "WIL";
 
-    const NAME = "Willpower";
+    public  const NAME = "Willpower";
 }

@@ -15,9 +15,9 @@ use AppBundle\Model\Common\Stats\aStat;
 
 class PainPoint extends aStat
 {
-    const TYPE = "PP";
+    public  const TYPE = "PP";
 
-    const NAME = "PainPoint";
+    public  const NAME = "PainPoint";
 
-    const BASE_STAT = false;
+    public  const BASE_STAT = false;
 }

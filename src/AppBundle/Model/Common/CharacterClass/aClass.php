@@ -27,9 +27,9 @@ use AppBundle\Model\Common\Stats\Base\Willpower;
 abstract class aClass
 {
     /** @var int|string */
-    const TYPE     = "-1" ?? -1;
+    public  const TYPE     = "-1" ?? -1;
     /** @var int|string */
-    const SUB_TYPE = "-1" ?? -1;
+    public  const SUB_TYPE = "-1" ?? -1;
 
     public static bool $playable = false;
 
@@ -82,7 +82,7 @@ abstract class aClass
      */
     public static function getModifiers(): array
     {
-        return static::$modifiers;
+        return self::$modifiers;
     }
 
     /**
@@ -90,7 +90,7 @@ abstract class aClass
      */
     public static function getName(): string
     {
-        return static::$name;
+        return self::$name;
     }
 
     /**
@@ -98,7 +98,7 @@ abstract class aClass
      */
     public static function getSkillPointBase(): int
     {
-        return static::$skillPointBase;
+        return self::$skillPointBase;
     }
 
     /**
@@ -106,7 +106,7 @@ abstract class aClass
      */
     public static function getSkillPointPerLevel(): int
     {
-        return static::$skillPointPerLevel;
+        return self::$skillPointPerLevel;
     }
 
     /**
@@ -114,7 +114,7 @@ abstract class aClass
      */
     public static function getHpBase(): int
     {
-        return static::$hpBase;
+        return self::$hpBase;
     }
 
     /**
@@ -122,7 +122,7 @@ abstract class aClass
      */
     public static function getPpBase(): int
     {
-        return static::$ppBase;
+        return self::$ppBase;
     }
 
     /**
@@ -130,7 +130,7 @@ abstract class aClass
      */
     public static function getPainPointsPerLevel(): array
     {
-        return static::$painPointsPerLevel;
+        return self::$painPointsPerLevel;
     }
 
     /**
@@ -138,7 +138,7 @@ abstract class aClass
      */
     public static function getCombatModifiersPerLevel(): array
     {
-        return static::$combatModifiersPerLevel;
+        return self::$combatModifiersPerLevel;
     }
 
     /**
@@ -146,7 +146,7 @@ abstract class aClass
      */
     public static function getBaseStatRanges(): array
     {
-        return static::$baseStatRanges;
+        return self::$baseStatRanges;
     }
 
     /**
@@ -154,7 +154,7 @@ abstract class aClass
      */
     public static function getBaseSkills(): array
     {
-        return static::$baseSkills;
+        return self::$baseSkills;
     }
 
     /**
@@ -162,7 +162,7 @@ abstract class aClass
      */
     public static function getLateSkills(): array
     {
-        return static::$lateSkills;
+        return self::$lateSkills;
     }
 
     /**
@@ -178,7 +178,7 @@ abstract class aClass
      */
     public static function getXpAfter12(): int
     {
-        return static::$xpAfter12;
+        return self::$xpAfter12;
     }
 
     #endregion

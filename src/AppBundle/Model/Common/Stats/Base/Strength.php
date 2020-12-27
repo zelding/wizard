@@ -13,7 +13,7 @@ use AppBundle\Model\Common\Stats\aStat;
 
 class Strength extends aStat
 {
-    const TYPE = "STR";
+    public  const TYPE = "STR";
 
-    const NAME = "Strength";
+    public  const NAME = "Strength";
 }

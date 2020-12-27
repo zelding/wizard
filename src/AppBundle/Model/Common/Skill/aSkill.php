@@ -13,15 +13,15 @@ namespace AppBundle\Model\Common\Skill;
 
 abstract class aSkill
 {
-    const TYPE = "-1" ?? -1;
+    public  const TYPE = "-1" ?? -1;
 
-    const SKILL_TYPE_COMBAT  = "combat";
-    const SKILL_TYPE_SCIENCE = "science";
-    const SKILL_TYPE_SOCIAL  = "social";
-    const SKILL_TYPE_CRIME   = "crime";
+    public  const SKILL_TYPE_COMBAT  = "combat";
+    public  const SKILL_TYPE_SCIENCE = "science";
+    public  const SKILL_TYPE_SOCIAL  = "social";
+    public  const SKILL_TYPE_CRIME   = "crime";
 
-    const MASTERY_BASIC  = "Basic";
-    const MASTERY_MASTER = "Master";
+    public  const MASTERY_BASIC  = "Basic";
+    public  const MASTERY_MASTER = "Master";
     /** @var string */
     public static string $category      = self::SKILL_TYPE_COMBAT;
     /** @var int cost of SP to learn the basics*/
@@ -86,7 +86,7 @@ abstract class aSkill
      */
     public static function getModifiers(): array
     {
-        return static::$modifiers;
+        return self::$modifiers;
     }
 
     /**
@@ -94,7 +94,7 @@ abstract class aSkill
      */
     public static function getStatRelations(): array
     {
-        return static::$statRelations;
+        return self::$statRelations;
     }
 
     /**
@@ -102,7 +102,7 @@ abstract class aSkill
      */
     public static function getOtherRelations(): array
     {
-        return static::$otherRelations;
+        return self::$otherRelations;
     }
 
     /**
@@ -110,7 +110,7 @@ abstract class aSkill
      */
     public function getName(): string
     {
-        return static::$name;
+        return self::$name;
     }
 
     /**

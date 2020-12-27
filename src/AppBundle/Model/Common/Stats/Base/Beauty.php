@@ -13,7 +13,7 @@ use AppBundle\Model\Common\Stats\aStat;
 
 class Beauty extends aStat
 {
-    const TYPE = "BEU";
+    public  const TYPE = "BEU";
 
-    const NAME = "Beauty";
+    public  const NAME = "Beauty";
 }

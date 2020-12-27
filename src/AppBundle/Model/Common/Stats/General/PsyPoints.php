@@ -15,9 +15,9 @@ use AppBundle\Model\Common\Stats\aStat;
 
 class PsyPoints extends aStat
 {
-    const TYPE = "PSY";
+    public  const TYPE = "PSY";
 
-    const NAME = "PsyPoints";
+    public  const NAME = "PsyPoint";
 
-    const BASE_STAT = false;
+    public  const BASE_STAT = false;
 }

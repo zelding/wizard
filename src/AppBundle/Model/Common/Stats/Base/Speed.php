@@ -13,7 +13,7 @@ use AppBundle\Model\Common\Stats\aStat;
 
 class Speed extends aStat
 {
-    const TYPE = "SPD";
+    public  const TYPE = "SPD";
 
-    const NAME = "Speed";
+    public  const NAME = "Speed";
 }

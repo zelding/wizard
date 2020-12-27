@@ -36,8 +36,8 @@ use AppBundle\Model\Common\Stats\Combat\Sequence;
 
 class Warrior extends aClass
 {
-    const TYPE     = "WAR";
-    const SUB_TYPE = "WAR";
+    public  const TYPE     = "WAR";
+    public  const SUB_TYPE = "WAR";
 
     /** @var aStat[] */
     protected static array $modifiers = [

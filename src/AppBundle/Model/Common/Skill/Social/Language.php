@@ -15,7 +15,7 @@ use AppBundle\Model\Common\Skill\aSkill;
 
 class Language extends aSkill
 {
-    const TYPE = "LNG";
+    public  const TYPE = "LNG";
 
     public static bool $allowMultiple = true;
 
@@ -33,7 +33,7 @@ class Language extends aSkill
 
     public function getName() : string
     {
-        return static::$name.": ".$this->getRelatesTo()." (".$this->getLevel().")";
+        return self::$name.": ".$this->getRelatesTo()." (".$this->getLevel().")";
     }
 
     public function setMastery(string $mastery): aSkill

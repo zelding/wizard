@@ -15,7 +15,7 @@ use AppBundle\Model\Common\Skill\aSkill;
 
 class HorsebackRiding extends aSkill
 {
-    const TYPE = "HBR";
+    public  const TYPE = "HBR";
 
     public static string $category = self::SKILL_TYPE_SOCIAL;
 

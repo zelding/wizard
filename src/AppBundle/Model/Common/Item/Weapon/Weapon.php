@@ -15,19 +15,19 @@ use AppBundle\Model\Common\Item\Item;
 
 class Weapon extends Item
 {
-    const TYPE = "WPN";
+    public  const TYPE = "WPN";
 
-    const ATTACK_THIRD = 0.33;
-    const ATTACK_HALF  = 0.5;
-    const ATTACK_ONCE  = 1.0;
-    const ATTACK_TWICE = 2.0;
+    public  const ATTACK_THIRD = 0.33;
+    public  const ATTACK_HALF  = 0.5;
+    public  const ATTACK_ONCE  = 1.0;
+    public  const ATTACK_TWICE = 2.0;
 
-    const SUB_CATEGORY_BLADE    = "blade";
-    const SUB_CATEGORY_BLUNT    = "blunt";
-    const SUB_CATEGORY_LONG     = "long";
-    const SUB_CATEGORY_RANGED   = "ranged";
-    const SUB_CATEGORY_THROWING = "throwing";
-    const SUB_CATEGORY_SHIELD   = "shield";
+    public  const SUB_CATEGORY_BLADE    = "blade";
+    public  const SUB_CATEGORY_BLUNT    = "blunt";
+    public  const SUB_CATEGORY_LONG     = "long";
+    public  const SUB_CATEGORY_RANGED   = "ranged";
+    public  const SUB_CATEGORY_THROWING = "throwing";
+    public  const SUB_CATEGORY_SHIELD   = "shield";
 
     public static string $category    = self::CATEGORY_WEAPON;
 
@@ -56,7 +56,7 @@ class Weapon extends Item
 
     public function __construct($subCategory = self::SUB_CATEGORY_MISC)
     {
-        parent::__construct(static::CATEGORY_WEAPON, $subCategory);
+        parent::__construct(self::CATEGORY_WEAPON, $subCategory);
     }
 
     /**
@@ -159,7 +159,7 @@ class Weapon extends Item
      */
     public static function getBasePierce(): int
     {
-        return static::$basePierce;
+        return self::$basePierce;
     }
 
     #endregion

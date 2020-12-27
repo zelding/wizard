@@ -13,7 +13,7 @@ use AppBundle\Model\Common\Stats\aStat;
 
 class Astral extends aStat
 {
-    const TYPE = "AST";
+    public  const TYPE = "AST";
 
-    const NAME = "Astral";
+    public  const NAME = "Astral";
 }

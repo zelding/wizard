@@ -13,10 +13,10 @@ namespace AppBundle\Model\Common\Item;
 
 class Inventory
 {
-    const INV_TYPE_BAG      = "bag";
-    const INV_TYPE_BACKPACK = "backpack";
-    const INV_TYPE_POCKET   = "pocket";
-    const INV_TYPE_BELT     = "belt";
+    public  const INV_TYPE_BAG      = "bag";
+    public  const INV_TYPE_BACKPACK = "backpack";
+    public  const INV_TYPE_POCKET   = "pocket";
+    public  const INV_TYPE_BELT     = "belt";
 
     protected string $type = self::INV_TYPE_BACKPACK;
 

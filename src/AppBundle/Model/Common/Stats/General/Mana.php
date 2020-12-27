@@ -15,9 +15,9 @@ use AppBundle\Model\Common\Stats\aStat;
 
 class Mana extends aStat
 {
-    const TYPE = "MP";
+    public  const TYPE = "MP";
 
-    const NAME = "Mana";
+    public  const NAME = "Mana";
 
-    const BASE_STAT = false;
+    public  const BASE_STAT = false;
 }

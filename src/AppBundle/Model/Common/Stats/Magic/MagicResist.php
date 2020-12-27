@@ -16,14 +16,14 @@ use AppBundle\Model\Common\Stats\aStat;
 
 class MagicResist extends aStat
 {
-    const TYPE = "MR";
+    public  const TYPE = "MR";
 
-    const NAME = "Magic Resist";
+    public  const NAME = "Magic Resist";
 
-    const BASE_STAT = false;
+    public  const BASE_STAT = false;
 
-    const TYPE_ASTRAL = "Astral";
-    const TYPE_MENTAL = "Mental";
+    public  const TYPE_ASTRAL = "Astral";
+    public  const TYPE_MENTAL = "Mental";
 
     protected $static       = 0;
 
@@ -35,7 +35,7 @@ class MagicResist extends aStat
 
     public function getName() : string
     {
-        return static::NAME;
+        return self::NAME;
     }
 
     public function getType() : string

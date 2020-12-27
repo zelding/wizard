@@ -15,7 +15,7 @@ use AppBundle\Model\Common\Skill\aSkill;
 
 abstract class Magic extends aSkill
 {
-    const TYPE = "Magic";
+    public  const TYPE = "Magic";
 
     public static string $category = self::SKILL_TYPE_SCIENCE;
 
@@ -29,11 +29,11 @@ abstract class Magic extends aSkill
 
     public function getBasePoints() : int
     {
-        return static::$basePoints;
+        return self::$basePoints;
     }
 
     public function getPointsPerLevel() : array
     {
-        return static::$pointsPerLevel;
+        return self::$pointsPerLevel;
     }
 }

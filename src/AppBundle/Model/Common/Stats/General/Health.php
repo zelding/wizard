@@ -15,9 +15,9 @@ use AppBundle\Model\Common\Stats\aStat;
 
 class Health extends aStat
 {
-    const TYPE = "HP";
+    public  const TYPE = "HP";
 
-    const NAME = "Health";
+    public  const NAME = "Health";
 
-    const BASE_STAT = false;
+    public  const BASE_STAT = false;
 }

@@ -28,7 +28,7 @@ use AppBundle\Model\Common\Stats\Combat\Aim;
 
 class Elf extends aRace
 {
-    const TYPE = "ELF";
+    public  const TYPE = "ELF";
 
     /** @var string */
     protected static string $name      = "Elf";

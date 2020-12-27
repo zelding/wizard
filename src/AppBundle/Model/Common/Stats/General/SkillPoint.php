@@ -13,9 +13,9 @@ use AppBundle\Model\Common\Stats\aStat;
 
 class SkillPoint extends aStat
 {
-    const TYPE = "SP";
+    public  const TYPE = "SP";
 
-    const NAME = "SkillPoint";
+    public  const NAME = "SkillPoint";
 
-    const BASE_STAT = false;
+    public  const BASE_STAT = false;
 }

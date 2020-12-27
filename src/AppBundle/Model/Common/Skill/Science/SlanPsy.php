@@ -15,7 +15,7 @@ use AppBundle\Model\Common\Skill\aSkill;
 
 class SlanPsy extends Psy
 {
-    const TYPE = "PSY-SL";
+    public  const TYPE = "PSY-SL";
 
     public static string $category = self::SKILL_TYPE_SCIENCE;
 

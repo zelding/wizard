@@ -13,7 +13,7 @@ namespace AppBundle\Model\Common\Race;
 
 class Human extends aRace
 {
-    const TYPE = "HUM";
+    public  const TYPE = "HUM";
 
     protected static bool $playable = true;
 

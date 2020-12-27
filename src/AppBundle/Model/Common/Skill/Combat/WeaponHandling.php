@@ -19,7 +19,7 @@ use AppBundle\Model\Common\Stats\Combat\Sequence;
 
 class WeaponHandling extends aSkill
 {
-    const TYPE = "WPH";
+    public  const TYPE = "WPH";
 
     public static string $category = self::SKILL_TYPE_COMBAT;
 

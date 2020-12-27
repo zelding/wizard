@@ -13,10 +13,10 @@ namespace AppBundle\Model\Common\Stats\Magic;
 
 class MentalMagicResist extends MagicResist
 {
-    const NAME = "Mental Magic Resist";
+    public  const NAME = "Mental Magic Resist";
 
     public function getType() : string
     {
-        return static::TYPE_MENTAL;
+        return self::TYPE_MENTAL;
     }
 }

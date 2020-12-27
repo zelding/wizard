@@ -20,7 +20,9 @@ use AppBundle\Model\Common\Skill\Science\PyarronPsy;
 use AppBundle\Model\Common\Skill\Social\Language;
 use AppBundle\Model\Common\Stats\aStat;
 use AppBundle\Model\Common\Stats\General\Health;
+use AppBundle\Model\Common\Stats\General\Mana;
 use AppBundle\Model\Common\Stats\General\PainPoint;
+use AppBundle\Model\Common\Stats\General\PsyPoints;
 use AppBundle\Model\Common\Stats\General\SkillPoint;
 
 use AppBundle\Helper\Stats as StatsHelper;
@@ -170,7 +172,9 @@ class ClassService
         return [
             Health::NAME     => $class::getHpBase(),
             PainPoint::NAME  => $class::getPpBase(),
-            SkillPoint::NAME => $class::getSkillPointBase()
+            SkillPoint::NAME => $class::getSkillPointBase(),
+            PsyPoints::NAME  => 0,
+            Mana::NAME       => 0
         ];
     }
 }

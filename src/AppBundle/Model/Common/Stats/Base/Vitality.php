@@ -13,7 +13,7 @@ use AppBundle\Model\Common\Stats\aStat;
 
 class Vitality extends aStat
 {
-    const TYPE = "VIT";
+    public  const TYPE = "VIT";
 
-    const NAME = "Vitality";
+    public  const NAME = "Vitality";
 }

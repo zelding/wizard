@@ -25,7 +25,7 @@ use AppBundle\Model\Common\Stats\Base\Willpower;
 abstract class aRace
 {
     /** @var int|string */
-    const TYPE = "-1" ?? -1;
+    public  const TYPE = "-1" ?? -1;
 
     /** @var string */
     protected static string $name      = "";
@@ -63,7 +63,7 @@ abstract class aRace
      */
     public static function getName(): string
     {
-        return static::$name;
+        return self::$name;
     }
 
     /**
@@ -71,7 +71,7 @@ abstract class aRace
      */
     public static function getBaseStatModifiers(): array
     {
-        return static::$baseStatModifiers;
+        return self::$baseStatModifiers;
     }
 
     /**
@@ -79,7 +79,7 @@ abstract class aRace
      */
     public static function getMaxBaseStats(): array
     {
-        return static::$maxBaseStats;
+        return self::$maxBaseStats;
     }
 
     /**
@@ -87,7 +87,7 @@ abstract class aRace
      */
     public static function isPlayable(): bool
     {
-        return static::$playable;
+        return self::$playable;
     }
 
     /**
@@ -95,7 +95,7 @@ abstract class aRace
      */
     public static function getBaseSkills(): array
     {
-        return static::$baseSkills;
+        return self::$baseSkills;
     }
 
     /**
@@ -103,7 +103,7 @@ abstract class aRace
      */
     public static function getCombatStatModifiers(): array
     {
-        return static::$combatStatModifiers;
+        return self::$combatStatModifiers;
     }
 
     #endregion

@@ -95,7 +95,7 @@ class CharacterService
                   ->setCurrentPP($character->getGeneralStats()->getPainPoint()->getValue());
 
         if ( $character->getPsySkill() ) {
-            $character->setCurrentPsy($character->getGeneralStats()->getPsyPoints()->getValue());
+            $character->setCurrentPsy($character->getGeneralStats()->getPsyPoint()->getValue());
         }
 
         if ( $character->getMagicSkill() ) {
@@ -158,6 +158,11 @@ class CharacterService
         $baseStats   = $character->getBaseStats();
         $combatStats = $character->getBaseCombatStats();
 
+        $combatStats->setSequence(0)
+            ->setAttack(0)
+            ->setDefense(0)
+            ->setAim(0);
+
         $combatStats->addSequence(
             $baseStats->getDexterity()->getRollModifierValue(),
             "Base Dexterity bonus"
@@ -179,6 +184,9 @@ class CharacterService
         )->addDefense(
             $baseStats->getSpeed()->getRollModifierValue(),
             "Base Speed bonus"
+        )->addAim(
+            $baseStats->getPerception()->getRollModifierValue(),
+            "Base perception bonus"
         )->addAim(
             $baseStats->getDexterity()->getRollModifierValue(),
             "Base Dexterity bonus"
@@ -219,12 +227,11 @@ class CharacterService
             "Intelligence bonus"
         );
 
-        $psySkill   = $character->getPsySkill();
-        $magicSkill = $character->getMagicSkill();
+        $psySkill = $character->getPsySkill();
 
         if ( $psySkill instanceof Psy ) {
             if ( $psySkill instanceof PyarronPsy && $psySkill->getLearnedAt() === 1 ) {
-                $generalStats->setPsyPoints(
+                $generalStats->setPsyPoint(
                     // if it was upgraded, then we need to just use the basic mastery stats
                     $psySkill->getUpgradedAt() === 0 ?
                         $psySkill->getBasePoints() :
@@ -232,9 +239,11 @@ class CharacterService
                 );
             }
             else {
-                $generalStats->setPsyPoints($psySkill->getBasePoints());
+                $generalStats->setPsyPoint($psySkill->getBasePoints());
             }
         }
+
+        $magicSkill = $character->getMagicSkill();
 
         if ( $magicSkill instanceof Magic) {
             $generalStats->setMana($magicSkill->getBasePoints());
@@ -259,10 +268,10 @@ class CharacterService
 
                 if ( $psySkill instanceof PyarronPsy ) {
                     if ( $i + 1 < $psySkill->getUpgradedAt() ) {
-                        $generalStats->addPsyPoints( $psySkill::$pointsPerLevel, "Extra psy on lvl {$i}" );
+                        $generalStats->addPsyPoint( $psySkill::$pointsPerLevel, "Extra psy on lvl {$i}" );
                     }
                     else {
-                        $generalStats->addPsyPoints($psySkill->getPointsPerLevel(), "Extra psy on lvl {$i}");
+                        $generalStats->addPsyPoint($psySkill->getPointsPerLevel(), "Extra psy on lvl {$i}");
                     }
                 }
 
@@ -285,8 +294,8 @@ class CharacterService
         $mental = new MentalMagicResist(0);
 
         if ( $character->getPsySkill() !== false) {
-            $astral->setStatic($character->getGeneralStats()->getPsyPoints()->getValue());
-            $mental->setStatic($character->getGeneralStats()->getPsyPoints()->getValue());
+            $astral->setStatic($character->getGeneralStats()->getPsyPoint()->getValue());
+            $mental->setStatic($character->getGeneralStats()->getPsyPoint()->getValue());
         }
 
         $astral->setDynamic(0)

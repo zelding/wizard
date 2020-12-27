@@ -15,7 +15,7 @@ use AppBundle\Model\Common\Skill\aSkill;
 
 class Leadership extends aSkill
 {
-    const TYPE = "LDS";
+    public  const TYPE = "LDS";
 
     public static string $category = self::SKILL_TYPE_COMBAT;
 

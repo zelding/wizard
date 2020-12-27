@@ -13,7 +13,7 @@ use AppBundle\Model\Common\Stats\aStat;
 
 class Stamina extends aStat
 {
-    const TYPE = "STM";
+    public  const TYPE = "STM";
 
-    const NAME = "Stamina";
+    public  const NAME = "Stamina";
 }

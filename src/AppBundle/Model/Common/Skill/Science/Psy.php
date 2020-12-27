@@ -15,7 +15,7 @@ use AppBundle\Model\Common\Skill\aSkill;
 
 abstract class Psy extends aSkill
 {
-    const TYPE = "PSY";
+    public  const TYPE = "PSY";
 
     public static string $category = self::SKILL_TYPE_SCIENCE;
 
@@ -31,12 +31,12 @@ abstract class Psy extends aSkill
 
     public function getBasePoints() : int
     {
-        return static::$basePoints;
+        return self::$basePoints;
     }
 
     public function getPointsPerLevel() : int
     {
-        return static::$pointsPerLevel;
+        return self::$pointsPerLevel;
     }
 
     /**

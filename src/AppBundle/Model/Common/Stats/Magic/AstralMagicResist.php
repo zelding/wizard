@@ -13,10 +13,10 @@ namespace AppBundle\Model\Common\Stats\Magic;
 
 class AstralMagicResist extends MagicResist
 {
-    const NAME = "Astral Magic Resist";
+    public  const NAME = "Astral Magic Resist";
 
     public function getType() : string
     {
-        return static::TYPE_ASTRAL;
+        return self::TYPE_ASTRAL;
     }
 }

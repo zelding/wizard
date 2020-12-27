@@ -13,7 +13,7 @@ namespace AppBundle\Model\Common\Skill\Science;
 
 class PyarronPsy extends Psy
 {
-    const TYPE = "PSY-PY";
+    public  const TYPE = "PSY-PY";
 
     public static int $baseCost    = 20;
     public static int $masteryCost = 55;

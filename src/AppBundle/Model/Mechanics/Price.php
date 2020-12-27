@@ -13,10 +13,10 @@ namespace AppBundle\Model\Mechanics;
 
 class Price
 {
-    const MITHRIL = 100000;
-    const GOLD    =   1000;
-    const SILVER  =    100;
-    const COPPER  =      1;
+    public  const MITHRIL = 100000;
+    public  const GOLD    =   1000;
+    public  const SILVER  =    100;
+    public  const COPPER  =      1;
 
     /** @var int base value */
     protected int $copper  = 0;

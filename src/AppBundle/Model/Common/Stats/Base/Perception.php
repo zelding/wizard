@@ -13,7 +13,7 @@ use AppBundle\Model\Common\Stats\aStat;
 
 class Perception extends aStat
 {
-    const TYPE = "PER";
+    public  const TYPE = "PER";
 
-    const NAME = "Perception";
+    public  const NAME = "Perception";
 }

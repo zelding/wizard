@@ -13,7 +13,7 @@ use AppBundle\Model\Common\Stats\aStat;
 
 class Dexterity extends aStat
 {
-    const TYPE = "DEX";
+    public  const TYPE = "DEX";
 
-    const NAME = "Dexterity";
+    public  const NAME = "Dexterity";
 }

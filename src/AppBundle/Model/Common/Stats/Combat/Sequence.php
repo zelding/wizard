@@ -15,9 +15,9 @@ use AppBundle\Model\Common\Stats\aStat;
 
 class Sequence extends aStat
 {
-    const TYPE = "SEQ";
+    public  const TYPE = "SEQ";
 
-    const NAME = "Sequence";
+    public  const NAME = "Sequence";
 
-    const BASE_STAT = false;
+    public  const BASE_STAT = false;
 }

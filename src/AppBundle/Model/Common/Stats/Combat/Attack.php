@@ -15,9 +15,9 @@ use AppBundle\Model\Common\Stats\aStat;
 
 class Attack extends aStat
 {
-    const TYPE = "ATK";
+    public  const TYPE = "ATK";
 
-    const NAME = "Attack";
+    public  const NAME = "Attack";
 
-    const BASE_STAT = false;
+    public  const BASE_STAT = false;
 }

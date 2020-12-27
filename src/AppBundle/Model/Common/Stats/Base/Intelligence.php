@@ -13,7 +13,7 @@ use AppBundle\Model\Common\Stats\aStat;
 
 class Intelligence extends aStat
 {
-    const TYPE = "INT";
+    public  const TYPE = "INT";
 
-    const NAME = "Intelligence";
+    public  const NAME = "Intelligence";
 }

@@ -19,12 +19,11 @@ use AppBundle\Exception\AppException;
  */
 abstract class aStat
 {
-    /** @var int|string */
-    const TYPE = -1 ?? "-1";
+    public const TYPE = "";
 
-    const NAME = "";
+    public const NAME = "";
 
-    const BASE_STAT = true;
+    public const BASE_STAT = true;
 
     /**
      * @var int
@@ -51,7 +50,7 @@ abstract class aStat
 
     public function getRollModifierValue() : int
     {
-        if ( static::BASE_STAT ) {
+        if ( self::BASE_STAT ) {
             return $this->getValue() > 10 ? $this->getValue() - 10 : 0;
         }
 
