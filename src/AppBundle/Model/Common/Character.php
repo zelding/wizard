@@ -299,7 +299,7 @@ abstract class Character
         return $this->generalStats;
     }
 
-    public function getMagicResist( $type = Stats\Magic\MagicResist::TYPE_ASTRAL ) : MagicResist
+    public function getMagicResist( string $type = Stats\Magic\MagicResist::TYPE_ASTRAL ) : MagicResist
     {
         return $this->magicResists[ $type ];
     }

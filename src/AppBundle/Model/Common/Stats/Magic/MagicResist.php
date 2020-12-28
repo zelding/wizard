@@ -14,7 +14,7 @@ namespace AppBundle\Model\Common\Stats\Magic;
 use AppBundle\Exception\AppException;
 use AppBundle\Model\Common\Stats\aStat;
 
-class MagicResist extends aStat
+abstract class MagicResist extends aStat
 {
     public const TYPE = "MR";
 
@@ -32,26 +32,19 @@ class MagicResist extends aStat
 
     protected int $perLevel = 0;
 
-    public function getType() : string
-    {
-        if ( !($this instanceof AstralMagicResist && $this instanceof MentalMagicResist) ) {
-            throw new AppException("invalid resist type");
-        }
+    public abstract function getType() : string;
 
-        return "";
-    }
-
-    public function getCurrentTotal($conscious = true) : int
+    public function getCurrentTotal(bool $conscious = true, int $level = 1) : int
     {
+        $x = 0;
         if ( $conscious ) {
-            return $this->static +
-                   $this->dynamic +
-                   $this->subConscious +
-                   $this->magic;
+            $x += $this->getStatic() +
+                  $this->getDynamic();
         }
 
-        return $this->subConscious +
-               $this->magic;
+        return $x +
+               $this->getSubConscious($level) +
+               $this->getMagic();
     }
 
     #region Setters
@@ -99,8 +92,26 @@ class MagicResist extends aStat
      */
     public function setMagic(int $magic): MagicResist
     {
-        $this->magic = $magic;
+        $this->magic = $magic + $this->getModifierValue();
 
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPerLevel(): int
+    {
+        return $this->perLevel;
+    }
+
+    /**
+     * @param int $perLevel
+     * @return MagicResist
+     */
+    public function setPerLevel(int $perLevel): MagicResist
+    {
+        $this->perLevel = $perLevel;
         return $this;
     }
 
@@ -126,38 +137,23 @@ class MagicResist extends aStat
 
     #endregion
 
-
-    /**
-     * @return int
-     */
     public function getStatic() : int
     {
         return $this->static;
     }
 
-    /**
-     * @return int
-     */
     public function getDynamic() : int
     {
         return $this->dynamic;
     }
 
-    /**
-     * @return int
-     */
-    public function getSubConscious() : int
+    public function getSubConscious(int $level = 1) : int
     {
-        return $this->subConscious;
+        return $this->subConscious + $this->getModifierValue() + $level * $this->getPerLevel();
     }
 
-    /**
-     * @return int
-     */
     public function getMagic() : int
     {
         return $this->magic;
     }
-
-
 }

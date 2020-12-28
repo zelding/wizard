@@ -26,6 +26,7 @@ use AppBundle\Model\Common\Stats\Base\Speed;
 use AppBundle\Model\Common\Stats\Base\Stamina;
 use AppBundle\Model\Common\Stats\Base\Strength;
 use AppBundle\Model\Common\Stats\Magic\AstralMagicResist;
+use AppBundle\Model\Common\Stats\Magic\MagicResist;
 use AppBundle\Model\Common\Stats\Magic\MentalMagicResist;
 use AppBundle\Model\Common\Stats\Modifier;
 use AppBundle\Model\Mechanics\Dice\D100;
@@ -296,16 +297,15 @@ class CharacterService
             $painPointRoll = $character->getClass()::getPainPointsPerLevel();
 
             for( $i = 1; $i < $character->getLevel(); $i++ ) {
-                if ($i !== 1) {
-                    //the first level pp is already given
+                if ($i > 1) {
+                    //the first level is already given
                     $generalStats->addPainPoint($painPointRoll->execute(), "Extra PainPoint on lvl {$i}");
-                }
 
-                if ($i > 1)
-                $generalStats->addSkillPoint(
-                    $character->getClass()::getSkillPointPerLevel(),
-                    "Extra on lvl {$i}"
-                );
+                    $generalStats->addSkillPoint(
+                        $character->getClass()::getSkillPointPerLevel(),
+                        "Extra SkillPoint on lvl {$i}"
+                    );
+                }
 
                 if ( $psySkill instanceof PyarronPsy ) {
                     if ( $i + 1 < $psySkill->getUpgradedAt() ) {
@@ -315,6 +315,12 @@ class CharacterService
                         $generalStats->addPsyPoint($psySkill->getPointsPerLevel(), "Extra psy on lvl {$i}");
                     }
                 }
+
+                /*if ( $character->getRace()::getGeneralStatModifiers() ) {
+                    foreach($character->getRace()::getGeneralStatModifiers() as $type => $bonus ) {
+                        $character->getMagicResist(MagicResist::TYPE_ASTRAL);
+                    }
+                }*/
 
                 $this->classService->setCombatModifiers($character, ($i+1));
             }
@@ -346,6 +352,29 @@ class CharacterService
         $mental->setDynamic(0)
                ->setSubConscious($character->getBaseStats()->getWillpower()->getRollModifierValue())
                ->setMagic(0);
+
+        $modifiers = $character->getRace()::getGeneralStatModifiers();
+
+        if ( array_key_exists(MagicResist::TYPE, $modifiers) ) {
+            $astral->setPerLevel($modifiers[ MagicResist::TYPE ]);
+            $mental->setPerLevel($modifiers[ MagicResist::TYPE ]);
+        }
+
+        if ( array_key_exists(MagicResist::TYPE_ASTRAL, $modifiers) ) {
+            $astral->addModifier(
+                (new Modifier($modifiers[ MagicResist::TYPE_ASTRAL ]))
+                    ->setDescription("Racial bonus for being {$character->getRace()::getName()}")
+                    ->setModifies(MagicResist::TYPE_ASTRAL)
+            );
+        }
+
+        if ( array_key_exists(MagicResist::TYPE_MENTAL, $modifiers) ) {
+            $mental->addModifier(
+                (new Modifier($modifiers[ MagicResist::TYPE_MENTAL ]))
+                    ->setDescription("Racial bonus for being {$character->getRace()::getName()}")
+                    ->setModifies(MagicResist::TYPE_MENTAL)
+            );
+        }
 
         $character->setMagicResists($astral);
         $character->setMagicResists($mental);

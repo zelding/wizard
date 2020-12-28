@@ -6,6 +6,8 @@
         <div class="row">
             <div class="col-md-4">
                 <div class="row">
+
+                    <!-- Base stats -->
                     <div class="col-xs-12">
                         <div class="panel panel-primary">
                             <div class="panel-heading">
@@ -41,7 +43,8 @@
                         </div>
                     </div>
 
-                    <div class="col-xs-6">
+                    <!-- magic resists -->
+                    <div class="col-xs-12">
                         <div class="panel panel-primary">
                             <div class="panel-heading">
                                 <h3 class="panel-title">Magic resists</h3>
@@ -66,8 +69,8 @@
                                             <li>{{ char.magicResist('Mental').static  }}</li>
                                             <li>{{ char.magicResist('Mental').dynamic }}</li>
                                             <li>{{ char.magicResist('Mental').magic  }}</li>
-                                            <li>{{ char.magicResist('Mental').subConscious  }}</li>
-                                            <li>{{ char.magicResist('Mental').currentTotal  }}</li>
+                                            <li>{{ char.magicResist('Mental').subConscious(0) }} + {{ char.magicResist('Mental').perLevel * char.level }}</li>
+                                            <li>{{ char.magicResist('Mental').currentTotal(true, char.level)  }}</li>
                                         </ul>
                                     </div>
 
@@ -77,8 +80,8 @@
                                             <li>{{ char.magicResist.static  }}</li>
                                             <li>{{ char.magicResist.dynamic }}</li>
                                             <li>{{ char.magicResist.magic  }}</li>
-                                            <li>{{ char.magicResist.subConscious  }}</li>
-                                            <li>{{ char.magicResist.currentTotal  }}</li>
+                                            <li>{{ char.magicResist.subConscious(0) }} + {{ char.magicResist.perLevel * char.level  }}</li>
+                                            <li>{{ char.magicResist.currentTotal(true, char.level)  }}</li>
                                         </ul>
                                     </div>
 
@@ -89,7 +92,8 @@
                         </div>
                     </div>
 
-                    <div class="col-xs-6">
+                    <!-- Combat stats -->
+                    <div class="col-xs-12">
                         <div class="panel panel-primary">
                             <div class="panel-heading">
                                 <h3 class="panel-title">Combat stats</h3>
@@ -152,6 +156,7 @@
                 </div>
             </div>
 
+            <!-- Character Info -->
             <div class="col-md-4">
                 <div class="row">
                     <div class="col-xs-12">
@@ -171,6 +176,7 @@
 
                                 <hr>
 
+                                <!-- XP -->
                                 <div class="row">
                                     <div class="col-xs-6 col-xs-offset-3">
                                         <ul class="list-unstyled">
@@ -183,6 +189,7 @@
 
                                 <hr>
 
+                                <!-- HP -->
                                 <div class="row">
                                     <div class="col-xs-4">
                                         <ul class="list-unstyled">

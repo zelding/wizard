@@ -11,20 +11,12 @@
 namespace AppBundle\Service;
 
 
+use AppBundle\Model\Common\InventorySlotProvider;
 use AppBundle\Model\Common\Item\Equippable;
 use AppBundle\Model\Common\Item\Item;
 
 class ItemService
 {
-    public const SLOT_HANDS   = "slot.hands";
-    public const SLOT_HEAD    = "slot.head";
-    public const SLOT_NECK    = "slot.neck";
-    public const SLOT_TORSO   = "slot.torso";
-    public const SLOT_FEET    = "slot.feet";
-    public const SLOT_LEGS    = "slot.legs";
-    public const SLOT_BELT    = "slot.belt";
-    public const SLOT_FINGERS = "slot.fingers";
-
     /**
      * @param Item $item
      *
@@ -40,13 +32,13 @@ class ItemService
 
             case Item::CATEGORY_WEAPON:
 
-                return self::SLOT_HANDS;
+                return InventorySlotProvider::SLOT_HANDS;
 
             case Item::CATEGORY_ARMOR:
-                return self::SLOT_TORSO;
+                return InventorySlotProvider::SLOT_TORSO;
 
             case Item::CATEGORY_HELMET:
-                return self::SLOT_HEAD;
+                return InventorySlotProvider::SLOT_HEAD;
         }
 
         return null;

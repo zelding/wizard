@@ -10,24 +10,45 @@
 
 namespace AppBundle\Model\Common\Race;
 
+use AppBundle\Service\ItemService;
+use AppBundle\Model\Common\{
+    InventorySlotProvider,
+    SkillProvider
+};
 use AppBundle\Model\Common\Skill\aSkill;
-use AppBundle\Model\Common\SkillProvider;
 use AppBundle\Model\Common\Stats\aStat;
 use AppBundle\Model\Common\Stats\Base\{
     Astral,Beauty,Dexterity,Intelligence,Perception,Speed,Stamina,Strength,Vitality,Willpower
 };
 
-abstract class aRace implements SkillProvider
+abstract class aRace implements SkillProvider, InventorySlotProvider
 {
     /** @var int|string */
     public const TYPE = "-1" ?? -1;
 
     /** @var string */
     protected static string $name      = "";
-    /** @var aStat[] */
+    /** @var int[] */
     protected static array $baseStatModifiers = [];
-    /** @var aStat[] */
+    /** @var int[] */
     protected static array $combatStatModifiers = [];
+    /** @var int[] */
+    protected static array $generalStatModifiers = [];
+
+    /**
+     * How many "places" you can put things
+     * @var array|int[]
+     */
+    protected static array $defaultInventorySlots = [
+        InventorySlotProvider::SLOT_HEAD    =>  1,
+        InventorySlotProvider::SLOT_NECK    =>  1,
+        InventorySlotProvider::SLOT_TORSO   =>  1,
+        InventorySlotProvider::SLOT_HANDS   =>  2,
+        InventorySlotProvider::SLOT_BELT    =>  1,
+        InventorySlotProvider::SLOT_FINGERS => 10,
+        InventorySlotProvider::SLOT_LEGS    =>  2,
+        InventorySlotProvider::SLOT_FEET    =>  2,
+    ];
 
     protected static array $maxBaseStats      = [
         Strength::TYPE     => 18,
@@ -51,12 +72,15 @@ abstract class aRace implements SkillProvider
      */
     protected static array $baseSkills = [];
 
+    /** @var aSkill[] later professions: level => aSkill|aSkill[] */
+    protected static array $lateSkills = [];
+
     protected static array $inventorySlotOverrides = [];
 
     /**
      * @return array
      */
-    public static function getBaseSkills(): array
+    final public static function getBaseSkills(): array
     {
         return static::$baseSkills;
     }
@@ -66,7 +90,12 @@ abstract class aRace implements SkillProvider
      */
     public static function getLateSkills(): array
     {
-        return [];
+        return static::$lateSkills;
+    }
+
+    final public static function getSlotConfiguration(): array
+    {
+        return static::$defaultInventorySlots;
     }
 
     #region Getters
@@ -104,11 +133,19 @@ abstract class aRace implements SkillProvider
     }
 
     /**
-     * @return aStat[]
+     * @return int[]
      */
     public static function getCombatStatModifiers(): array
     {
         return static::$combatStatModifiers;
+    }
+
+    /**
+     * @return int[]
+     */
+    public static function getGeneralStatModifiers(): array
+    {
+        return static::$generalStatModifiers;
     }
 
     #endregion

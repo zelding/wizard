@@ -32,7 +32,7 @@ class Elf extends aRace
 
     /** @var string */
     protected static string $name      = "Elf";
-    /** @var aStat[]  */
+    /** @var int[]  */
     protected static array $baseStatModifiers = [
         Strength::TYPE   => -2,
         Stamina::TYPE    => -1,

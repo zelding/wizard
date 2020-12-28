@@ -13,6 +13,9 @@ interface SkillProvider
      */
     public static function getBaseSkills() : array;
 
+    /**
+     * @return aSkill[]
+     */
     public static function getLateSkills() : array;
 
     public static function getName(): string;

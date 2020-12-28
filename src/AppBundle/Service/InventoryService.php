@@ -14,25 +14,26 @@ namespace AppBundle\Service;
 use AppBundle\Exception\AppException;
 use AppBundle\Helper\Stats;
 use AppBundle\Model\Common\Character;
+use AppBundle\Model\Common\InventorySlotProvider;
 use AppBundle\Model\Common\Item\Equipment;
 use AppBundle\Model\Common\Item\Equippable;
 use AppBundle\Model\Common\Item\Inventory;
 use AppBundle\Model\Common\Item\Item;
 use AppBundle\Model\Common\Race\aRace;
 
-class InventoryService
+class InventoryService implements InventorySlotProvider
 {
     protected ItemService $itemService;
 
-    public static array $defaultInventorySlots = [
-        ItemService::SLOT_HEAD    =>  1,
-        ItemService::SLOT_NECK    =>  1,
-        ItemService::SLOT_TORSO   =>  1,
-        ItemService::SLOT_HANDS   =>  2,
-        ItemService::SLOT_BELT    =>  1,
-        ItemService::SLOT_FINGERS => 10,
-        ItemService::SLOT_LEGS    =>  2,
-        ItemService::SLOT_FEET    =>  2,
+    protected static array $defaultInventorySlots = [
+        InventorySlotProvider::SLOT_HEAD    =>  1,
+        InventorySlotProvider::SLOT_NECK    =>  1,
+        InventorySlotProvider::SLOT_TORSO   =>  1,
+        InventorySlotProvider::SLOT_HANDS   =>  2,
+        InventorySlotProvider::SLOT_BELT    =>  1,
+        InventorySlotProvider::SLOT_FINGERS => 10,
+        InventorySlotProvider::SLOT_LEGS    =>  2,
+        InventorySlotProvider::SLOT_FEET    =>  2,
     ];
 
     /**
@@ -42,6 +43,11 @@ class InventoryService
     public function __construct(ItemService $itemService)
     {
         $this->itemService = $itemService;
+    }
+
+    public static function getSlotConfiguration(): array
+    {
+        return self::$defaultInventorySlots;
     }
 
     public function setUpInventories(Character  $character) : self
@@ -58,9 +64,14 @@ class InventoryService
         return $this;
     }
 
-    protected function createEquipmentForRace(aRace $aRace) : Equipment
+    protected function createEquipmentForRace(aRace $race) : Equipment
     {
-        $eq = new Equipment(100, self::$defaultInventorySlots);
+        // we use/treat this service's values as default
+        // than we use the current child's version
+        // and finally we apply the racial updates
+        $eq = new Equipment(100, array_merge(self::getSlotConfiguration(), static::getSlotConfiguration(), $race::getSlotConfiguration()));
+
+        //$race::getLateSkills();
 
         return $eq;
     }
