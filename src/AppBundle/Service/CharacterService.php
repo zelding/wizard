@@ -13,6 +13,7 @@ namespace AppBundle\Service;
 use AppBundle\Exception\AppException;
 use AppBundle\Model\Common\Character;
 use AppBundle\Model\Common\CharacterClass\aClass;
+use AppBundle\Model\Common\Item\Weapon\ShortSword;
 use AppBundle\Model\Common\Item\Weapon\Weapon;
 use AppBundle\Model\Common\Race\aRace;
 use AppBundle\Model\Common\Skill\aSkill;
@@ -20,8 +21,15 @@ use AppBundle\Model\Common\Skill\Science\Magic;
 use AppBundle\Model\Common\Skill\Science\Psy;
 use AppBundle\Model\Common\Skill\Science\PyarronPsy;
 use AppBundle\Model\Common\Stats\aStat;
+use AppBundle\Model\Common\Stats\Base\Dexterity;
+use AppBundle\Model\Common\Stats\Base\Speed;
+use AppBundle\Model\Common\Stats\Base\Stamina;
+use AppBundle\Model\Common\Stats\Base\Strength;
 use AppBundle\Model\Common\Stats\Magic\AstralMagicResist;
 use AppBundle\Model\Common\Stats\Magic\MentalMagicResist;
+use AppBundle\Model\Common\Stats\Modifier;
+use AppBundle\Model\Mechanics\Dice\D100;
+use AppBundle\Model\Mechanics\Dice\DiceRoll;
 use AppBundle\Model\PC\PlayerCharacter;
 
 use AppBundle\Helper\Stats as StatsHelper;
@@ -37,15 +45,19 @@ class CharacterService
 
     protected ClassService $classService;
 
-    protected ItemService $itemService;
+    protected InventoryService $inventoryService;
 
-    public function __construct(RaceService $raceService, ClassService $classService, ItemService $itemService)
+    protected SkillService $skillService;
+
+    public function __construct(RaceService $raceService, ClassService $classService, InventoryService $inventoryService, SkillService $skillService)
     {
         $this->raceService  = $raceService;
 
         $this->classService = $classService;
 
-        $this->itemService  = $itemService;
+        $this->inventoryService  = $inventoryService;
+
+        $this->skillService = $skillService;
     }
 
     /**
@@ -62,6 +74,7 @@ class CharacterService
     {
         $character = new PlayerCharacter($race, $class);
         $character->setBaseStats($this->generateBaseStats($race, $class));
+
         $character->setFirstName("Allento");
         $character->setLastName("Al'amall");
         $character->setOtherNames(["Ly"]);
@@ -71,8 +84,9 @@ class CharacterService
 
         //first set class bonuses
         $this->classService->applyClassBonuses($character);
-
         $this->raceService->applyRacialBonuses($character);
+
+        $this->applySpecialTraining($character, [Strength::TYPE, Stamina::TYPE, Dexterity::TYPE, Speed::TYPE]);
 
         $this->applyBonuses($character)
              ->calculateOtherStats($character)
@@ -81,10 +95,11 @@ class CharacterService
 
         $character->setCurrentSp($character->getGeneralStats()->getSkillPoint()->getValue());
 
-        $longSw = new Weapon(Weapon::SUB_CATEGORY_LONG);
-        $longSw->setName("Long sword");
+        $shortSw = new ShortSword(Weapon::SUB_CATEGORY_LONG);
+        $shortSw->setName("Short sword");
 
-        $character->getInventory()->addItem($longSw);
+        $this->inventoryService->setUpInventories($character);
+        $this->inventoryService->equipItem($character, $shortSw);
 
         return $character;
     }
@@ -120,20 +135,10 @@ class CharacterService
 
         $statValues = [];
 
-        foreach($statRanges as $statType => $range) {
-            $i = 1;
+        foreach($statRanges as $statType => $rollData) {
+            $roll = new DiceRoll(...$rollData);
 
-            $statValue = mt_rand($range[0], $range[1]);
-
-            //if you are allowed to re-roll
-            while($range[2] > $i) {
-                $next = mt_rand($range[0], $range[1]);
-                $i++;
-
-                if ( $next > $statValue ) {
-                    $statValue = $next;
-                }
-            }
+            $statValue = $roll->execute();
 
             if ( $statValue > $statMaxValues[ $statType ] ) {
                 $statValue = $statMaxValues[ $statType ];
@@ -143,6 +148,47 @@ class CharacterService
         }
 
         return $statValues;
+    }
+
+    protected function applySpecialTraining(Character $character, array $applyTo = [])
+    {
+        $statRanges = $character->getClass()::getBaseStatRanges();
+
+        foreach( $applyTo as $statType ) {
+            $method = StatsHelper::$BaseStatTypeToStatName[ $statType ];
+
+            $roll = new DiceRoll(...$statRanges[ $statType ]);
+
+            /** @var aStat $stat */
+            $stat = $character->getBaseStats()->{"get$method"}();
+
+            // if allowed for special training
+            if ( !empty($statRanges[ $statType ][3]) && $stat->getOriginalValue() === $roll->getMax()) {
+                $specialRoll = new DiceRoll([new D100()]);
+
+                $result = $specialRoll->execute();
+
+                if ($result > 90) {
+                    $modifier = new Modifier(2, "Perfect Special training");
+                }
+                elseif ($result > 80) {
+                    $modifier = new Modifier(1, "Successful Special training");
+                }
+                elseif( $result > 60 ) {
+                    $modifier = new Modifier(0, "Unsuccessful Special training");
+                }
+                elseif( $result > 30 ) {
+                    $modifier = new Modifier(-1, "Very Unsuccessful Special training");
+                }
+                else {
+                    $modifier = new Modifier(-2, "Almost deadly Special training");
+                }
+
+                $modifier->setModifies($statType);
+
+                $stat->addModifier($modifier);
+            }
+        }
     }
 
     /**
@@ -212,7 +258,7 @@ class CharacterService
             $character->getBaseStats()->getWillpower()->getRollModifierValue(),
             "Willpower bonus"
         )->addPainPoint(
-            $character->getClass()::getPainPointsPerLevel()[1], //on level 1 they get the max
+            $character->getClass()::getPainPointsPerLevel()->getMax(), //on level 1 they get the max
             "First level bonus"
         )->addSkillPoint(
             $character->getBaseStats()->getDexterity()->getRollModifierValue(),
@@ -247,12 +293,12 @@ class CharacterService
         $this->classService->setCombatModifiers($character, 1);
 
         if ( $character->getLevel() > 1 ) {
-            list($min, $max) = $character->getClass()::getPainPointsPerLevel();
+            $painPointRoll = $character->getClass()::getPainPointsPerLevel();
 
             for( $i = 1; $i < $character->getLevel(); $i++ ) {
                 if ($i !== 1) {
                     //the first level pp is already given
-                    $generalStats->addPainPoint(mt_rand($min, $max), "Extra PainPoint on lvl {$i}");
+                    $generalStats->addPainPoint($painPointRoll->execute(), "Extra PainPoint on lvl {$i}");
                 }
 
                 if ($i > 1)
@@ -333,25 +379,15 @@ class CharacterService
 
     protected function setSkills(Character $character) : self
     {
-        $racialSkills = $this->raceService->getRacialSkills($character);
-        $classSkills  = $this->classService->getClassSkills($character);
+        $racialSkills = $this->skillService->getSkillsFromProvider($character->getRace());
+        $classSkills  = $this->skillService->getSkillsFromProvider($character->getClass());
 
-        foreach($classSkills as $skill) {
-            if ( empty($skill->getOrigin()) ) {
-                $skill->updateOrigin("from class: ".$character->getClass()::getName());
-            }
-
+        foreach( $racialSkills as $skill ) {
             $this->addCharacterSkill($character, $skill);
         }
 
-        if ( !empty($racialSkills) ) {
-            foreach( $racialSkills as $skill ) {
-                if ( empty($skill->getOrigin()) ) {
-                    $skill->setOrigin("from race: ".$character->getRace()::getName());
-                }
-
-                $this->addCharacterSkill($character, $skill);
-            }
+        foreach($classSkills as $skill) {
+            $this->addCharacterSkill($character, $skill);
         }
 
         return $this;

@@ -32,7 +32,7 @@ abstract class aStat
     protected int $originalValue = 0;
     /** @var int */
     protected int $baseValue     = 0;
-    /** @var aStat[]  */
+    /** @var Modifier[]  */
     protected array $modifiers     = [];
 
     public function __construct(int $value)
@@ -48,6 +48,15 @@ abstract class aStat
         return $this->baseValue + $this->getModifierValue();
     }
 
+    public function getPermanentValue() : int
+    {
+        return $this->baseValue += $this->getPermanentModifierValue();
+    }
+
+    /**
+     * @return int
+     * @throws AppException
+     */
     public function getRollModifierValue() : int
     {
         if ( static::BASE_STAT ) {
@@ -82,6 +91,24 @@ abstract class aStat
         return $sum;
     }
 
+    public function getPermanentModifierValue() : int
+    {
+        if ( empty($this->modifiers) ) {
+            return 0;
+        }
+
+        $sum = 0;
+
+        foreach($this->modifiers as $modifier) {
+            //recursion
+            if ( $modifier->isPermanent() ) {
+                $sum += $modifier->getValue();
+            }
+        }
+
+        return $sum;
+    }
+
     #region Getters/Setters
 
     /**
@@ -111,7 +138,7 @@ abstract class aStat
     }
 
     /**
-     * @return aStat[]
+     * @return Modifier[]
      */
     public function getModifiers() : array
     {
@@ -119,7 +146,7 @@ abstract class aStat
     }
 
     /**
-     * @param aStat[] $modifiers
+     * @param Modifier[] $modifiers
      * @return aStat
      */
     public function setModifiers(array $modifiers) : aStat
@@ -132,7 +159,7 @@ abstract class aStat
 
     /**
      * @param Modifier $modifier
-     * @return $this|aStat
+     * @return $this
      * @throws AppException
      */
     public function addModifier(Modifier $modifier) : aStat

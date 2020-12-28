@@ -11,8 +11,6 @@
 namespace AppBundle\Service;
 
 use AppBundle\Model\Common\Character;
-use AppBundle\Model\Common\Skill\aSkill;
-use AppBundle\Model\Common\Skill\Social\Language;
 
 use AppBundle\Helper\Stats as StatsHelper;
 
@@ -40,42 +38,6 @@ class RaceService
     /**
      * @param Character $character
      *
-     * @return aSkill[]
-     */
-    public function getRacialSkills(Character $character) : array
-    {
-        $skills = $character->getRace()::getBaseSkills();
-
-        $racialSkills = [];
-
-        if ( !empty($skills) ) {
-            foreach ($skills as $class => $mastery) {
-                /** @var aSkill $skill */
-                $skill = new $class();
-
-                if ( $skill instanceof Language ) {
-                    foreach($mastery as $langData) {
-                        /** @var Language $lang */
-                        $lang = new $class($langData["mastery"]);
-                        $lang->setLevel($langData["level"]);
-                        $lang->setRelatesTo($langData["for"]);
-
-                        $racialSkills[] = $lang;
-                    }
-                }
-                else {
-                    $skill->setMastery($mastery);
-                    $racialSkills[] = $skill;
-                }
-            }
-        }
-
-        return $racialSkills;
-    }
-
-    /**
-     * @param Character $character
-     *
      * @return $this
      */
     protected function setRacialBonuses(Character $character) : self
@@ -86,7 +48,10 @@ class RaceService
             foreach($raceBonuses as $type => $bonus) {
 
                 $method = StatsHelper::$BaseStatTypeToStatName[ $type ];
-                $character->getBaseStats()->{"add{$method}"}($bonus);
+                $character->getBaseStats()->{"add{$method}"}(
+                    $bonus,
+                    "Racial bonus for being {$character->getRace()::getName()}"
+                );
             }
         }
 
@@ -105,7 +70,10 @@ class RaceService
         if ( !empty($raceBonuses) ) {
             foreach($raceBonuses as $type => $bonus) {
                 $method = StatsHelper::$CombatStatTypeToStatName[ $type ];
-                $character->getBaseCombatStats()->{"add{$method}"}($bonus, "Racial bonus");
+                $character->getBaseCombatStats()->{"add{$method}"}(
+                    $bonus,
+                    "Racial bonus for being {$character->getRace()::getName()}"
+                );
             }
         }
 

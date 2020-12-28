@@ -76,7 +76,7 @@ abstract class aSkill
 
     public function isMaster() : bool
     {
-        return $this->mastery === self::MASTERY_MASTER;
+        return $this->mastery === static::MASTERY_MASTER;
     }
 
     #region Getters/Setters
@@ -86,7 +86,7 @@ abstract class aSkill
      */
     public static function getModifiers(): array
     {
-        return self::$modifiers;
+        return static::$modifiers;
     }
 
     /**
@@ -94,7 +94,7 @@ abstract class aSkill
      */
     public static function getStatRelations(): array
     {
-        return self::$statRelations;
+        return static::$statRelations;
     }
 
     /**
@@ -102,7 +102,7 @@ abstract class aSkill
      */
     public static function getOtherRelations(): array
     {
-        return self::$otherRelations;
+        return static::$otherRelations;
     }
 
     /**
@@ -110,7 +110,7 @@ abstract class aSkill
      */
     public function getName(): string
     {
-        return self::$name;
+        return static::$name;
     }
 
     /**

@@ -12,19 +12,16 @@ namespace AppBundle\Model\Common\CharacterClass;
 
 
 use AppBundle\Model\Common\Skill\aSkill;
+use AppBundle\Model\Common\SkillProvider;
 use AppBundle\Model\Common\Stats\aStat;
-use AppBundle\Model\Common\Stats\Base\Astral;
-use AppBundle\Model\Common\Stats\Base\Beauty;
-use AppBundle\Model\Common\Stats\Base\Dexterity;
-use AppBundle\Model\Common\Stats\Base\Intelligence;
-use AppBundle\Model\Common\Stats\Base\Perception;
-use AppBundle\Model\Common\Stats\Base\Speed;
-use AppBundle\Model\Common\Stats\Base\Stamina;
-use AppBundle\Model\Common\Stats\Base\Strength;
-use AppBundle\Model\Common\Stats\Base\Vitality;
-use AppBundle\Model\Common\Stats\Base\Willpower;
+use AppBundle\Model\Common\Stats\Base\{
+    Astral,Beauty,Dexterity,Intelligence,Perception,Speed,Stamina,Strength,Vitality,Willpower
+};
+use AppBundle\Model\Mechanics\Dice\D4;
+use AppBundle\Model\Mechanics\Dice\D6;
+use AppBundle\Model\Mechanics\Dice\DiceRoll;
 
-abstract class aClass
+abstract class aClass implements SkillProvider
 {
     /** @var int|string */
     public  const TYPE     = "-1" ?? -1;
@@ -38,21 +35,21 @@ abstract class aClass
     protected static array $modifiers = [];
 
     /**
-     * minimum, maximum, number of rolls (highest counts), allow special training
+     * aDice[], modifier, number of rolls (highest counts), allow special training
      *
      * @var array[]
      */
     protected static array $baseStatRanges = [
-        Strength::TYPE     => [0, 0, 1, false],
-        Stamina::TYPE      => [0, 0, 1, false],
-        Dexterity::TYPE    => [0, 0, 1, false],
-        Speed::TYPE        => [0, 0, 1, false],
-        Vitality::TYPE     => [0, 0, 1, false],
-        Beauty::TYPE       => [0, 0, 1, false],
-        Intelligence::TYPE => [0, 0, 1, false],
-        Willpower::TYPE    => [0, 0, 1, false],
-        Astral::TYPE       => [0, 0, 1, false],
-        Perception::TYPE   => [0, 0, 1, false]
+        Strength::TYPE     => [ [D6::class], 0, 1, true ],
+        Stamina::TYPE      => [ [D6::class], 0, 1, true ],
+        Dexterity::TYPE    => [ [D6::class], 0, 1, true ],
+        Speed::TYPE        => [ [D6::class], 0, 1, true ],
+        Vitality::TYPE     => [ [D6::class], 0, 1, true ],
+        Beauty::TYPE       => [ [D6::class], 0, 1, true ],
+        Intelligence::TYPE => [ [D6::class], 0, 1, true ],
+        Willpower::TYPE    => [ [D6::class], 0, 1, true ],
+        Astral::TYPE       => [ [D6::class], 0, 1, true ],
+        Perception::TYPE   => [ [D6::class], 0, 1, true ]
     ];
     /** @var int */
     protected static int $skillPointBase     = 0;
@@ -63,7 +60,7 @@ abstract class aClass
     /** @var int */
     protected static int $ppBase             = 1;
     /** @var int[] min, max */
-    protected static array $painPointsPerLevel = [0, 0];
+    protected static array $painPointsPerLevel = [[D4::class], 0, 1];
     /** @var array[] point, mandatory points */
     protected static array $combatModifiersPerLevel = [0, []];
     /** @var aSkill[] starting professions */
@@ -76,6 +73,22 @@ abstract class aClass
     protected static int $xpAfter12 = 30000;
 
     #region Getters
+
+    /**
+     * @return array
+     */
+    public static function getBaseSkills(): array
+    {
+        return static::$baseSkills;
+    }
+
+    /**
+     * @return aSkill[]
+     */
+    public static function getLateSkills(): array
+    {
+        return static::$lateSkills;
+    }
 
     /**
      * @return aStat[]
@@ -126,11 +139,11 @@ abstract class aClass
     }
 
     /**
-     * @return array
+     * @return DiceRoll
      */
-    public static function getPainPointsPerLevel(): array
+    public static function getPainPointsPerLevel(): DiceRoll
     {
-        return static::$painPointsPerLevel;
+        return new DiceRoll(...static::$painPointsPerLevel);
     }
 
     /**
@@ -147,22 +160,6 @@ abstract class aClass
     public static function getBaseStatRanges(): array
     {
         return static::$baseStatRanges;
-    }
-
-    /**
-     * @return array
-     */
-    public static function getBaseSkills(): array
-    {
-        return static::$baseSkills;
-    }
-
-    /**
-     * @return aSkill[]
-     */
-    public static function getLateSkills(): array
-    {
-        return static::$lateSkills;
     }
 
     /**

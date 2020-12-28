@@ -190,13 +190,14 @@ class BaseStats
      * @param string $name
      * @param int    $value
      * @param string $description
+     * @param bool   $permanent
      *
      * @return $this
      * @throws AppException
      */
-    protected function addModifier(string $name, int $value, $description = "") : self
+    protected function addModifier(string $name, int $value, $description = "", bool $permanent = true) : self
     {
-        $modifierClass = $this->resolveModifierClass($name, $value, $description);
+        $modifierClass = $this->resolveModifierClass($name, $value, $description, $permanent);
 
         if ( !array_key_exists($modifierClass->getModifies(), $this->stats) ) {
             throw new AppException("{$name}/".$modifierClass::TYPE." is not yet defined");
@@ -231,15 +232,16 @@ class BaseStats
      * @param string $name
      * @param int    $value
      * @param string $description
+     * @param bool   $permanent
      *
      * @return Modifier
      */
-    protected function resolveModifierClass(string $name, int $value = 0, $description = "") : Modifier
+    protected function resolveModifierClass(string $name, int $value = 0, $description = "", bool $permanent = true) : Modifier
     {
         /** @var aStat $statClassName */
         $statClassName = static::$baseStats[ $name ];
 
-        $modifier = new Modifier($value, $description);
+        $modifier = new Modifier($value, $description, $permanent);
         $modifier->setModifies($statClassName::TYPE);
 
         return $modifier;

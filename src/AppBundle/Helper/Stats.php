@@ -27,14 +27,14 @@ use AppBundle\Model\Common\Stats\Combat\Sequence;
 
 final class Stats
 {
-    public static $CombatStatTypeToStatName = [
+    public static array $CombatStatTypeToStatName = [
         Sequence::TYPE => Sequence::NAME,
         Attack::TYPE   => Attack::NAME,
         Defense::TYPE  => Defense::NAME,
         Aim::TYPE      => Aim::NAME
     ];
 
-    public static $BaseStatTypeToStatName = [
+    public static array $BaseStatTypeToStatName = [
         Strength::TYPE     => Strength::NAME,
         Stamina::TYPE      => Stamina::NAME,
         Dexterity::TYPE    => Dexterity::NAME,

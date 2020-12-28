@@ -97,6 +97,17 @@ class Price
         return $this;
     }
 
+    public function simplify() : self
+    {
+        $val = $this->getFullValue();
+
+        $this->setLowestCountPrice($val);
+
+        return $this;
+    }
+
+    #region GETTERS / SETTERS
+
     /**
      * @return int
      */
@@ -168,4 +179,6 @@ class Price
 
         return $this;
     }
+
+    #endregion
 }

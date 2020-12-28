@@ -16,27 +16,21 @@ use AppBundle\Model\Common\Stats\aStat;
 
 class MagicResist extends aStat
 {
-    public  const TYPE = "MR";
+    public const TYPE = "MR";
 
-    public  const NAME = "Magic Resist";
+    public const NAME = "Magic Resist";
 
-    public  const BASE_STAT = false;
+    public const BASE_STAT = false;
 
-    public  const TYPE_ASTRAL = "Astral";
-    public  const TYPE_MENTAL = "Mental";
+    public const TYPE_ASTRAL = "Astral";
+    public const TYPE_MENTAL = "Mental";
 
-    protected $static       = 0;
+    protected int $static       = 0;
+    protected int $dynamic      = 0;
+    protected int $subConscious = 0;
+    protected int $magic        = 0;
 
-    protected $dynamic      = 0;
-
-    protected $subConscious = 0;
-
-    protected $magic        = 0;
-
-    public function getName() : string
-    {
-        return self::NAME;
-    }
+    protected int $perLevel = 0;
 
     public function getType() : string
     {
@@ -126,14 +120,6 @@ class MagicResist extends aStat
      * @throws AppException
      */
     public function getBaseValue(): int
-    {
-        throw new AppException("Not allowed in resists");
-    }
-
-    /**
-     * @throws AppException
-     */
-    public function getModifiers(): array
     {
         throw new AppException("Not allowed in resists");
     }

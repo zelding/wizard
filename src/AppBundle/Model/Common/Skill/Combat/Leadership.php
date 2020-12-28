@@ -22,5 +22,5 @@ class Leadership extends aSkill
     public static int $baseCost    =  5;
     public static int $masteryCost = 20;
 
-    protected static string $name = "Horseback riding";
+    protected static string $name = "Leadership";
 }

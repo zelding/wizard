@@ -11,6 +11,7 @@
 namespace AppBundle\Model\Common;
 
 use AppBundle\Model\Common\CharacterClass\aClass;
+use AppBundle\Model\Common\Item\Equipment;
 use AppBundle\Model\Common\Item\Inventory;
 use AppBundle\Model\Common\Race\aRace;
 use AppBundle\Model\Common\Skill\aSkill;
@@ -44,6 +45,7 @@ abstract class Character
     protected BaseCombatStats $baseCombatStats;
     protected GeneralStats $generalStats;
     protected Inventory $inventory;
+    protected Equipment $equipment;
 
     protected int $currentHP  = 0;
     protected int $currentPP  = 0;
@@ -56,9 +58,6 @@ abstract class Character
     /** @var Stats\Magic\MagicResist[] */
     protected array $magicResists = [];
 
-    /** @var  */
-    protected $equipment;
-
     /** @var aSkill[][] */
     protected array $skills = [];
 
@@ -67,7 +66,8 @@ abstract class Character
         $this->race  = $race;
         $this->class = $class;
 
-        $this->inventory = new Inventory();
+       //$this->inventory = new Inventory();
+       //$this->equipment = new Equipment();
     }
 
     /**
@@ -495,9 +495,15 @@ abstract class Character
         return $this->availableCombatModifiers;
     }
 
-    public function getEquipment()
+    public function getEquipment(): Equipment
     {
         return $this->equipment;
+    }
+
+    public function setEquipment(Equipment $equipment): Character
+    {
+        $this->equipment = $equipment;
+        return $this;
     }
 
     #endregion

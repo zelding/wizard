@@ -10,22 +10,17 @@
 
 namespace AppBundle\Model\Common\Race;
 
+use AppBundle\Model\Common\Skill\aSkill;
+use AppBundle\Model\Common\SkillProvider;
 use AppBundle\Model\Common\Stats\aStat;
-use AppBundle\Model\Common\Stats\Base\Astral;
-use AppBundle\Model\Common\Stats\Base\Beauty;
-use AppBundle\Model\Common\Stats\Base\Dexterity;
-use AppBundle\Model\Common\Stats\Base\Intelligence;
-use AppBundle\Model\Common\Stats\Base\Perception;
-use AppBundle\Model\Common\Stats\Base\Speed;
-use AppBundle\Model\Common\Stats\Base\Stamina;
-use AppBundle\Model\Common\Stats\Base\Strength;
-use AppBundle\Model\Common\Stats\Base\Vitality;
-use AppBundle\Model\Common\Stats\Base\Willpower;
+use AppBundle\Model\Common\Stats\Base\{
+    Astral,Beauty,Dexterity,Intelligence,Perception,Speed,Stamina,Strength,Vitality,Willpower
+};
 
-abstract class aRace
+abstract class aRace implements SkillProvider
 {
     /** @var int|string */
-    public  const TYPE = "-1" ?? -1;
+    public const TYPE = "-1" ?? -1;
 
     /** @var string */
     protected static string $name      = "";
@@ -56,6 +51,24 @@ abstract class aRace
      */
     protected static array $baseSkills = [];
 
+    protected static array $inventorySlotOverrides = [];
+
+    /**
+     * @return array
+     */
+    public static function getBaseSkills(): array
+    {
+        return static::$baseSkills;
+    }
+
+    /**
+     * @return aSkill[]
+     */
+    public static function getLateSkills(): array
+    {
+        return [];
+    }
+
     #region Getters
 
     /**
@@ -63,7 +76,7 @@ abstract class aRace
      */
     public static function getName(): string
     {
-        return self::$name;
+        return static::$name;
     }
 
     /**
@@ -71,7 +84,7 @@ abstract class aRace
      */
     public static function getBaseStatModifiers(): array
     {
-        return self::$baseStatModifiers;
+        return static::$baseStatModifiers;
     }
 
     /**
@@ -79,7 +92,7 @@ abstract class aRace
      */
     public static function getMaxBaseStats(): array
     {
-        return self::$maxBaseStats;
+        return static::$maxBaseStats;
     }
 
     /**
@@ -87,15 +100,7 @@ abstract class aRace
      */
     public static function isPlayable(): bool
     {
-        return self::$playable;
-    }
-
-    /**
-     * @return array
-     */
-    public static function getBaseSkills(): array
-    {
-        return self::$baseSkills;
+        return static::$playable;
     }
 
     /**
@@ -103,7 +108,7 @@ abstract class aRace
      */
     public static function getCombatStatModifiers(): array
     {
-        return self::$combatStatModifiers;
+        return static::$combatStatModifiers;
     }
 
     #endregion

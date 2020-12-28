@@ -11,9 +11,12 @@
 namespace AppBundle\Model\Common\Item\Weapon;
 
 
+use AppBundle\Model\Common\Item\Equippable;
 use AppBundle\Model\Common\Item\Item;
+use AppBundle\Model\Mechanics\Dice\D4;
+use AppBundle\Model\Mechanics\Dice\DiceRoll;
 
-class Weapon extends Item
+class Weapon extends Item implements Equippable
 {
     public  const TYPE = "WPN";
 
@@ -31,7 +34,7 @@ class Weapon extends Item
 
     public static string $category    = self::CATEGORY_WEAPON;
 
-    public static string $subCategory = self::SUB_CATEGORY_MISC;
+    public static string $subCategory = self::SUB_CATEGORY_BLADE;
 
     /** @var float attacks per round */
     protected static float $baseAttacksPerRound = self::ATTACK_ONCE;
@@ -46,17 +49,32 @@ class Weapon extends Item
     protected static int $baseDefense         = 0;
 
     /** @var int[] base damage range */
-    protected static array $baseDamage          = [1, 1];
+    protected static array $baseDamage          = [[D4::class], 0, 1];
 
     /** @var int Amount of armor ignored */
     protected static int $basePierce          = 0;
 
+    /** @var int Default price in copper */
+    protected static int $basePrice           = 10;
+
+    protected static array $requires          = [];
+
     /** @var string name */
     protected string $name;
 
-    public function __construct($subCategory = self::SUB_CATEGORY_MISC)
+    public function __construct($subCategory = self::SUB_CATEGORY_BLADE)
     {
         parent::__construct(self::CATEGORY_WEAPON, $subCategory);
+    }
+
+    public function requires(): array
+    {
+        return static::$requires;
+    }
+
+    public function slots(): int
+    {
+        return $this->isTwoHanded() ? 2 : 1;
     }
 
     /**
@@ -147,11 +165,11 @@ class Weapon extends Item
     }
 
     /**
-     * @return int[]
+     * @return DiceRoll
      */
-    public static function getBaseDamage(): array
+    public static function getBaseDamage(): DiceRoll
     {
-        return self::$baseDamage;
+        return new DiceRoll(...static::$baseDamage);
     }
 
     /**

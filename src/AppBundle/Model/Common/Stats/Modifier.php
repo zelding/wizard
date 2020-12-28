@@ -14,15 +14,18 @@ namespace AppBundle\Model\Common\Stats;
 class Modifier extends aStat
 {
     /** @var string */
-    protected string $modifies = self::TYPE;
+    protected string $modifies = Modifier::TYPE;
     /** @var string */
     protected string $description = "";
 
-    public function __construct($value, $description = "")
+    protected bool $permanent = true;
+
+    public function __construct($value, $description = "", bool $permanent = true)
     {
         parent::__construct($value);
 
         $this->setDescription($description);
+        $this->permanent = $permanent;
     }
 
     /**
@@ -63,5 +66,13 @@ class Modifier extends aStat
         $this->modifies = $modifies;
 
         return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPermanent(): bool
+    {
+        return $this->permanent;
     }
 }

@@ -13,17 +13,26 @@ namespace AppBundle\Model\Common\Item;
 
 class Inventory
 {
-    public  const INV_TYPE_BAG      = "bag";
-    public  const INV_TYPE_BACKPACK = "backpack";
-    public  const INV_TYPE_POCKET   = "pocket";
-    public  const INV_TYPE_BELT     = "belt";
+    public const INV_TYPE_BAG      = "bag";
+    public const INV_TYPE_BACKPACK = "backpack";
+    public const INV_TYPE_POCKET   = "pocket";
+    public const INV_TYPE_BELT     = "belt";
 
     protected string $type = self::INV_TYPE_BACKPACK;
 
     /** @var Item[][] */
     protected array $items = [];
 
-    protected static int $maxWeight = 0;
+    protected int $maxWeight = 0;
+
+    /**
+     * Inventory constructor.
+     * @param int $maxWeight
+     */
+    public function __construct(int $maxWeight)
+    {
+        $this->maxWeight = $maxWeight;
+    }
 
     /**
      * @return string
@@ -44,9 +53,9 @@ class Inventory
     /**
      * @return int
      */
-    public static function getMaxWeight(): int
+    public function getMaxWeight(): int
     {
-        return self::$maxWeight;
+        return $this->maxWeight;
     }
 
     public function getTotalWeight() : float

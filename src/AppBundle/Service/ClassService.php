@@ -13,11 +13,6 @@ namespace AppBundle\Service;
 
 use AppBundle\Helper\Stats;
 use AppBundle\Model\Common\Character;
-
-use AppBundle\Model\Common\Skill\aSkill;
-use AppBundle\Model\Common\Skill\Science\Psy;
-use AppBundle\Model\Common\Skill\Science\PyarronPsy;
-use AppBundle\Model\Common\Skill\Social\Language;
 use AppBundle\Model\Common\Stats\aStat;
 use AppBundle\Model\Common\Stats\General\Health;
 use AppBundle\Model\Common\Stats\General\Mana;
@@ -35,80 +30,6 @@ class ClassService
                   ->setGeneralStats($this->generateGeneralStats($character));
 
         return $this;
-    }
-
-    /**
-     * @param Character $character
-     *
-     * @return aSkill[]
-     */
-    public function getClassSkills(Character $character) : array
-    {
-        $skills = $character->getClass()::getBaseSkills();
-
-        $classSkills = [];
-
-        foreach( $skills as $class => $skillData ) {
-            /** @var aSkill $skill */
-            $skill = new $class();
-
-            if ( $skill instanceof Language ) {
-                foreach($skillData as $langData) {
-                    /** @var Language $lang */
-                    $lang = new $class($langData["mastery"]);
-                    $lang->setLevel($langData["level"]);
-                    $lang->setRelatesTo($langData["for"]);
-
-                    $classSkills[] = $lang;
-                }
-            }
-            //probably weapon handling
-            elseif ( is_array($skillData) && is_array($skillData["relations"]) ) {
-                // If multiple of the same type are present like weapon handling or language
-                for($i = 0; $i < count($skillData["relations"]); $i++) {
-                    $skill = new $class($skillData["mastery"]);
-                    $skill->setRelatesTo($skillData["relations"][ $i ]);
-                    $classSkills[] = $skill;
-                }
-            }
-            else {
-                if ( $skill instanceof Psy) {
-                    /** @var Psy $skill */
-                    $skill->setLearnedAt(1);
-                }
-
-                /** @var string $skillData */
-                $skill->setMastery($skillData);
-                $classSkills[] = $skill;
-            }
-        }
-
-        if ( $character->getLevel() > 1 ) {
-            $laterSkills = $character->getClass()::getLateSkills();
-            foreach( $laterSkills as $lvl => $skills ) {
-                if ( $lvl <= $character->getLevel() ) {
-                    foreach( $skills as $class => $mastery ) {
-                        $skill = new $class($mastery);
-
-                        //in case of Pyarron Psy we need to set the level when it was upgraded
-                        if ( $skill instanceof PyarronPsy ) {
-                            if ($skill->getMastery() === aSkill::MASTERY_BASIC) {
-                                $skill->setLearnedAt($lvl);
-                            }
-                            else {
-                                $skill->setUpgradedAt($lvl);
-                            }
-                        }
-
-                        $classSkills[] = $skill->setOrigin(
-                            "from class: ".$character->getClass()::getName().", unlocked at lvl {$lvl}"
-                        );
-                    }
-                }
-            }
-        }
-
-        return $classSkills;
     }
 
     public function setCombatModifiers(Character $character, int $lvl = 1) : self

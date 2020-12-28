@@ -33,6 +33,8 @@ use AppBundle\Model\Common\Stats\Combat\Aim;
 use AppBundle\Model\Common\Stats\Combat\Attack;
 use AppBundle\Model\Common\Stats\Combat\Defense;
 use AppBundle\Model\Common\Stats\Combat\Sequence;
+use AppBundle\Model\Mechanics\Dice\D10;
+use AppBundle\Model\Mechanics\Dice\D6;
 
 class Warrior extends aClass
 {
@@ -59,7 +61,7 @@ class Warrior extends aClass
 
     protected static int $ppBase             = 6;
 
-    protected static array $painPointsPerLevel = [5, 10];
+    protected static array $painPointsPerLevel = [[D6::class], 4];
 
     protected static array $combatModifiersPerLevel = [11, [
         Attack::TYPE  => 3,
@@ -67,16 +69,16 @@ class Warrior extends aClass
     ]];
 
     protected static array $baseStatRanges  = [
-        Strength::TYPE     => [13, 18, 1, true],
-        Stamina::TYPE      => [ 9, 18, 1, true],
-        Dexterity::TYPE    => [ 8, 18, 1, true],
-        Speed::TYPE        => [ 8, 18, 1, true],
-        Vitality::TYPE     => [11, 20, 1, false],
-        Beauty::TYPE       => [ 3, 18, 2, false],
-        Intelligence::TYPE => [ 3, 18, 2, false],
-        Willpower::TYPE    => [ 8, 18, 1, false],
-        Astral::TYPE       => [ 3, 18, 2, false],
-        Perception::TYPE   => [ 8, 18, 1, false]
+        Strength::TYPE     => [ [D6::class], 12, 1, true ],
+        Stamina::TYPE      => [ [D10::class], 8, 1, true ],
+        Dexterity::TYPE    => [ [D10::class], 8, 1, true ],
+        Speed::TYPE        => [ [D10::class], 8, 1, true ],
+        Vitality::TYPE     => [ [D10::class], 10, 1, false ],
+        Beauty::TYPE       => [ [D6::class, D6::class, D6::class], 0, 2, false ],
+        Intelligence::TYPE => [ [D6::class, D6::class, D6::class], 0, 2, false ],
+        Willpower::TYPE    => [ [D10::class], 8, 1, false ],
+        Astral::TYPE       => [ [D6::class, D6::class, D6::class], 0, 2, false ],
+        Perception::TYPE   => [ [D10::class], 8, 1, false ]
     ];
 
     protected static array $baseSkills      = [

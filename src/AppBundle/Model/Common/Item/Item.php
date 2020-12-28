@@ -16,17 +16,18 @@ use AppBundle\Model\Mechanics\Price;
 
 abstract class Item
 {
-    public  const TYPE = "ITM";
+    public const TYPE = "ITM";
 
-    public  const CATEGORY_MISC     = "misc";
-    public  const CATEGORY_ANIMALS  = "animals";
-    public  const CATEGORY_SERVICE  = "service";
-    public  const CATEGORY_CLOTHING = "clothing";
-    public  const CATEGORY_FOOD     = "food";
-    public  const CATEGORY_WEAPON   = "weapon";
-    public  const CATEGORY_ARMOR    = "armor";
+    public const CATEGORY_MISC     = "misc";
+    public const CATEGORY_ANIMALS  = "animals";
+    public const CATEGORY_SERVICE  = "service";
+    public const CATEGORY_CLOTHING = "clothing";
+    public const CATEGORY_FOOD     = "food";
+    public const CATEGORY_WEAPON   = "weapon";
+    public const CATEGORY_ARMOR    = "armor";
+    public const CATEGORY_HELMET   = "helmet";
 
-    public  const SUB_CATEGORY_MISC = "misc";
+    public const SUB_CATEGORY_MISC = "misc";
 
     public static string $category    = self::CATEGORY_MISC;
 
@@ -48,8 +49,11 @@ abstract class Item
 
     public function __construct($category = self::CATEGORY_MISC, $subCategory = self::SUB_CATEGORY_MISC)
     {
-        self::$category    = $category;
-        self::$subCategory = $subCategory;
+        static::$category    = $category;
+        static::$subCategory = $subCategory;
+
+        $this->price = new Price();
+        $this->price->setLowestCountPrice(static::$basePrice);
     }
 
     /**
