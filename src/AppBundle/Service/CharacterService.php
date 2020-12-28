@@ -158,11 +158,6 @@ class CharacterService
         $baseStats   = $character->getBaseStats();
         $combatStats = $character->getBaseCombatStats();
 
-        $combatStats->setSequence(0)
-            ->setAttack(0)
-            ->setDefense(0)
-            ->setAim(0);
-
         $combatStats->addSequence(
             $baseStats->getDexterity()->getRollModifierValue(),
             "Base Dexterity bonus"

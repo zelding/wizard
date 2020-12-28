@@ -82,7 +82,7 @@ abstract class aClass
      */
     public static function getModifiers(): array
     {
-        return self::$modifiers;
+        return static::$modifiers;
     }
 
     /**
@@ -90,7 +90,7 @@ abstract class aClass
      */
     public static function getName(): string
     {
-        return self::$name;
+        return static::$name;
     }
 
     /**
@@ -98,7 +98,7 @@ abstract class aClass
      */
     public static function getSkillPointBase(): int
     {
-        return self::$skillPointBase;
+        return static::$skillPointBase;
     }
 
     /**
@@ -106,7 +106,7 @@ abstract class aClass
      */
     public static function getSkillPointPerLevel(): int
     {
-        return self::$skillPointPerLevel;
+        return static::$skillPointPerLevel;
     }
 
     /**
@@ -114,7 +114,7 @@ abstract class aClass
      */
     public static function getHpBase(): int
     {
-        return self::$hpBase;
+        return static::$hpBase;
     }
 
     /**
@@ -122,7 +122,7 @@ abstract class aClass
      */
     public static function getPpBase(): int
     {
-        return self::$ppBase;
+        return static::$ppBase;
     }
 
     /**
@@ -130,7 +130,7 @@ abstract class aClass
      */
     public static function getPainPointsPerLevel(): array
     {
-        return self::$painPointsPerLevel;
+        return static::$painPointsPerLevel;
     }
 
     /**
@@ -138,7 +138,7 @@ abstract class aClass
      */
     public static function getCombatModifiersPerLevel(): array
     {
-        return self::$combatModifiersPerLevel;
+        return static::$combatModifiersPerLevel;
     }
 
     /**
@@ -146,7 +146,7 @@ abstract class aClass
      */
     public static function getBaseStatRanges(): array
     {
-        return self::$baseStatRanges;
+        return static::$baseStatRanges;
     }
 
     /**
@@ -154,7 +154,7 @@ abstract class aClass
      */
     public static function getBaseSkills(): array
     {
-        return self::$baseSkills;
+        return static::$baseSkills;
     }
 
     /**
@@ -162,7 +162,7 @@ abstract class aClass
      */
     public static function getLateSkills(): array
     {
-        return self::$lateSkills;
+        return static::$lateSkills;
     }
 
     /**
@@ -178,7 +178,7 @@ abstract class aClass
      */
     public static function getXpAfter12(): int
     {
-        return self::$xpAfter12;
+        return static::$xpAfter12;
     }
 
     #endregion

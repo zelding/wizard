@@ -50,7 +50,7 @@ abstract class aStat
 
     public function getRollModifierValue() : int
     {
-        if ( self::BASE_STAT ) {
+        if ( static::BASE_STAT ) {
             return $this->getValue() > 10 ? $this->getValue() - 10 : 0;
         }
 
