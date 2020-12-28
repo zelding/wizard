@@ -288,7 +288,7 @@ class CharacterService
         $astral = new AstralMagicResist(0);
         $mental = new MentalMagicResist(0);
 
-        if ( $character->getPsySkill() !== false) {
+        if ( $character->getPsySkill() instanceof Psy ) {
             $astral->setStatic($character->getGeneralStats()->getPsyPoint()->getValue());
             $mental->setStatic($character->getGeneralStats()->getPsyPoint()->getValue());
         }
