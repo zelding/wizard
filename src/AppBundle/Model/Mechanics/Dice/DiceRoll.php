@@ -26,6 +26,41 @@ class DiceRoll
         $this->n        = $n;
     }
 
+    public function __toString(): string
+    {
+        $c = [];
+
+        // Group them by type
+        foreach ($this->dice as $d) {
+            //can be instance or FCN
+            if ( $d instanceof aDice) {
+                // Use the overridden method on the dye
+                $s = (string)$d;
+            }
+            else {
+                $s = $d;
+            }
+
+            $p = explode('\\', $s);
+
+            $name = array_pop($p);
+
+            if ( !array_key_exists($name, $c)) {
+                $c[ $name ] = 0;
+            }
+
+            $c[ $name ]++;
+        }
+
+
+        $dice = [];
+        foreach($c as $n => $x) {
+            $dice[] = $x > 1 ? "$x$n" : "$n";
+        }
+
+        return implode(" + ", $dice)." + {$this->modifier}";
+    }
+
     public function getMin() : int
     {
         $sum = 0;

@@ -46,6 +46,11 @@ class Price
         $this->allowGold    = $allowGold;
     }
 
+    public function __toString() : string
+    {
+        return "{$this->gold} g {$this->silver} s {$this->copper} c";
+    }
+
     public function getFullValue() : int
     {
         return $this->mithril * self::MITHRIL +

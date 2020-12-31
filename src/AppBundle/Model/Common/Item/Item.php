@@ -61,7 +61,7 @@ abstract class Item
      */
     public static function getWeight(): float
     {
-        return self::$weight;
+        return static::$weight;
     }
 
     /**
@@ -69,7 +69,7 @@ abstract class Item
      */
     public static function getQuantity(): int
     {
-        return self::$quantity;
+        return static::$quantity;
     }
 
     /**
@@ -77,7 +77,7 @@ abstract class Item
      */
     public static function getModifiers(): array
     {
-        return self::$modifiers;
+        return static::$modifiers;
     }
 
     /**
@@ -85,7 +85,7 @@ abstract class Item
      */
     public static function getBasePrice(): Price
     {
-        return (new Price())->setLowestCountPrice(self::$basePrice);
+        return (new Price())->setLowestCountPrice(static::$basePrice);
     }
 
     /**
@@ -105,7 +105,7 @@ abstract class Item
      */
     public static function getCategory(): string
     {
-        return self::$category;
+        return static::$category;
     }
 
     /**
@@ -113,7 +113,7 @@ abstract class Item
      */
     public static function getSubCategory(): string
     {
-        return self::$subCategory;
+        return static::$subCategory;
     }
 
     /**

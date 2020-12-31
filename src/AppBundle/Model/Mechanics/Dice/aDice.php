@@ -10,6 +10,13 @@ abstract class aDice
 
     protected static int $max;
 
+    public function __toString() : string
+    {
+        $p = explode('\\', __CLASS__);
+
+        return array_pop($p);
+    }
+
     final public static function getMin() : int
     {
         return static::$min;

@@ -17,13 +17,13 @@ class ShortSword extends Weapon
     protected static float $baseAttacksPerRound = self::ATTACK_ONCE;
 
     /** @var int base sequence bonus */
-    protected static int $baseSequence        = 0;
+    protected static int $baseSequence        = 5;
 
     /** @var int base attack bonus */
-    protected static int $baseAttack          = 0;
+    protected static int $baseAttack          = 10;
 
     /** @var int base defense bonus */
-    protected static int $baseDefense         = 0;
+    protected static int $baseDefense         = 10;
 
     /** @var int[] base damage range */
     protected static array $baseDamage          = [[D6::class], 1];
@@ -33,6 +33,8 @@ class ShortSword extends Weapon
 
     /** @var int Default price in copper */
     protected static int $basePrice           = 1320;
+
+    protected static float $weight    = 3.0;
 
     /** @var string name */
     protected string $name = "Short sword";

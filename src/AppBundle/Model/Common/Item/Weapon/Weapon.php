@@ -18,19 +18,19 @@ use AppBundle\Model\Mechanics\Dice\DiceRoll;
 
 class Weapon extends Item implements Equippable
 {
-    public  const TYPE = "WPN";
+    public const TYPE = "WPN";
 
-    public  const ATTACK_THIRD = 0.33;
-    public  const ATTACK_HALF  = 0.5;
-    public  const ATTACK_ONCE  = 1.0;
-    public  const ATTACK_TWICE = 2.0;
+    public const ATTACK_THIRD = 0.33;
+    public const ATTACK_HALF  = 0.5;
+    public const ATTACK_ONCE  = 1.0;
+    public const ATTACK_TWICE = 2.0;
 
-    public  const SUB_CATEGORY_BLADE    = "blade";
-    public  const SUB_CATEGORY_BLUNT    = "blunt";
-    public  const SUB_CATEGORY_LONG     = "long";
-    public  const SUB_CATEGORY_RANGED   = "ranged";
-    public  const SUB_CATEGORY_THROWING = "throwing";
-    public  const SUB_CATEGORY_SHIELD   = "shield";
+    public const SUB_CATEGORY_BLADE    = "blade";
+    public const SUB_CATEGORY_BLUNT    = "blunt";
+    public const SUB_CATEGORY_LONG     = "long";
+    public const SUB_CATEGORY_RANGED   = "ranged";
+    public const SUB_CATEGORY_THROWING = "throwing";
+    public const SUB_CATEGORY_SHIELD   = "shield";
 
     public static string $category    = self::CATEGORY_WEAPON;
 
@@ -117,27 +117,11 @@ class Weapon extends Item implements Equippable
     }
 
     /**
-     * @return string
-     */
-    public static function getCategory(): string
-    {
-        return self::$category;
-    }
-
-    /**
-     * @return string
-     */
-    public static function getSubCategory(): string
-    {
-        return self::$subCategory;
-    }
-
-    /**
      * @return float
      */
     public static function getBaseAttacksPerRound(): float
     {
-        return self::$baseAttacksPerRound;
+        return static::$baseAttacksPerRound;
     }
 
     /**
@@ -145,7 +129,7 @@ class Weapon extends Item implements Equippable
      */
     public static function getBaseSequence(): int
     {
-        return self::$baseSequence;
+        return static::$baseSequence;
     }
 
     /**
@@ -153,7 +137,7 @@ class Weapon extends Item implements Equippable
      */
     public static function getBaseAttack(): int
     {
-        return self::$baseAttack;
+        return static::$baseAttack;
     }
 
     /**
@@ -161,7 +145,7 @@ class Weapon extends Item implements Equippable
      */
     public static function getBaseDefense(): int
     {
-        return self::$baseDefense;
+        return static::$baseDefense;
     }
 
     /**
@@ -177,7 +161,7 @@ class Weapon extends Item implements Equippable
      */
     public static function getBasePierce(): int
     {
-        return self::$basePierce;
+        return static::$basePierce;
     }
 
     #endregion
