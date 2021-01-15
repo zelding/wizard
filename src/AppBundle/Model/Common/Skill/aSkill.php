@@ -56,8 +56,6 @@ abstract class aSkill
 
     /** @var string */
     protected static string $name  = "";
-    /** @var string */
-    protected string $mastery = self::MASTERY_BASIC ?? self::MASTERY_MASTER;
 
     /** @var string only used if $allowMultiple */
     protected string $relatesTo = "";
@@ -66,13 +64,10 @@ abstract class aSkill
 
     /**
      * aSkill constructor.
-     *
-     * @param string $mastery
      */
-    public function __construct(string $mastery = self::MASTERY_BASIC)
-    {
-        $this->mastery = $mastery;
-    }
+    public function __construct(
+        protected string $mastery = self::MASTERY_BASIC
+    ) {}
 
     public function isMaster() : bool
     {

@@ -15,10 +15,7 @@ class Player
     /** @var int|null */
     protected ?int $id;
 
-    protected Character $character;
-
-    public function __construct(Character $character)
+    public function __construct(protected Character $character)
     {
-        $this->character = $character;
     }
 }

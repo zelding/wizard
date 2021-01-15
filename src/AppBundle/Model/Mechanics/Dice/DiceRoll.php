@@ -4,7 +4,7 @@
 namespace AppBundle\Model\Mechanics\Dice;
 
 
-class DiceRoll
+class DiceRoll implements \Stringable
 {
     /** @var aDice[] */
     protected array $dice;

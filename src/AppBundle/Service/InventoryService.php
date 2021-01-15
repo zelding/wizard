@@ -23,8 +23,6 @@ use AppBundle\Model\Common\Race\aRace;
 
 class InventoryService implements InventorySlotProvider
 {
-    protected ItemService $itemService;
-
     protected static array $defaultInventorySlots = [
         InventorySlotProvider::SLOT_HEAD    =>  1,
         InventorySlotProvider::SLOT_NECK    =>  1,
@@ -38,11 +36,9 @@ class InventoryService implements InventorySlotProvider
 
     /**
      * InventoryService constructor.
-     * @param ItemService $itemService
      */
-    public function __construct(ItemService $itemService)
+    public function __construct(protected ItemService $itemService)
     {
-        $this->itemService = $itemService;
     }
 
     public static function getSlotConfiguration(): array

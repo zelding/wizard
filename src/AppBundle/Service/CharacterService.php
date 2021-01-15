@@ -42,23 +42,8 @@ use AppBundle\Helper\Stats as StatsHelper;
  */
 class CharacterService
 {
-    protected RaceService $raceService;
-
-    protected ClassService $classService;
-
-    protected InventoryService $inventoryService;
-
-    protected SkillService $skillService;
-
-    public function __construct(RaceService $raceService, ClassService $classService, InventoryService $inventoryService, SkillService $skillService)
+    public function __construct(protected RaceService $raceService, protected ClassService $classService, protected InventoryService $inventoryService, protected SkillService $skillService)
     {
-        $this->raceService  = $raceService;
-
-        $this->classService = $classService;
-
-        $this->inventoryService  = $inventoryService;
-
-        $this->skillService = $skillService;
     }
 
     /**

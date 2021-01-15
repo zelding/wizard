@@ -11,7 +11,7 @@
 namespace AppBundle\Model\Mechanics;
 
 
-class Price
+class Price implements \Stringable
 {
     public  const MITHRIL = 100000;
     public  const GOLD    =   1000;
@@ -30,20 +30,11 @@ class Price
     /** @var int 100 gold = 1 mithril */
     protected int $mithril = 0;
 
-    protected bool $allowMithril = false;
-    protected bool $allowGold    = true;
-
     /**
      * if you set the value by this, it will be reduced to minimal coins
-     *
-     * @param bool $allowGold
-     * @param bool $allowMithril
-     *
      */
-    public function __construct($allowGold = true, $allowMithril = false)
+    public function __construct(protected $allowGold = true, protected $allowMithril = false)
     {
-        $this->allowMithril = $allowMithril;
-        $this->allowGold    = $allowGold;
     }
 
     public function __toString() : string

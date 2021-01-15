@@ -23,15 +23,11 @@ class Inventory
     /** @var Item[][] */
     protected array $items = [];
 
-    protected int $maxWeight = 0;
-
     /**
      * Inventory constructor.
-     * @param int $maxWeight
      */
-    public function __construct(int $maxWeight)
+    public function __construct(protected int $maxWeight)
     {
-        $this->maxWeight = $maxWeight;
     }
 
     /**

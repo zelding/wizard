@@ -4,7 +4,7 @@
 namespace AppBundle\Model\Mechanics\Dice;
 
 
-abstract class aDice
+abstract class aDice implements \Stringable
 {
     protected static int $min = 1;
 

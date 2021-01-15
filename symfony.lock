@@ -2,6 +2,12 @@
     "composer/package-versions-deprecated": {
         "version": "1.x-dev"
     },
+    "composer/semver": {
+        "version": "3.x-dev"
+    },
+    "composer/xdebug-handler": {
+        "version": "1.4.5"
+    },
     "doctrine/common": {
         "version": "3.1.x-dev"
     },
@@ -57,6 +63,9 @@
     "doctrine/sql-formatter": {
         "version": "1.x-dev"
     },
+    "jean85/pretty-package-versions": {
+        "version": "1.x-dev"
+    },
     "laminas/laminas-code": {
         "version": "3.5.x-dev"
     },
@@ -66,14 +75,47 @@
     "laminas/laminas-zendframework-bridge": {
         "version": "1.2.x-dev"
     },
+    "nette/finder": {
+        "version": "v2.5.x-dev"
+    },
+    "nette/neon": {
+        "version": "3.2-dev"
+    },
+    "nette/robot-loader": {
+        "version": "3.3-dev"
+    },
+    "nette/utils": {
+        "version": "3.2-dev"
+    },
+    "nikic/php-parser": {
+        "version": "v4.10.4"
+    },
     "ocramius/proxy-manager": {
         "version": "2.11.x-dev"
     },
     "php": {
         "version": "7.4"
     },
+    "phpstan/phpdoc-parser": {
+        "version": "0.4-dev"
+    },
+    "phpstan/phpstan": {
+        "version": "0.12-dev"
+    },
+    "phpstan/phpstan-phpunit": {
+        "version": "0.12-dev"
+    },
     "psr/event-dispatcher": {
         "version": "1.0.x-dev"
+    },
+    "psr/simple-cache": {
+        "version": "1.0.x-dev"
+    },
+    "rector/rector": {
+        "version": "dev-master"
+    },
+    "sebastian/diff": {
+        "version": "4.0-dev"
     },
     "symfony/contracts": {
         "version": "2.3-dev"
@@ -114,7 +156,58 @@
     "symfony/polyfill-uuid": {
         "version": "1.21-dev"
     },
+    "symplify/astral": {
+        "version": "9.1-dev"
+    },
+    "symplify/autowire-array-parameter": {
+        "version": "9.1-dev"
+    },
+    "symplify/composer-json-manipulator": {
+        "version": "9.1-dev"
+    },
+    "symplify/console-color-diff": {
+        "version": "9.1-dev"
+    },
+    "symplify/console-package-builder": {
+        "version": "9.1-dev"
+    },
+    "symplify/easy-testing": {
+        "version": "9.1-dev"
+    },
+    "symplify/markdown-diff": {
+        "version": "9.1-dev"
+    },
+    "symplify/package-builder": {
+        "version": "9.1-dev"
+    },
+    "symplify/php-config-printer": {
+        "version": "9.1-dev"
+    },
+    "symplify/rule-doc-generator": {
+        "version": "9.1-dev"
+    },
+    "symplify/set-config-resolver": {
+        "version": "9.1-dev"
+    },
+    "symplify/simple-php-doc-parser": {
+        "version": "9.1-dev"
+    },
+    "symplify/skipper": {
+        "version": "9.1-dev"
+    },
+    "symplify/smart-file-system": {
+        "version": "9.1-dev"
+    },
+    "symplify/symfony-php-config": {
+        "version": "9.1-dev"
+    },
+    "symplify/symplify-kernel": {
+        "version": "9.1-dev"
+    },
     "webimpress/safe-writer": {
         "version": "2.2.x-dev"
+    },
+    "webmozart/assert": {
+        "version": "1.9.1"
     }
 }
