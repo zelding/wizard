@@ -47,4 +47,4 @@ gulp.task('vendor', ['vendor-css', 'vendor-js']);
 
 gulp.task('default', ['build']);
 
-gulp.task('all', ['build', 'vendor']);
+gulp.task('all', ['vendor', 'build']);

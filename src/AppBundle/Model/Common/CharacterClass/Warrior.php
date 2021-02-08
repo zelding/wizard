@@ -41,7 +41,6 @@ class Warrior extends aClass
     public  const TYPE     = "WAR";
     public  const SUB_TYPE = "WAR";
 
-    /** @var aStat[] */
     protected static array $modifiers = [
         Sequence::TYPE =>  9,
         Attack::TYPE   => 20,

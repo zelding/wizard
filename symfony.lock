@@ -66,6 +66,9 @@
     "jean85/pretty-package-versions": {
         "version": "1.x-dev"
     },
+    "jetbrains/phpstorm-attributes": {
+        "version": "dev-master"
+    },
     "laminas/laminas-code": {
         "version": "3.5.x-dev"
     },

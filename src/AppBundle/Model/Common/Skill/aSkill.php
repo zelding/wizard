@@ -11,6 +11,12 @@
 namespace AppBundle\Model\Common\Skill;
 
 
+use AppBundle\Model\Common\Stats\Combat\Aim;
+use AppBundle\Model\Common\Stats\Combat\Attack;
+use AppBundle\Model\Common\Stats\Combat\Defense;
+use AppBundle\Model\Common\Stats\Combat\Sequence;
+use JetBrains\PhpStorm\ArrayShape;
+
 abstract class aSkill
 {
     public  const TYPE = "-1" ?? -1;
@@ -40,10 +46,26 @@ abstract class aSkill
      *
      * @var array
      */
+    #[ArrayShape([
+        self::MASTERY_BASIC  => [
+            Sequence::TYPE => "int",
+            Attack::TYPE   => "int",
+            Defense::TYPE  => "int",
+            Aim::TYPE      => "int"
+        ],
+        self::MASTERY_MASTER => [
+            Sequence::TYPE => "int",
+            Attack::TYPE   => "int",
+            Defense::TYPE  => "int",
+            Aim::TYPE      => "int"
+        ]
+    ])]
     protected static array $modifiers = [
         self::MASTERY_BASIC  => [],
         self::MASTERY_MASTER => []
     ];
+
+    protected string $mastery = self::MASTERY_BASIC;
 
     /**
      * Relation to base stats
@@ -52,6 +74,7 @@ abstract class aSkill
      */
     protected static array $statRelations  = [];
 
+    /** @var string[] */
     protected static array $otherRelations = [];
 
     /** @var string */
@@ -59,15 +82,17 @@ abstract class aSkill
 
     /** @var string only used if $allowMultiple */
     protected string $relatesTo = "";
+
     /** @var string[]  */
     protected array $origin = [];
 
     /**
      * aSkill constructor.
      */
-    public function __construct(
-        protected string $mastery = self::MASTERY_BASIC
-    ) {}
+    public function __construct()
+    {
+
+    }
 
     public function isMaster() : bool
     {

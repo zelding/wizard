@@ -14,6 +14,10 @@ namespace AppBundle\Service;
 use AppBundle\Helper\Stats;
 use AppBundle\Model\Common\Character;
 use AppBundle\Model\Common\Stats\aStat;
+use AppBundle\Model\Common\Stats\Combat\Aim;
+use AppBundle\Model\Common\Stats\Combat\Attack;
+use AppBundle\Model\Common\Stats\Combat\Defense;
+use AppBundle\Model\Common\Stats\Combat\Sequence;
 use AppBundle\Model\Common\Stats\General\Health;
 use AppBundle\Model\Common\Stats\General\Mana;
 use AppBundle\Model\Common\Stats\General\PainPoint;
@@ -21,6 +25,8 @@ use AppBundle\Model\Common\Stats\General\PsyPoints;
 use AppBundle\Model\Common\Stats\General\SkillPoint;
 
 use AppBundle\Helper\Stats as StatsHelper;
+use JetBrains\PhpStorm\ArrayShape;
+use JetBrains\PhpStorm\Pure;
 
 class ClassService
 {
@@ -39,7 +45,7 @@ class ClassService
 
         /** @var int $combatStatModifiersPerLevel */
         /** @var aStat[] $requiredStats */
-        list($combatStatModifiersPerLevel, $requiredStats) = $class::getCombatModifiersPerLevel();
+        [$combatStatModifiersPerLevel, $requiredStats] = $class::getCombatModifiersPerLevel();
 
         $character->addAvailableCombatModifier($combatStatModifiersPerLevel);
 
@@ -65,12 +71,19 @@ class ClassService
      *
      * @return aStat[]
      */
+    #[Pure]
+    #[ArrayShape([
+        Sequence::NAME => "int",
+        Attack::NAME   => "int",
+        Defense::NAME  => "int",
+        Aim::NAME      => "int"
+    ])]
     protected function generateBaseCombatStats(Character $character) : array
     {
         $class = $character->getClass();
         $stats = [];
 
-        foreach($class->getModifiers() as $type => $value) {
+        foreach($class::getModifiers() as $type => $value) {
             $name = StatsHelper::$CombatStatTypeToStatName[ $type ];
 
             $stats[ $name ] = $value;
@@ -86,6 +99,13 @@ class ClassService
      *
      * @return array
      */
+    #[ArrayShape([
+        Health::NAME     => "int",
+        PainPoint::NAME  => "int",
+        SkillPoint::NAME => "int",
+        PsyPoints::NAME  => "int",
+        Mana::NAME       => "int"
+    ])]
     protected function generateGeneralStats(Character $character) : array
     {
         $class = $character->getClass();

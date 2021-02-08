@@ -22,6 +22,7 @@ use AppBundle\Model\Common\Stats\Base\BaseStats;
 use AppBundle\Model\Common\Stats\Combat\BaseCombatStats;
 use AppBundle\Model\Common\Stats\General\GeneralStats;
 use AppBundle\Model\Common\Stats\Magic\MagicResist;
+use JetBrains\PhpStorm\ArrayShape;
 
 abstract class Character
 {
@@ -32,9 +33,8 @@ abstract class Character
     /** @var string */
     protected string $lastName  = "";
 
-    /** @var aRace */
     protected aRace $race;
-    /** @var aClass */
+
     protected aClass $class;
 
     protected int $level = 1;
@@ -55,10 +55,18 @@ abstract class Character
 
     protected int $availableCombatModifiers = 0;
 
-    /** @var Stats\Magic\MagicResist[] */
+    #[ArrayShape([
+        MagicResist::TYPE_ASTRAL => MagicResist::class,
+        MagicResist::TYPE_MENTAL => MagicResist::class
+    ])]
     protected array $magicResists = [];
 
-    /** @var aSkill[][] */
+    #[ArrayShape([
+        aSkill::SKILL_TYPE_COMBAT  => aSkill::class."[]",
+        aSkill::SKILL_TYPE_CRIME   => aSkill::class."[]",
+        aSkill::SKILL_TYPE_SCIENCE => aSkill::class."[]",
+        aSkill::SKILL_TYPE_SOCIAL  => aSkill::class."[]"
+    ])]
     protected array $skills = [];
 
     public function __construct(aRace $race, aClass $class)
@@ -66,8 +74,8 @@ abstract class Character
         $this->race  = $race;
         $this->class = $class;
 
-       //$this->inventory = new Inventory();
-       //$this->equipment = new Equipment();
+        //$this->inventory = new Inventory();
+        //$this->equipment = new Equipment();
     }
 
     /**
@@ -139,7 +147,7 @@ abstract class Character
 
     public function getMaxCombatModifier() : int
     {
-        list($perLvl, $stats) = $this->class::getCombatModifiersPerLevel();
+        [$perLvl, $stats] = $this->class::getCombatModifiersPerLevel();
 
         // negated the operation so the ide will shut up about operations on arrays
         return array_sum($stats) * -1 + $perLvl;
