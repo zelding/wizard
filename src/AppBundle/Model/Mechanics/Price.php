@@ -11,7 +11,9 @@
 namespace AppBundle\Model\Mechanics;
 
 
-class Price implements \Stringable
+use Stringable;
+
+class Price implements Stringable
 {
     public  const MITHRIL = 100000;
     public  const GOLD    =   1000;
@@ -39,7 +41,10 @@ class Price implements \Stringable
 
     public function __toString() : string
     {
-        return "{$this->gold} g {$this->silver} s {$this->copper} c";
+        return
+            ($this->allowMithril ? "{$this->mithril}m ": "") .
+            ($this->allowGold ? "{$this->gold}g " : "").
+            "{$this->silver}s {$this->copper}c";
     }
 
     public function getFullValue() : int
@@ -47,48 +52,30 @@ class Price implements \Stringable
         return $this->mithril * self::MITHRIL +
                $this->gold    * self::GOLD    +
                $this->silver  * self::SILVER  +
-               $this->copper;
+               $this->copper  * self::COPPER;
     }
 
     public function setLowestCountPrice(int $value = 0) : self
     {
-        if ( $this->allowMithril ) {
+        if ( $this->allowMithril && $value > self::MITHRIL ) {
             $this->mithril = floor($value / self::MITHRIL);
 
-            if ( $this->allowGold ) {
-                $this->gold    = floor(($value % self::MITHRIL) / self::GOLD);
-
-                $this->silver  = floor(($value % self::GOLD) / self::SILVER);
-
-                $this->copper  = floor($value % self::SILVER );
-            }
-            else {
-                $this->silver  =
-                    floor(($value % self::MITHRIL) / self::GOLD) * (self::GOLD / self::SILVER) +
-                    floor(($value % self::GOLD) / self::SILVER);
-
-                $this->copper  = floor($value % self::SILVER );
-            }
+            $value -= $this->mithril * self::MITHRIL;
         }
-        else {
-            if ( $this->allowGold ) {
-                $this->gold =
-                    floor($value / self::MITHRIL) * (self::MITHRIL / self::GOLD) +
-                    floor(($value % self::MITHRIL) / self::GOLD);
 
-                $this->silver  = floor(($value % self::GOLD) / self::SILVER);
+        if ( $this->allowGold && $value > self::GOLD ) {
+            $this->gold = floor($value / self::GOLD);
 
-                $this->copper  = floor($value % self::SILVER );
-            }
-            else {
-                $this->silver  =
-                    floor($value / self::MITHRIL) * (self::MITHRIL / self::GOLD) * (self::GOLD / self::SILVER) +
-                    floor(($value % self::MITHRIL) / self::GOLD) * (self::GOLD / self::SILVER) +
-                    floor(($value % self::GOLD) / self::SILVER);
-
-                $this->copper  = floor($value % self::SILVER );
-            }
+            $value -= $this->gold * self::GOLD;
         }
+
+        if ( $value > self::SILVER ) {
+            $this->silver = floor($value / self::SILVER);
+
+            $value -= $this->silver * self::SILVER;
+        }
+
+        $this->copper  = $value;
 
         return $this;
     }
