@@ -21,7 +21,7 @@
         ]
     },
     "require": {
-        "php": ">=8.0",
+        "php": "^8.1",
         "composer/package-versions-deprecated": ">=1.0",
         "doctrine/doctrine-bundle": "~2.0",
         "doctrine/doctrine-migrations-bundle": "~3.0",
@@ -29,13 +29,10 @@
         "incenteev/composer-parameter-handler": "^2.1",
         "symfony/flex": "^1.11",
         "symfony/monolog-bundle": "^3.6",
-        "symfony/proxy-manager-bridge": "*",
-        "symfony/symfony": "^5.2",
+        "symfony/symfony": "^5.4",
         "twig/twig": "^3.1"
     },
     "require-dev": {
-        "jetbrains/phpstorm-attributes": "dev-master",
-        "rector/rector": "dev-master",
         "symfony/phpunit-bridge": "*"
     },
     "scripts": {

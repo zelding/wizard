@@ -67,6 +67,7 @@ class InventoryService implements InventorySlotProvider
         // and finally we apply the racial updates
         $eq = new Equipment(100, array_merge(self::getSlotConfiguration(), static::getSlotConfiguration(), $race::getSlotConfiguration()));
 
+        // TODO
         //$race::getLateSkills();
 
         return $eq;
@@ -79,8 +80,8 @@ class InventoryService implements InventorySlotProvider
 
         $inventory->addItem($item);
 
-        if  ( $item instanceof Equippable && $slot = $this->itemService->getItemSlot($item) ) {
-            //TODO equip
+        // also check for available slot
+        if ( $item instanceof Equippable && $slot = $this->itemService->getItemSlot($item) ) {
 
             if ( !empty($item->requires()) ) {
 
