@@ -26,11 +26,9 @@ use JetBrains\PhpStorm\ArrayShape;
 
 abstract class Character
 {
-    /** @var string */
     protected string $firstName  = "";
     /** @var string[] */
     protected array $otherNames = [];
-    /** @var string */
     protected string $lastName  = "";
 
     protected aRace $race;
@@ -96,13 +94,10 @@ abstract class Character
 
     public function getXpToNextLevel() : int
     {
-        if ( $this->class instanceof aClass) {
-            $table = $this->class::getExperienceTable();
 
-            return $table[ $this->level ] - $this->experience;
-        }
+        $table = $this->class::getExperienceTable();
 
-        return -1;
+        return $table[ $this->level ] - $this->experience;
     }
 
     public function getPsySkill() : ?Psy

@@ -96,7 +96,7 @@ class SkillService
                             if ($skill->getMastery() === aSkill::MASTERY_BASIC) {
                                 $skill->setLearnedAt($lvl);
                             }
-                            else {
+                            elseif ( 0 === $skill->getUpgradedAt() ) {
                                 $skill->setUpgradedAt($lvl);
                             }
                         }

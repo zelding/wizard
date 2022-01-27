@@ -81,6 +81,9 @@
     "laminas/laminas-zendframework-bridge": {
         "version": "1.2.x-dev"
     },
+    "myclabs/deep-copy": {
+        "version": "1.x-dev"
+    },
     "nette/finder": {
         "version": "v2.5.x-dev"
     },
@@ -99,6 +102,12 @@
     "ocramius/proxy-manager": {
         "version": "2.11.x-dev"
     },
+    "phar-io/manifest": {
+        "version": "2.0.x-dev"
+    },
+    "phar-io/version": {
+        "version": "3.1.0"
+    },
     "php": {
         "version": "7.4"
     },
@@ -111,6 +120,35 @@
     "phpstan/phpstan-phpunit": {
         "version": "0.12-dev"
     },
+    "phpunit/php-code-coverage": {
+        "version": "10.0-dev"
+    },
+    "phpunit/php-file-iterator": {
+        "version": "4.0-dev"
+    },
+    "phpunit/php-invoker": {
+        "version": "4.0-dev"
+    },
+    "phpunit/php-text-template": {
+        "version": "3.0-dev"
+    },
+    "phpunit/php-timer": {
+        "version": "6.0-dev"
+    },
+    "phpunit/phpunit": {
+        "version": "10.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "9.3",
+            "ref": "a6249a6c4392e9169b87abf93225f7f9f59025e6"
+        },
+        "files": [
+            ".env.test",
+            "phpunit.xml.dist",
+            "tests/bootstrap.php"
+        ]
+    },
     "psr/event-dispatcher": {
         "version": "1.0.x-dev"
     },
@@ -120,7 +158,49 @@
     "rector/rector": {
         "version": "dev-master"
     },
+    "sebastian/cli-parser": {
+        "version": "2.0-dev"
+    },
+    "sebastian/code-unit": {
+        "version": "2.0-dev"
+    },
+    "sebastian/code-unit-reverse-lookup": {
+        "version": "3.0-dev"
+    },
+    "sebastian/comparator": {
+        "version": "5.0-dev"
+    },
+    "sebastian/complexity": {
+        "version": "3.0-dev"
+    },
     "sebastian/diff": {
+        "version": "4.0-dev"
+    },
+    "sebastian/environment": {
+        "version": "6.0-dev"
+    },
+    "sebastian/exporter": {
+        "version": "5.0-dev"
+    },
+    "sebastian/global-state": {
+        "version": "6.0-dev"
+    },
+    "sebastian/lines-of-code": {
+        "version": "2.0-dev"
+    },
+    "sebastian/object-enumerator": {
+        "version": "5.0-dev"
+    },
+    "sebastian/object-reflector": {
+        "version": "3.0-dev"
+    },
+    "sebastian/recursion-context": {
+        "version": "5.0-dev"
+    },
+    "sebastian/type": {
+        "version": "3.0-dev"
+    },
+    "sebastian/version": {
         "version": "4.0-dev"
     },
     "symfony/contracts": {
@@ -212,6 +292,9 @@
     },
     "symplify/symplify-kernel": {
         "version": "9.1-dev"
+    },
+    "theseer/tokenizer": {
+        "version": "1.2.1"
     },
     "webimpress/safe-writer": {
         "version": "2.2.x-dev"

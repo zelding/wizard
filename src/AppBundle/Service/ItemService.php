@@ -28,19 +28,11 @@ class ItemService
             return null;
         }
 
-        switch( $item::$category ) {
-
-            case Item::CATEGORY_WEAPON:
-
-                return InventorySlotProvider::SLOT_HANDS;
-
-            case Item::CATEGORY_ARMOR:
-                return InventorySlotProvider::SLOT_TORSO;
-
-            case Item::CATEGORY_HELMET:
-                return InventorySlotProvider::SLOT_HEAD;
-        }
-
-        return null;
+        return match ($item::$category) {
+            Item::CATEGORY_WEAPON => InventorySlotProvider::SLOT_HANDS,
+            Item::CATEGORY_ARMOR  => InventorySlotProvider::SLOT_TORSO,
+            Item::CATEGORY_HELMET => InventorySlotProvider::SLOT_HEAD,
+            default               => null
+        };
     }
 }

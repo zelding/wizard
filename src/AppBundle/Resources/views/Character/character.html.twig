@@ -156,9 +156,11 @@
                 </div>
             </div>
 
-            <!-- Character Info -->
+            <!-- Mid -->
             <div class="col-md-4">
                 <div class="row">
+
+                    <!-- Character Info -->
                     <div class="col-xs-12">
                         <div class="panel panel-primary">
                             <div class="panel-heading">
@@ -221,6 +223,7 @@
                         </div>
                     </div>
 
+                    <!-- Skills -->
                     <div class="col-xs-12">
                         <div class="panel panel-primary">
                             <div class="panel-heading">
@@ -267,66 +270,23 @@
                 </div>
             </div>
 
-            <div class="col-md-4">{{ dump(char) }}</div>
-        </div>
+            <!-- Character Info -->
+            <div class="col-md-4">
 
-        <div class="row">
+                <div class="row">
 
-            <div class="col-xs-8">
-
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Inventory</h3>
+                    <div class="col-xs-12">
+                        {% include '@App/Common/inventory_panel.html.twig' with {
+                            inventory: char.inventory
+                        } %}
                     </div>
 
-                    <div class="panel-body">
-                        <div class="row">
-                            <div class="col-xs-2"><strong>Name</strong></div>
-                            <div class="col-xs-2"><strong>Category</strong></div>
-                            <div class="col-xs-2"><strong>Quantity</strong></div>
-                            <div class="col-xs-2"><strong>Weight</strong></div>
-                            <div class="col-xs-2"><strong>Value</strong></div>
-                            <div class="col-xs-2"><strong>Equipped</strong></div>
-                        </div>
-
-                        {% for catName, categories in char.inventory.items %}
-                            {% for subCatName, subcat in categories %}
-                                {% for item in subcat %}
-                                    {# @var item AppBundle\Model\Common\Item\Item #}
-
-                                    <div class="row">
-                                        <div class="col-xs-2">{{ item.name }}</div>
-                                        <div class="col-xs-2">{{ catName }}/{{ subCatName }}</div>
-                                        <div class="col-xs-2">{{ item.quantity }}</div>
-                                        <div class="col-xs-2">{{ item.weight }}</div>
-                                        <div class="col-xs-2">{{ item.price }}</div>
-                                        <div class="col-xs-2">no</div>
-                                    </div>
-
-                                    {% if item is instanceof('AppBundle\\Model\\Common\\Item\\Equippable') %}
-                                        <div class="row">
-                                            <div class="col-xs-2">{{ item.baseSequence }}</div>
-                                            <div class="col-xs-2">{{ item.baseAttacksPerRound }}</div>
-                                            <div class="col-xs-2">{{ item.baseAttack }}</div>
-                                            <div class="col-xs-2">{{ item.baseDefense }}</div>
-                                            <div class="col-xs-2">{{ item.baseDamage }}</div>
-                                            <div class="col-xs-2"></div>
-                                        </div>
-                                    {% endif %}
-
-                                {% endfor %}
-                            {% endfor %}
-                        {% endfor %}
-                    </div>
-
-                    <div class="panel-footer">
-                        Weight: {{ char.inventory.totalWeight }} / {{ char.inventory.maxWeight }}.
-                    </div>
                 </div>
 
             </div>
-
         </div>
 
     </div>
+
+    <div id="test_div" class="hidden-xs hidden-sm hidden-md hidden-lg hidden-print">test_text</div>
 {% endblock %}

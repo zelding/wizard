@@ -16,8 +16,6 @@ use AppBundle\Model\Common\Skill\Combat\Leadership;
 use AppBundle\Model\Common\Skill\Combat\WeaponHandling;
 use AppBundle\Model\Common\Skill\Social\HorsebackRiding;
 use AppBundle\Model\Common\Skill\Social\Language;
-use AppBundle\Model\Common\Stats\aStat;
-
 use AppBundle\Model\Common\Stats\Base\Astral;
 use AppBundle\Model\Common\Stats\Base\Beauty;
 use AppBundle\Model\Common\Stats\Base\Dexterity;
@@ -28,7 +26,6 @@ use AppBundle\Model\Common\Stats\Base\Stamina;
 use AppBundle\Model\Common\Stats\Base\Strength;
 use AppBundle\Model\Common\Stats\Base\Vitality;
 use AppBundle\Model\Common\Stats\Base\Willpower;
-
 use AppBundle\Model\Common\Stats\Combat\Aim;
 use AppBundle\Model\Common\Stats\Combat\Attack;
 use AppBundle\Model\Common\Stats\Combat\Defense;
@@ -53,11 +50,8 @@ class Warrior extends aClass
     protected static string $name = "Warrior";
 
     protected static int $skillPointBase     = 10;
-
     protected static int $skillPointPerLevel = 14;
-
     protected static int $hpBase             = 7;
-
     protected static int $ppBase             = 6;
 
     protected static array $painPointsPerLevel = [[D6::class], 4];
@@ -68,16 +62,16 @@ class Warrior extends aClass
     ]];
 
     protected static array $baseStatRanges  = [
-        Strength::TYPE     => [ [D6::class], 12, 1, true ],
-        Stamina::TYPE      => [ [D10::class], 8, 1, true ],
-        Dexterity::TYPE    => [ [D10::class], 8, 1, true ],
-        Speed::TYPE        => [ [D10::class], 8, 1, true ],
+        Strength::TYPE     => [ [ D6::class], 12, 1, true ],
+        Stamina::TYPE      => [ [D10::class],  8, 1, true ],
+        Dexterity::TYPE    => [ [D10::class],  8, 1, true ],
+        Speed::TYPE        => [ [D10::class],  8, 1, true ],
         Vitality::TYPE     => [ [D10::class], 10, 1, false ],
-        Beauty::TYPE       => [ [D6::class, D6::class, D6::class], 0, 2, false ],
-        Intelligence::TYPE => [ [D6::class, D6::class, D6::class], 0, 2, false ],
-        Willpower::TYPE    => [ [D10::class], 8, 1, false ],
-        Astral::TYPE       => [ [D6::class, D6::class, D6::class], 0, 2, false ],
-        Perception::TYPE   => [ [D10::class], 8, 1, false ]
+        Beauty::TYPE       => [ [ D6::class, D6::class, D6::class], 0, 2, false ],
+        Intelligence::TYPE => [ [ D6::class, D6::class, D6::class], 0, 2, false ],
+        Willpower::TYPE    => [ [D10::class],  8, 1, false ],
+        Astral::TYPE       => [ [ D6::class, D6::class, D6::class], 0, 2, false ],
+        Perception::TYPE   => [ [D10::class],  8, 1, false ]
     ];
 
     protected static array $baseSkills      = [

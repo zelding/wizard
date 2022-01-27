@@ -11,6 +11,7 @@
 namespace AppBundle\Service;
 
 use AppBundle\Exception\AppException;
+use AppBundle\Helper\Stats as StatsHelper;
 use AppBundle\Model\Common\Character;
 use AppBundle\Model\Common\CharacterClass\aClass;
 use AppBundle\Model\Common\Item\Weapon\ShortSword;
@@ -32,8 +33,6 @@ use AppBundle\Model\Common\Stats\Modifier;
 use AppBundle\Model\Mechanics\Dice\D100;
 use AppBundle\Model\Mechanics\Dice\DiceRoll;
 use AppBundle\Model\PC\PlayerCharacter;
-
-use AppBundle\Helper\Stats as StatsHelper;
 
 /**
  * Class CharacterService
@@ -325,7 +324,7 @@ class CharacterService
         $astral = new AstralMagicResist(0);
         $mental = new MentalMagicResist(0);
 
-        if ( $character->getPsySkill() instanceof Psy ) {
+        if ( $character->getPsySkill() ) {
             $astral->setStatic($character->getGeneralStats()->getPsyPoint()->getValue());
             $mental->setStatic($character->getGeneralStats()->getPsyPoint()->getValue());
         }

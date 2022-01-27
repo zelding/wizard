@@ -3,8 +3,12 @@
 
 namespace AppBundle\Model\Mechanics\Dice;
 
+use Stringable;
+use function array_pop;
+use function explode;
+use function mt_rand;
 
-abstract class aDice implements \Stringable
+abstract class aDice implements Stringable
 {
     protected static int $min = 1;
 
