@@ -8,9 +8,9 @@
  * Date: 1/27/22 10:08 AM
  */
 
-namespace Tests\AppBundle\Model\Mechanics;
+namespace Tests\App\Model\Mechanics;
 
-use AppBundle\Model\Mechanics\Price;
+use App\Model\Mechanics\Price;
 use PHPUnit\Framework\TestCase;
 
 class PriceTest extends TestCase

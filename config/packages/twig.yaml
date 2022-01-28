@@ -1,0 +1,13 @@
+twig:
+    default_path:     '%kernel.project_dir%/templates'
+    cache:            '%kernel.cache_dir%/twig'
+    charset:          '%kernel.charset%'
+    debug:            '%kernel.debug%'
+    strict_variables: '%kernel.debug%'
+    number_format:
+        decimals:            0
+        decimal_point:       .
+        thousands_separator: ','
+    date:
+        format:          'F j, Y H:i'
+        interval_format: '%d days'

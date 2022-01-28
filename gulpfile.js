@@ -4,14 +4,14 @@ const uglify    = require('gulp-uglify');
 const uglifyCss = require('gulp-uglifycss');
 
 gulp.task('watch', ['build'], f => {
-    gulp.watch('src/AppBundle/Resources/css/**/*.*', ['build']);
-    gulp.watch('src/AppBundle/Resources/js/**/*.*', ['build']);
+    gulp.watch('assets/css/**/*.*', ['build']);
+    gulp.watch('assets/js/**/*.*', ['build']);
 });
 
 gulp.task('css', f => {
     return gulp.src([
-        "src/AppBundle/Resources/public/css/*.css",
-        "src/AppBundle/Resources/public/css/**/*.*"
+        "assets/css/*.css",
+        "assets/css/**/*.*"
     ]).pipe(uglifyCss())
         .pipe(concat('style.css'))
         .pipe(gulp.dest('web/css/'));
@@ -19,8 +19,8 @@ gulp.task('css', f => {
 
 gulp.task('js', f => {
     return gulp.src([
-        "src/AppBundle/Resources/public/js/*.js",
-        "src/AppBundle/Resources/public/js/**/*.js"
+        "public/js/*.js",
+        "public/js/**/*.js"
     ]).pipe(uglify())
       .pipe(concat('script.js'))
       .pipe(gulp.dest('web/js/'));

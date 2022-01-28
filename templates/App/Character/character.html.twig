@@ -1,0 +1,257 @@
+{% extends 'App/base.html.twig' %}
+
+{% block content %}
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="row">
+
+                    <!-- Base stats -->
+                    <div class="col-xs-12">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Base stats</h3>
+                            </div>
+
+                            <div class="panel-body">
+                                <ul class="list-unstyled">
+                                    {% for stat in char.baseStats.allStats %}
+                                        {# @var stat \App\Model\Common\Stats\aStat #}
+                                        {% set mod = stat.modifierValue != 0 %}
+                                        <li>
+                                            <div class="row">
+                                                <div class="col-xs-3">{{ stat.name }} :</div>
+                                                <div class="col-xs-1 text-right">{{ stat.baseValue }}</div>
+                                                {% if mod %}
+                                                    <div class="col-xs-1 text-right">+</div>
+                                                    <div class="col-xs-1 text-right">{{ stat.modifierValue }}</div>
+                                                {% else %}
+                                                    <div class="col-xs-2">&nbsp;</div>
+                                                {% endif %}
+                                                <div class="col-xs-1 text-right">=</div>
+                                                <div class="col-xs-1 text-right">{{ stat.value }}</div>
+                                                {% if stat.rollModifierValue %}
+                                                    <div class="col-xs-2 text-right">+ {{ stat.rollModifierValue }}</div>
+                                                {% endif %}
+                                            </div>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- magic resists -->
+                    <div class="col-xs-12">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Magic resists</h3>
+                            </div>
+
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-xs-4">
+                                        <ul class="list-unstyled">
+                                            <li>&nbsp;</li>
+                                            <li>Static</li>
+                                            <li>Dynamic</li>
+                                            <li>Magic</li>
+                                            <li>Sub-conscious</li>
+                                            <li>Total</li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="col-xs-4">
+                                        <ul class="list-unstyled">
+                                            <li>Mental</li>
+                                            <li>{{ char.magicResist('Mental').static  }}</li>
+                                            <li>{{ char.magicResist('Mental').dynamic }}</li>
+                                            <li>{{ char.magicResist('Mental').magic  }}</li>
+                                            <li>{{ char.magicResist('Mental').subConscious(0) }} + {{ char.magicResist('Mental').perLevel * char.level }}</li>
+                                            <li>{{ char.magicResist('Mental').currentTotal(true, char.level)  }}</li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="col-xs-4">
+                                        <ul class="list-unstyled">
+                                            <li>Astral</li>
+                                            <li>{{ char.magicResist.static  }}</li>
+                                            <li>{{ char.magicResist.dynamic }}</li>
+                                            <li>{{ char.magicResist.magic  }}</li>
+                                            <li>{{ char.magicResist.subConscious(0) }} + {{ char.magicResist.perLevel * char.level  }}</li>
+                                            <li>{{ char.magicResist.currentTotal(true, char.level)  }}</li>
+                                        </ul>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="panel-footer">Panel footer</div>
+                        </div>
+                    </div>
+
+                    <!-- Combat stats -->
+                    <div class="col-xs-12">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Combat stats</h3>
+                            </div>
+
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-xs-2">
+                                        <ul class="list-unstyled">
+                                            <li>&nbsp;</li>
+                                            <li>SEQ</li>
+                                            <li>ATK</li>
+                                            <li>DEF</li>
+                                            <li>AIM</li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="col-xs-3">
+                                        <ul class="list-unstyled">
+                                            <li>Base</li>
+                                            <li>{{ char.baseCombatStats.getSequence.baseValue }}</li>
+                                            <li>{{ char.baseCombatStats.getAttack.baseValue }}</li>
+                                            <li>{{ char.baseCombatStats.getDefense.baseValue }}</li>
+                                            <li>{{ char.baseCombatStats.getAim.baseValue }}</li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="col-xs-3">
+                                        <ul class="list-unstyled">
+                                            <li>Bonuses</li>
+                                            <li>+{{ char.baseCombatStats.getSequence.modifierValue }}</li>
+                                            <li>+{{ char.baseCombatStats.getAttack.modifierValue }}</li>
+                                            <li>+{{ char.baseCombatStats.getDefense.modifierValue }}</li>
+                                            <li>+{{ char.baseCombatStats.getAim.modifierValue }}</li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="col-xs-3 col-xs-offset-1">
+                                        <ul class="list-unstyled">
+                                            <li>Total</li>
+                                            <li>= {{ char.baseCombatStats.getSequence.value }}</li>
+                                            <li>= {{ char.baseCombatStats.getAttack.value }}</li>
+                                            <li>= {{ char.baseCombatStats.getDefense.value }}</li>
+                                            <li>= {{ char.baseCombatStats.getAim.value }}</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-xs-8">Combat modifiers available:</div>
+
+                                <div class="col-xs-8 col-xs-offset-4">{{ char.getAvailableCombatModifier }} ({{ char.getMaxCombatModifier }})</div>
+                            </div>
+
+                            <div class="panel-footer">Panel footer</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Mid -->
+            <div class="col-md-4">
+                <div class="row">
+
+                    <!-- Character Info -->
+                    <div class="col-xs-12">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Character info</h3>
+                            </div>
+
+                            <div class="panel-body">
+                                <ul class="list-unstyled">
+                                    <li>Name:<span class="pull-right">{{ char.fullName }}</span></li>
+                                    <li>Origin:<span class="pull-right"></span></li>
+                                    <li>Hometown:<span class="pull-right"></span></li>
+                                    <li>Race:<strong class="pull-right">{{ char.race.name }}</strong></li>
+                                    <li>Class:<strong class="pull-right">{{ char.class.name }}</strong></li>
+                                </ul>
+
+                                <hr>
+
+                                <!-- XP -->
+                                <div class="row">
+                                    <div class="col-xs-6 col-xs-offset-3">
+                                        <ul class="list-unstyled">
+                                            <li>Level:<strong class="pull-right">{{ char.level }}</strong></li>
+                                            <li>XP:<span class="pull-right">{{ char.experience }}</span></li>
+                                            <li>Xp to next level<span class="pull-right">{{ char.xpToNextLevel }}</span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <hr>
+
+                                <!-- HP -->
+                                <div class="row">
+                                    <div class="col-xs-4">
+                                        <ul class="list-unstyled">
+                                            <li>HP:<span class="pull-right">{{ char.currentHP }}/<strong>{{ char.generalStats.getHealth.value }}</strong></span></li>
+                                            <li>PP:<span class="pull-right">{{ char.currentPP }}/<strong>{{ char.generalStats.getPainPoint.value }}</strong></span></li>
+                                            {% if char.magicSkill %}
+                                            <li>MP:<span class="pull-right">{{ char.currentMP }}/<strong>{{ char.generalStats.getMana.value }}</strong></span></li>
+                                            {% endif %}
+                                            {% if char.psySkill %}
+                                            <li>Ψ:<span class="pull-right">{{ char.currentPsy }}/<strong>{{ char.generalStats.getPsyPoint.value }}</strong></span></li>
+                                            {% endif %}
+                                        </ul>
+                                    </div>
+
+                                    <div class="col-xs-4 col-xs-offset-4">
+                                        <ul class="list-unstyled">
+                                            <li>&nbsp;</li>
+                                            <li>Per level<span class="pull-right">{{ char.class.painPointsPerLevel.min }} - {{ char.class.painPointsPerLevel.max }}</span></li>
+                                            {% if char.magicSkill %}
+                                            <li>Per level<span class="pull-right">{{ char.magicSkill.pointsPerLevel }}</span></li>
+                                            {% endif %}
+                                            {% if char.psySkill %}
+                                            <li>Per level<span class="pull-right">{{ char.psySkill.pointsPerLevel }}</span></li>
+                                            {% endif %}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Skills -->
+                    <div class="col-xs-12">
+                        {% include 'App/Common/skill_panel.html.twig' with {
+                            skills: char.skills,
+                            currentSp: char.currentSp,
+                            modifier: char.generalStats.getSkillPoint.value,
+                            spPerLvl: char.class.skillPointPerLevel
+                        } %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Character Info -->
+            <div class="col-md-4">
+
+                <div class="row">
+
+                    <div class="col-xs-12">
+                        {% include 'App/Common/inventory_panel.html.twig' with {
+                            inventory: char.inventory
+                        } %}
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div id="test_div" class="hidden-xs hidden-sm hidden-md hidden-lg hidden-print">test_text</div>
+{% endblock %}
