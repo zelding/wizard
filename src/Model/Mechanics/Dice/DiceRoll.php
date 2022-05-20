@@ -58,7 +58,7 @@ class DiceRoll implements \Stringable
             $dice[] = $x > 1 ? "$x$n" : "$n";
         }
 
-        return implode(" + ", $dice)." + {$this->modifier}";
+        return implode(" + ", $dice).($this->modifier !== 0 ? " + {$this->modifier}" : "");
     }
 
     public function getMin() : int
@@ -81,26 +81,37 @@ class DiceRoll implements \Stringable
         return $sum + $this->modifier;
     }
 
+    public function getAvg(): float
+    {
+        return round(($this->getMin() + $this->getMax()) / 2.0, 2);
+    }
+
     public function execute() : int
     {
         $sum = 0;
 
-        foreach( $this->dice as $dice ) {
-            $val = $dice::roll();
+        foreach( $this->dice as $die ) {
+            $sum += $die::roll();
+        }
 
-            if ($this->n > 1) {
-                for ($i = 1; $i < $this->n; $i++) {
-                    $new = $dice::roll();
+        if ($this->n > 1) {
+            for ($i = 1; $i < $this->n; $i++) {
+                $new = 0;
+                foreach( $this->dice as $die ) {
+                    $new += $die::roll();
+                }
 
-                    if ($new > $val) {
-                        $val = $new;
-                    }
+                if ( $new > $sum ) {
+                    $sum = $new;
                 }
             }
-
-            $sum += $val;
         }
 
         return $sum + $this->modifier;
+    }
+
+    public function getModifier(): int
+    {
+        return $this->modifier;
     }
 }
