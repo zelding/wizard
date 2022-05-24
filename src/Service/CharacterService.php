@@ -11,21 +11,35 @@
 namespace App\Service;
 
 use App\Exception\AppException;
-use App\Helper\Stats as StatsHelper;
+use App\Exception\GameRuleException;
 use App\Model\Common\Character;
 use App\Model\Common\CharacterClass\aClass;
 use App\Model\Common\Item\Weapon\ShortSword;
-use App\Model\Common\Item\Weapon\Weapon;
 use App\Model\Common\Race\aRace;
 use App\Model\Common\Skill\aSkill;
 use App\Model\Common\Skill\Science\Magic;
 use App\Model\Common\Skill\Science\Psy;
 use App\Model\Common\Skill\Science\PyarronPsy;
 use App\Model\Common\Stats\aStat;
+use App\Model\Common\Stats\Base\Astral;
 use App\Model\Common\Stats\Base\Dexterity;
+use App\Model\Common\Stats\Base\Intelligence;
+use App\Model\Common\Stats\Base\Perception;
 use App\Model\Common\Stats\Base\Speed;
 use App\Model\Common\Stats\Base\Stamina;
 use App\Model\Common\Stats\Base\Strength;
+use App\Model\Common\Stats\Base\Vitality;
+use App\Model\Common\Stats\Base\Willpower;
+use App\Model\Common\Stats\Combat\Aim;
+use App\Model\Common\Stats\Combat\Attack;
+use App\Model\Common\Stats\Combat\Damage;
+use App\Model\Common\Stats\Combat\Defense;
+use App\Model\Common\Stats\Combat\Sequence;
+use App\Model\Common\Stats\General\Health;
+use App\Model\Common\Stats\General\Mana;
+use App\Model\Common\Stats\General\PainPoint;
+use App\Model\Common\Stats\General\PsyPoints;
+use App\Model\Common\Stats\General\SkillPoint;
 use App\Model\Common\Stats\Magic\AstralMagicResist;
 use App\Model\Common\Stats\Magic\MagicResist;
 use App\Model\Common\Stats\Magic\MentalMagicResist;
@@ -53,12 +67,18 @@ class CharacterService
      * @param int    $level
      *
      * @return PlayerCharacter
+     * @throws GameRuleException
      * @throws AppException
      */
     public function generateCharacter(aRace $race, aClass $class, int $level = 7) : PlayerCharacter
     {
         $character = new PlayerCharacter($race, $class);
-        $character->setBaseStats($this->generateBaseStats($race, $class));
+
+        $base = $this->generateBaseStats($race, $class);
+
+        $character->setBaseStats($base);
+
+        //die("<pre>".print_r($character->getBaseStats(), true));
 
         $character->setFirstName("Allento");
         $character->setLastName("Al'amall");
@@ -67,20 +87,24 @@ class CharacterService
         $this->setCharacterLevel($character, $level)
              ->setSkills($character);
 
+        $this->addXpToCharacter($character, mt_rand(12, 2001));
+
         //first set class bonuses
         $this->classService->applyClassBonuses($character);
+
         $this->raceService->applyRacialBonuses($character);
 
-        $this->applySpecialTraining($character, [Strength::TYPE, Stamina::TYPE, Dexterity::TYPE, Speed::TYPE]);
+        $this->applySpecialTraining($character, [Strength::class, Stamina::class, Dexterity::class, Speed::class]);
 
-        $this->applyBonuses($character)
-             ->calculateOtherStats($character)
-             ->setUpStaticMagicResists($character)
-             ->regenerateCharacter($character);
+        $this->applyBonuses($character);
+        $this->calculateOtherStats($character);
+        //die("<pre>".print_r($character->getGeneralStats(), true));
+        $this->setUpStaticMagicResists($character);
+        $this->regenerateCharacter($character);
 
-        $character->setCurrentSp($character->getGeneralStats()->getSkillPoint()->getValue());
+        $character->setCurrentSp($character->getGeneralStats()->getStat(SkillPoint::class)->getValue());
 
-        $shortSw = new ShortSword(Weapon::SUB_CATEGORY_LONG);
+        $shortSw = new ShortSword();
         $shortSw->setName("Short sword");
 
         $this->inventoryService->setUpInventories($character);
@@ -91,15 +115,15 @@ class CharacterService
 
     public function regenerateCharacter(Character $character) : self
     {
-        $character->setCurrentHP($character->getGeneralStats()->getHealth()->getValue())
-                  ->setCurrentPP($character->getGeneralStats()->getPainPoint()->getValue());
+        $character->setCurrentHP($character->getGeneralStats()->getStat(Health::class)->getValue())
+                  ->setCurrentPP($character->getGeneralStats()->getStat(PainPoint::class)->getValue());
 
         if ( $character->getPsySkill() ) {
-            $character->setCurrentPsy($character->getGeneralStats()->getPsyPoint()->getValue());
+            $character->setCurrentPsy($character->getGeneralStats()->getStat(PsyPoints::class)->getValue());
         }
 
         if ( $character->getMagicSkill() ) {
-            $character->setCurrentMP($character->getGeneralStats()->getMana()->getValue());
+            $character->setCurrentMP($character->getGeneralStats()->getStat(Mana::class)->getValue());
         }
 
         return $this;
@@ -120,35 +144,33 @@ class CharacterService
 
         $statValues = [];
 
-        foreach($statRanges as $statType => $rollData) {
+        foreach($statRanges as $statClass => $rollData) {
             $roll = new DiceRoll(...$rollData);
 
             $statValue = $roll->execute();
 
-            if ( $statValue > $statMaxValues[ $statType ] ) {
-                $statValue = $statMaxValues[ $statType ];
+            if ( $statValue > $statMaxValues[ $statClass ] ) {
+                $statValue = $statMaxValues[ $statClass ];
             }
 
-            $statValues[ StatsHelper::$BaseStatTypeToStatName[ $statType ] ] = $statValue;
+            $statValues[ $statClass ] = $statValue;
         }
 
         return $statValues;
     }
 
-    protected function applySpecialTraining(Character $character, array $applyTo = [])
+    protected function applySpecialTraining(Character $character, array $applyTo = []): void
     {
         $statRanges = $character->getClass()::getBaseStatRanges();
 
-        foreach( $applyTo as $statType ) {
-            $method = StatsHelper::$BaseStatTypeToStatName[ $statType ];
-
-            $roll = new DiceRoll(...$statRanges[ $statType ]);
+        foreach( $applyTo as $statClass ) {
+            $roll = new DiceRoll(...$statRanges[ $statClass ]);
 
             /** @var aStat $stat */
-            $stat = $character->getBaseStats()->{"get$method"}();
+            $stat = $character->getBaseStats()->getStat($statClass);
 
             // if allowed for special training
-            if ( !empty($statRanges[ $statType ][3]) && $stat->getOriginalValue() === $roll->getMax()) {
+            if ( !empty($statRanges[ $statClass ][3]) && $stat->getOriginalValue() === $roll->getMax()) {
                 $specialRoll = new DiceRoll([new D100()]);
 
                 $result = $specialRoll->execute();
@@ -169,7 +191,7 @@ class CharacterService
                     $modifier = new Modifier(-2, "Almost deadly Special training");
                 }
 
-                $modifier->setModifies($statType);
+                $modifier->setModifies($statClass);
 
                 $stat->addModifier($modifier);
             }
@@ -189,33 +211,38 @@ class CharacterService
         $baseStats   = $character->getBaseStats();
         $combatStats = $character->getBaseCombatStats();
 
-        $combatStats->addSequence(
-            $baseStats->getDexterity()->getRollModifierValue(),
+        $combatStats->addModifier(Sequence::class,
+            $baseStats->getStat(Dexterity::class)->getRollModifierValue(),
             "Base Dexterity bonus"
-        )->addSequence(
-            $baseStats->getSpeed()->getRollModifierValue(),
+        )->addModifier(Sequence::class,
+            $baseStats->getStat(Speed::class)->getRollModifierValue(),
             "Base Speed bonus"
-        )->addAttack(
-            $baseStats->getStrength()->getRollModifierValue(),
+        )->addModifier(Attack::class,
+            $baseStats->getStat(Strength::class)->getRollModifierValue(),
             "Base Strength bonus"
-        )->addAttack(
-            $baseStats->getDexterity()->getRollModifierValue(),
+        )->addModifier(Attack::class,
+            $baseStats->getStat(Dexterity::class)->getRollModifierValue(),
             "Base Dexterity bonus"
-        )->addAttack(
-            $baseStats->getSpeed()->getRollModifierValue(),
+        )->addModifier(Attack::class,
+            $baseStats->getStat(Speed::class)->getRollModifierValue(),
             "Base Speed bonus"
-        )->addDefense(
-            $baseStats->getDexterity()->getRollModifierValue(),
+        )->addModifier(Defense::class,
+            $baseStats->getStat(Dexterity::class)->getRollModifierValue(),
             "Base Dexterity bonus"
-        )->addDefense(
-            $baseStats->getSpeed()->getRollModifierValue(),
+        )->addModifier(Defense::class,
+            $baseStats->getStat(Speed::class)->getRollModifierValue(),
             "Base Speed bonus"
-        )->addAim(
-            $baseStats->getPerception()->getRollModifierValue(),
+        )->addModifier(Aim::class,
+            $baseStats->getStat(Perception::class)->getRollModifierValue(),
             "Base perception bonus"
-        )->addAim(
-            $baseStats->getDexterity()->getRollModifierValue(),
+        )->addModifier(Aim::class,
+            $baseStats->getStat(Dexterity::class)->getRollModifierValue(),
             "Base Dexterity bonus"
+        );
+
+        $combatStats->addModifier(Damage::class,
+            $baseStats->getStat(Strength::class)->getRollModifierValue(),
+            "Base Strength bonus"
         );
 
         return $this;
@@ -233,23 +260,23 @@ class CharacterService
     {
         $generalStats = $character->getGeneralStats();
 
-        $generalStats->addHealth(
-            $character->getBaseStats()->getVitality()->getRollModifierValue(),
+        $generalStats->addModifier(Health::class,
+            $character->getBaseStats()->getStat(Vitality::class)->getRollModifierValue(),
             "Vitality bonus"
-        )->addPainPoint(
-            $character->getBaseStats()->getStamina()->getRollModifierValue(),
+        )->addModifier(PainPoint::class,
+            $character->getBaseStats()->getStat(Stamina::class)->getRollModifierValue(),
             "Stamina bonus"
-        )->addPainPoint(
-            $character->getBaseStats()->getWillpower()->getRollModifierValue(),
+        )->addModifier(PainPoint::class,
+            $character->getBaseStats()->getStat(Willpower::class)->getRollModifierValue(),
             "Willpower bonus"
-        )->addPainPoint(
+        )->addModifier(PainPoint::class,
             $character->getClass()::getPainPointsPerLevel()->getMax(), //on level 1 they get the max
             "First level bonus"
-        )->addSkillPoint(
-            $character->getBaseStats()->getDexterity()->getRollModifierValue(),
+        )->addModifier(SkillPoint::class,
+            $character->getBaseStats()->getStat(Dexterity::class)->getRollModifierValue(),
             "Dexterity bonus"
-        )->addSkillPoint(
-            $character->getBaseStats()->getIntelligence()->getRollModifierValue(),
+        )->addModifier(SkillPoint::class,
+            $character->getBaseStats()->getStat(Intelligence::class)->getRollModifierValue(),
             "Intelligence bonus"
         );
 
@@ -257,7 +284,7 @@ class CharacterService
 
         if ( $psySkill instanceof Psy ) {
             if ( $psySkill instanceof PyarronPsy && $psySkill->getLearnedAt() === 1 ) {
-                $generalStats->setPsyPoint(
+                $generalStats->setStat(PsyPoints::class,
                     // if it was upgraded, then we need to just use the basic mastery stats
                     $psySkill->getUpgradedAt() === 0 ?
                         $psySkill->getBasePoints() :
@@ -265,14 +292,14 @@ class CharacterService
                 );
             }
             else {
-                $generalStats->setPsyPoint($psySkill->getBasePoints());
+                $generalStats->setStat(PsyPoints::class, $psySkill->getBasePoints());
             }
         }
 
         $magicSkill = $character->getMagicSkill();
 
         if ( $magicSkill instanceof Magic) {
-            $generalStats->setMana($magicSkill->getBasePoints());
+            $generalStats->setStat(Mana::class, $magicSkill->getBasePoints());
         }
 
         $this->classService->setCombatModifiers($character, 1);
@@ -283,9 +310,12 @@ class CharacterService
             for( $i = 1; $i < $character->getLevel(); $i++ ) {
                 if ($i > 1) {
                     //the first level is already given
-                    $generalStats->addPainPoint($painPointRoll->execute(), "Extra PainPoint on lvl {$i}");
+                    $generalStats->addModifier(PainPoint::class,
+                        $painPointRoll->execute(),
+                        "Extra PainPoint on lvl {$i}"
+                    );
 
-                    $generalStats->addSkillPoint(
+                    $generalStats->addModifier(SkillPoint::class,
                         $character->getClass()::getSkillPointPerLevel(),
                         "Extra SkillPoint on lvl {$i}"
                     );
@@ -293,10 +323,15 @@ class CharacterService
 
                 if ( $psySkill instanceof PyarronPsy ) {
                     if ( $i + 1 < $psySkill->getUpgradedAt() ) {
-                        $generalStats->addPsyPoint( $psySkill::$pointsPerLevel, "Extra psy on lvl {$i}" );
+                        $generalStats->addModifier(PsyPoints::class,
+                            $psySkill::$pointsPerLevel,
+                            "Extra psy on lvl {$i}"
+                        );
                     }
                     else {
-                        $generalStats->addPsyPoint($psySkill->getPointsPerLevel(), "Extra psy on lvl {$i}");
+                        $generalStats->addModifier(PsyPoints::class,
+                            $psySkill->getPointsPerLevel(),
+                            "Extra psy on lvl {$i}");
                     }
                 }
 
@@ -325,43 +360,59 @@ class CharacterService
         $mental = new MentalMagicResist(0);
 
         if ( $character->getPsySkill() ) {
-            $astral->setStatic($character->getGeneralStats()->getPsyPoint()->getValue());
-            $mental->setStatic($character->getGeneralStats()->getPsyPoint()->getValue());
+            $astral->setStatic($character->getGeneralStats()->getStat(PsyPoints::class)->getValue());
+            $mental->setStatic($character->getGeneralStats()->getStat(PsyPoints::class)->getValue());
         }
 
         $astral->setDynamic(0)
-               ->setSubConscious($character->getBaseStats()->getAstral()->getRollModifierValue())
+               ->setSubConscious($character->getBaseStats()->getStat(Astral::class)->getRollModifierValue())
                ->setMagic(0);
 
         $mental->setDynamic(0)
-               ->setSubConscious($character->getBaseStats()->getWillpower()->getRollModifierValue())
+               ->setSubConscious($character->getBaseStats()->getStat(Willpower::class)->getRollModifierValue())
                ->setMagic(0);
 
         $modifiers = $character->getRace()::getGeneralStatModifiers();
 
-        if ( array_key_exists(MagicResist::TYPE, $modifiers) ) {
-            $astral->setPerLevel($modifiers[ MagicResist::TYPE ]);
-            $mental->setPerLevel($modifiers[ MagicResist::TYPE ]);
+        if ( array_key_exists(MagicResist::class, $modifiers) ) {
+            $astral->setPerLevel($modifiers[ MagicResist::class ]);
+            $mental->setPerLevel($modifiers[ MagicResist::class ]);
         }
 
-        if ( array_key_exists(MagicResist::TYPE_ASTRAL, $modifiers) ) {
+        if ( array_key_exists(AstralMagicResist::class, $modifiers) ) {
             $astral->addModifier(
-                (new Modifier($modifiers[ MagicResist::TYPE_ASTRAL ]))
+                (new Modifier($modifiers[ AstralMagicResist::class ]))
                     ->setDescription("Racial bonus for being {$character->getRace()::getName()}")
-                    ->setModifies(MagicResist::TYPE_ASTRAL)
+                    ->setModifies(AstralMagicResist::class)
             );
         }
 
-        if ( array_key_exists(MagicResist::TYPE_MENTAL, $modifiers) ) {
+        if ( array_key_exists(MentalMagicResist::class, $modifiers) ) {
             $mental->addModifier(
-                (new Modifier($modifiers[ MagicResist::TYPE_MENTAL ]))
+                (new Modifier($modifiers[ MentalMagicResist::class ]))
                     ->setDescription("Racial bonus for being {$character->getRace()::getName()}")
-                    ->setModifies(MagicResist::TYPE_MENTAL)
+                    ->setModifies(MentalMagicResist::class)
             );
         }
 
         $character->setMagicResists($astral);
         $character->setMagicResists($mental);
+
+        return $this;
+    }
+
+    protected function addXpToCharacter(Character $character, int $xp): self
+    {
+        $nextAt = $character->getXpToNextLevel();
+
+        if ( $character->getXpToNextLevel() < $xp ) {
+            $this->setCharacterLevel($character, $character->getLevel() + 1);
+            $xp -= $nextAt;
+
+            $this->addXpToCharacter($character, $xp);
+        }
+
+        $character->setExperience($character->getExperience() + $xp);
 
         return $this;
     }
@@ -372,7 +423,7 @@ class CharacterService
 
         $xp = 0;
         $i  = 1;
-        $maxTable = count($xpTable);
+        $maxTable = count($xpTable) - 1;
 
         while ( $i < $level && $i < $maxTable ) {
             $xp = $xpTable[ $i ];

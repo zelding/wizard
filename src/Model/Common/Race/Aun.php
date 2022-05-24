@@ -8,8 +8,7 @@ use App\Model\Common\InventorySlotProvider;
 use App\Model\Common\Skill\aSkill;
 use App\Model\Common\Skill\Combat\WeaponHandling;
 use App\Model\Common\Stats\aStat;
-use App\Model\Common\Stats\Base\{
-    Astral,
+use App\Model\Common\Stats\Base\{Astral,
     Beauty,
     Dexterity,
     Intelligence,
@@ -32,27 +31,27 @@ class Aun extends aRace
 
     /** @var aStat[] */
     protected static array $baseStatModifiers = [
-        Strength::TYPE     => 1,
-        Stamina::TYPE      => 2,
-        Dexterity::TYPE    => 4,
-        Speed::TYPE        => 1,
-        Vitality::TYPE     => 1,
-        Beauty::TYPE       => -5,
-        Intelligence::TYPE => -1,
-        Willpower::TYPE    => -1,
-        Astral::TYPE       => -2,
-        Perception::TYPE   => 1
+        Strength::class     => 1,
+        Stamina::class      => 2,
+        Dexterity::class    => 4,
+        Speed::class        => 1,
+        Vitality::class     => 1,
+        Beauty::class       => -5,
+        Intelligence::class => -1,
+        Willpower::class    => -1,
+        Astral::class       => -2,
+        Perception::class   => 1
     ];
 
     /** @var aStat[] */
     protected static array $combatStatModifiers = [
-        Aim::TYPE     => 30,
-        Defense::TYPE => 15
+        Aim::class     => 30,
+        Defense::class => 15
     ];
 
     /** @var aStat[] */
     protected static array $generalStatModifiers = [
-        MagicResist::TYPE => 4
+        MagicResist::class => 4
     ];
 
     protected static array $defaultInventorySlots = [
@@ -68,16 +67,16 @@ class Aun extends aRace
     ];
 
     protected static array $maxBaseStats = [
-        Strength::TYPE     => 19,
-        Stamina::TYPE      => 20,
-        Dexterity::TYPE    => 22,
-        Speed::TYPE        => 19,
-        Vitality::TYPE     => 19,
-        Beauty::TYPE       => 13,
-        Intelligence::TYPE => 17,
-        Willpower::TYPE    => 17,
-        Astral::TYPE       => 16,
-        Perception::TYPE   => 19
+        Strength::class     => 19,
+        Stamina::class      => 20,
+        Dexterity::class    => 22,
+        Speed::class        => 19,
+        Vitality::class     => 19,
+        Beauty::class       => 13,
+        Intelligence::class => 17,
+        Willpower::class    => 17,
+        Astral::class       => 16,
+        Perception::class   => 19
     ];
 
     protected static bool $playable = true;

@@ -10,7 +10,6 @@
 
 namespace App\Service;
 
-use App\Helper\Stats as StatsHelper;
 use App\Model\Common\Character;
 
 class RaceService
@@ -43,11 +42,12 @@ class RaceService
     {
         $raceBonuses = $character->getRace()::getBaseStatModifiers();
 
-        if ( !empty($raceBonuses) ) {
-            foreach($raceBonuses as $type => $bonus) {
+        //die("<pre>".print_r($character, true));
 
-                $method = StatsHelper::$BaseStatTypeToStatName[ $type ];
-                $character->getBaseStats()->{"add{$method}"}(
+        if ( !empty($raceBonuses) ) {
+            foreach($raceBonuses as $class => $bonus) {
+
+                $character->getBaseStats()->addModifier($class,
                     $bonus,
                     "Racial bonus for being {$character->getRace()::getName()}"
                 );
@@ -67,9 +67,9 @@ class RaceService
         $raceBonuses = $character->getRace()::getCombatStatModifiers();
 
         if ( !empty($raceBonuses) ) {
-            foreach($raceBonuses as $type => $bonus) {
-                $method = StatsHelper::$CombatStatTypeToStatName[ $type ];
-                $character->getBaseCombatStats()->{"add{$method}"}(
+            foreach($raceBonuses as $statClass => $bonus) {
+                $character->getBaseCombatStats()->addModifier(
+                    $statClass,
                     $bonus,
                     "Racial bonus for being {$character->getRace()::getName()}"
                 );

@@ -21,17 +21,23 @@ use App\Model\Common\Stats\Base\Strength;
 use App\Model\Common\Stats\Base\Vitality;
 use App\Model\Common\Stats\Base\Willpower;
 use App\Model\Common\Stats\Combat\Aim;
+use App\Model\Common\Stats\Combat\Armor;
+use App\Model\Common\Stats\Combat\ArmorPenetration;
 use App\Model\Common\Stats\Combat\Attack;
+use App\Model\Common\Stats\Combat\Damage;
 use App\Model\Common\Stats\Combat\Defense;
 use App\Model\Common\Stats\Combat\Sequence;
 
 final class Stats
 {
     public static array $CombatStatTypeToStatName = [
-        Sequence::TYPE => Sequence::NAME,
-        Attack::TYPE   => Attack::NAME,
-        Defense::TYPE  => Defense::NAME,
-        Aim::TYPE      => Aim::NAME
+        Sequence::TYPE         => Sequence::NAME,
+        Attack::TYPE           => Attack::NAME,
+        Defense::TYPE          => Defense::NAME,
+        Aim::TYPE              => Aim::NAME,
+        Damage::TYPE           => Damage::NAME,
+        Armor::TYPE            => Armor::NAME,
+        ArmorPenetration::TYPE => ArmorPenetration::NAME
     ];
 
     public static array $BaseStatTypeToStatName = [

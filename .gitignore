@@ -23,7 +23,6 @@
 !/composer.lock
 
 ###> phpunit/phpunit ###
-/phpunit.xml
 .phpunit.result.cache
 ###< phpunit/phpunit ###
 
@@ -34,5 +33,5 @@
 /config/secrets/prod/prod.decrypt.private.php
 /public/bundles/
 /var/
-/vendor/
+/phpunit-html
 ###< symfony/framework-bundle ###

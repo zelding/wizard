@@ -29,11 +29,6 @@ class PyarronPsy extends Psy
     /** @var int The level when the mastery was updated */
     protected int $upgradedAt = 0;
 
-    public function getName(): string
-    {
-        return self::$name;
-    }
-
     public function getBasePoints() : int
     {
         if ( $this->mastery === self::MASTERY_BASIC ) {

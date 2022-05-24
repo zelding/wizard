@@ -39,5 +39,5 @@ class ShortSword extends Weapon
     /** @var string name */
     protected string $name = "Short sword";
 
-    protected static array $requires          = [Strength::TYPE => 10];
+    protected static array $requires          = [Strength::class => 10];
 }

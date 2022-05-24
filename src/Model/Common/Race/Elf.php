@@ -33,29 +33,29 @@ class Elf extends aRace
     protected static string $name      = "Elf";
     /** @var int[]  */
     protected static array $baseStatModifiers = [
-        Strength::TYPE   => -2,
-        Stamina::TYPE    => -1,
-        Speed::TYPE      =>  1,
-        Dexterity::TYPE  =>  1,
-        Beauty::TYPE     =>  1,
-        Perception::TYPE =>  2
+        Strength::class   => -2,
+        Stamina::class    => -1,
+        Speed::class      =>  1,
+        Dexterity::class  =>  1,
+        Beauty::class     =>  1,
+        Perception::class =>  2
     ];
 
     protected static array $combatStatModifiers = [
-        Aim::TYPE => 30
+        Aim::class => 30
     ];
 
     protected static array $maxBaseStats        = [
-        Strength::TYPE     => 18,
-        Stamina::TYPE      => 18,
-        Dexterity::TYPE    => 21,
-        Speed::TYPE        => 21,
-        Vitality::TYPE     => 18,
-        Beauty::TYPE       => 21,
-        Intelligence::TYPE => 18,
-        Willpower::TYPE    => 18,
-        Astral::TYPE       => 18,
-        Perception::TYPE   => 20
+        Strength::class     => 18,
+        Stamina::class      => 18,
+        Dexterity::class    => 21,
+        Speed::class        => 21,
+        Vitality::class     => 18,
+        Beauty::class       => 21,
+        Intelligence::class => 18,
+        Willpower::class    => 18,
+        Astral::class       => 18,
+        Perception::class   => 20
     ];
 
     protected static bool $playable            = true;

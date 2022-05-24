@@ -10,13 +10,10 @@
 
 namespace App\Model\Common\Race;
 
-use App\Model\Common\{
-    InventorySlotProvider,
-    SkillProvider};
+use App\Model\Common\{InventorySlotProvider, SkillProvider};
 use App\Model\Common\Skill\aSkill;
 use App\Model\Common\Stats\aStat;
-use App\Model\Common\Stats\Base\{
-    Astral,
+use App\Model\Common\Stats\Base\{Astral,
     Beauty,
     Dexterity,
     Intelligence,
@@ -57,16 +54,16 @@ abstract class aRace implements SkillProvider, InventorySlotProvider
     ];
 
     protected static array $maxBaseStats      = [
-        Strength::TYPE     => 18,
-        Stamina::TYPE      => 18,
-        Dexterity::TYPE    => 18,
-        Speed::TYPE        => 18,
-        Vitality::TYPE     => 18,
-        Beauty::TYPE       => 18,
-        Intelligence::TYPE => 18,
-        Willpower::TYPE    => 18,
-        Astral::TYPE       => 18,
-        Perception::TYPE   => 18
+        Strength::class     => 18,
+        Stamina::class      => 18,
+        Dexterity::class    => 18,
+        Speed::class        => 18,
+        Vitality::class     => 18,
+        Beauty::class       => 18,
+        Intelligence::class => 18,
+        Willpower::class    => 18,
+        Astral::class       => 18,
+        Perception::class   => 18
     ];
 
     protected static bool $playable          = false;

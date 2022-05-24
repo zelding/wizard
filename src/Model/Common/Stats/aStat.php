@@ -9,6 +9,7 @@
 namespace App\Model\Common\Stats;
 
 use App\Exception\AppException;
+use App\Model\Mechanics\Dice\DiceRoll;
 
 /**
  * Class aStat
@@ -17,7 +18,7 @@ use App\Exception\AppException;
  *
  * @package App\Model\Common\Stats
  */
-abstract class aStat
+abstract class aStat implements \Stringable
 {
     public const TYPE = "";
 
@@ -25,19 +26,63 @@ abstract class aStat
 
     public const BASE_STAT = true;
 
-    /**
-     * @var int
-     * @readonly
-     */
-    protected int $originalValue = 0;
-    /** @var int */
-    protected int $baseValue     = 0;
+    protected readonly int|DiceRoll $originalValue;
+    protected int|DiceRoll          $baseValue;
+
+    private bool $isRoll;
+
     /** @var Modifier[]  */
     protected array $modifiers     = [];
 
-    public function __construct(int $value)
+    public function __construct(int|array $value)
     {
-        $this->originalValue = $this->baseValue = $value;
+        $this->isRoll = is_array($value);
+
+        if ( $this->isRoll ) {
+            $value = new DiceRoll(...$value);
+            $this->originalValue = clone $value;
+        }
+        else {
+            $this->originalValue = $value;
+        }
+
+        $this->baseValue = $value;
+    }
+
+    public function __toString(): string
+    {
+        /** @see DiceRoll::__ToString */
+        return $this->baseValue instanceof DiceRoll ?  (string) $this->baseValue : $this->baseValue;
+    }
+
+    /** @return string[] */
+    public function getModifierTexts(): array
+    {
+        /** @see DiceRoll::__ToString
+        return $this->baseValue->getModifier() instanceof DiceRoll ?
+            (string) $this->baseValue->getModifier()
+            : implode(' ',);*/
+
+        $strings = [];
+
+        foreach($this->getModifiers() as $modifier) {
+            $strings[] = "+".str_pad($modifier->getValue(), 2, pad_type: STR_PAD_LEFT)." {$modifier->getDescription()}";
+        }
+
+        return $strings;
+    }
+
+    /**
+     * @return int
+     * @throws AppException
+     */
+    final public function getRollModifierValue() : int
+    {
+        if ( static::BASE_STAT ) {
+            return $this->getValue() > 10 ? $this->getValue() - 10 : 0;
+        }
+
+        throw new AppException("Only base stats have roll modifiers");
     }
 
     /**
@@ -45,25 +90,12 @@ abstract class aStat
      */
     public function getValue() : int
     {
-        return $this->baseValue + $this->getModifierValue();
+        return $this->getBaseValue() + $this->getModifierValue();
     }
 
     public function getPermanentValue() : int
     {
-        return $this->baseValue += $this->getPermanentModifierValue();
-    }
-
-    /**
-     * @return int
-     * @throws AppException
-     */
-    public function getRollModifierValue() : int
-    {
-        if ( static::BASE_STAT ) {
-            return $this->getValue() > 10 ? $this->getValue() - 10 : 0;
-        }
-
-        throw new AppException("Only base stats have roll modifiers");
+        return $this->getBaseValue() + $this->getPermanentModifierValue();
     }
 
     public function getName() : string
@@ -77,11 +109,11 @@ abstract class aStat
      */
     public function getModifierValue() : int
     {
-        if ( empty($this->modifiers) ) {
-            return 0;
-        }
-
         $sum = 0;
+
+        if ( empty($this->modifiers) ) {
+            return $sum;
+        }
 
         foreach($this->modifiers as $modifier) {
             //recursion
@@ -93,11 +125,11 @@ abstract class aStat
 
     public function getPermanentModifierValue() : int
     {
-        if ( empty($this->modifiers) ) {
-            return 0;
-        }
+        $sum = $this->getModifierValue();
 
-        $sum = 0;
+        if ( empty($this->modifiers) ) {
+            return $sum;
+        }
 
         foreach($this->modifiers as $modifier) {
             //recursion
@@ -116,7 +148,7 @@ abstract class aStat
      */
     public function getOriginalValue() : int
     {
-        return $this->originalValue;
+        return $this->isRoll ? $this->originalValue->getAvg() : $this->originalValue;
     }
 
     /**
@@ -124,7 +156,7 @@ abstract class aStat
      */
     public function getBaseValue() : int
     {
-        return $this->baseValue;
+        return $this->isRoll ? $this->baseValue->getAvg() :$this->baseValue;
     }
 
     /**
@@ -164,11 +196,11 @@ abstract class aStat
      */
     public function addModifier(Modifier $modifier) : aStat
     {
-        if ( $modifier->getModifies() === static::TYPE ) {
+        if ( $modifier->getModifies() === static::class ) {
             $this->modifiers[] = $modifier;
         }
         else {
-            throw new AppException('Modifier type mismatch. Expected '.static::TYPE.', got '.$modifier::TYPE.'.');
+            throw new AppException('Modifier type mismatch. Expected '.static::class.', got '.$modifier::class.'.');
         }
 
         return $this;

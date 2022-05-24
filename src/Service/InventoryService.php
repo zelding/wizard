@@ -12,7 +12,7 @@ namespace App\Service;
 
 
 use App\Exception\AppException;
-use App\Helper\Stats;
+use App\Exception\GameRuleException;
 use App\Model\Common\Character;
 use App\Model\Common\InventorySlotProvider;
 use App\Model\Common\Item\Equipment;
@@ -20,6 +20,7 @@ use App\Model\Common\Item\Equippable;
 use App\Model\Common\Item\Inventory;
 use App\Model\Common\Item\Item;
 use App\Model\Common\Race\aRace;
+use App\Model\Common\Stats\Base\Strength;
 
 class InventoryService implements InventorySlotProvider
 {
@@ -48,7 +49,9 @@ class InventoryService implements InventorySlotProvider
 
     public function setUpInventories(Character  $character) : self
     {
-        $inv = new Inventory($character->getBaseStats()->getStrength()->getRollModifierValue() + 10);
+        $inv = new Inventory(
+            $character->getBaseStats()->getStat(Strength::class)->getRollModifierValue() + 10
+        );
 
         $eq = $this->createEquipmentForRace($character->getRace());
 
@@ -73,6 +76,10 @@ class InventoryService implements InventorySlotProvider
         return $eq;
     }
 
+    /**
+     * @throws AppException
+     * @throws GameRuleException
+     */
     public function equipItem(Character $character, Item $item) : self
     {
         $inventory = $character->getInventory();
@@ -85,15 +92,15 @@ class InventoryService implements InventorySlotProvider
 
             if ( !empty($item->requires()) ) {
 
-                foreach( $item->requires() as $statType => $min ) {
+                foreach( $item->requires() as $statClass => $min ) {
 
-                    $currentValue = $character->getBaseStats()->getAllStats()[ $statType ]->getValue();
+                    $currentValue = $character->getBaseStats()->getAllStats()[ $statClass ]->getValue();
 
                     if( $currentValue < $min) {
 
-                        $statName = Stats::$BaseStatTypeToStatName[ $statType ];
+                        //$statName = $statClass::NAME;
 
-                        throw new AppException("Unable to equip, Minimum {$statName} of {$min} not reached; available: {$currentValue}");
+                        throw new GameRuleException("Unable to equip, Minimum {$statClass} of {$min} not reached; available: {$currentValue}");
                     }
 
                 }

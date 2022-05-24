@@ -11,6 +11,7 @@
 namespace App\Model\Common\Stats\General;
 
 
+use App\Exception\AppException;
 use App\Model\Common\Stats\aStat;
 use App\Model\Common\Stats\Base\BaseStats;
 
@@ -19,37 +20,26 @@ use App\Model\Common\Stats\Base\BaseStats;
  *
  * @package App\Model\Common\Stats\General
  *
- * @method aStat getHealth()
- * @method GeneralStats addHealth(int $hp, $description = "")
- * @method GeneralStats setHealth(int $hp)
- *
- * @method aStat getPainPoint()
- * @method GeneralStats addPainPoint(int $pp, $description = "")
- * @method GeneralStats setPainPoint(int $pp)
- *
- * @method aStat getPsyPoint()
- * @method GeneralStats addPsyPoint(int $pp, $description = "")
- * @method GeneralStats setPsyPoint(int $pp)
- *
- * @method aStat getMana()
- * @method GeneralStats addMana(int $mp, $description = "")
- * @method GeneralStats setMana(int $mp)
- *
- * @method aStat getSkillPoint()
- * @method GeneralStats addSkillPoint(int $sp, $description = "")
- * @method GeneralStats setSkillPoint(int $sp)
  */
 class GeneralStats extends BaseStats
 {
     public static array $baseStats = [
-        Health::NAME    => Health::class,
-        PainPoint::NAME => PainPoint::class,
-        PsyPoints::NAME => PsyPoints::class,
-        Mana::NAME      => Mana::class,
-
+        Health::NAME     => Health::class,
+        PainPoint::NAME  => PainPoint::class,
+        PsyPoints::NAME  => PsyPoints::class,
+        Mana::NAME       => Mana::class,
         SkillPoint::NAME => SkillPoint::class
     ];
 
-    /** @var GeneralStats[]  */
-    protected array $stats = [];
+    public function getStat(string $statClass) : aStat
+    {
+        //die("<pre>".print_r($this->stats, true));
+
+        if ( array_key_exists($statClass, $this->getAllStats()) ) {
+            return $this->stats[ $statClass ];
+        }
+        else {
+            throw new AppException("{$statClass} is not yet defined");
+        }
+    }
 }

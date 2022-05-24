@@ -11,9 +11,8 @@
 namespace App\Service;
 
 
-use App\Helper\Stats;
-use App\Helper\Stats as StatsHelper;
 use App\Model\Common\Character;
+use App\Model\Common\CharacterClass\aClass;
 use App\Model\Common\Stats\aStat;
 use App\Model\Common\Stats\Combat\Aim;
 use App\Model\Common\Stats\Combat\Attack;
@@ -24,11 +23,20 @@ use App\Model\Common\Stats\General\Mana;
 use App\Model\Common\Stats\General\PainPoint;
 use App\Model\Common\Stats\General\PsyPoints;
 use App\Model\Common\Stats\General\SkillPoint;
+use App\Model\Mechanics\LevelUp\MandatoryStatIncrease;
 use JetBrains\PhpStorm\ArrayShape;
 use JetBrains\PhpStorm\Pure;
 
 class ClassService
 {
+    public function createClass(string $class, array $attributes = []): aClass
+    {
+        /** @var aClass $class */
+        $class = new $class($attributes);
+
+        return $class;
+    }
+
     public function applyClassBonuses(Character $character) : self
     {
         $character->setBaseCombatStats($this->generateBaseCombatStats($character))
@@ -41,23 +49,22 @@ class ClassService
     {
         $class       = $character->getClass();
         $combatStats = $character->getBaseCombatStats();
+        $statsPerLevel = $class::getCombatModifiersPerLevel();
 
-        /** @var int $combatStatModifiersPerLevel */
-        /** @var aStat[] $requiredStats */
-        [$combatStatModifiersPerLevel, $requiredStats] = $class::getCombatModifiersPerLevel();
+        $character->addAvailableCombatModifier($statsPerLevel->getTotalPerLevel());
 
-        $character->addAvailableCombatModifier($combatStatModifiersPerLevel);
+        $mcsm = $statsPerLevel->getMandatoryStats();
 
-        foreach($requiredStats as $statType => $requiredAmount) {
+        foreach($mcsm as $required) {
+            /** @see MandatoryStatIncrease::__ToString */
+            $classname = (string)$required;
 
-            $combatStatName = Stats::$CombatStatTypeToStatName[ $statType ];
-
-            $combatStats->{"add{$combatStatName}"}(
-                $requiredAmount,
+            $combatStats->addModifier($classname,
+                $required->getAmount(),
                 "Mandatory Combat modifier bonus in level {$lvl}"
             );
 
-            $character->useAvailableCombatModifier($requiredAmount);
+            $character->useAvailableCombatModifier($required->getAmount());
         }
 
         return $this;
@@ -72,20 +79,18 @@ class ClassService
      */
     #[Pure]
     #[ArrayShape([
-        Sequence::NAME => "int",
-        Attack::NAME   => "int",
-        Defense::NAME  => "int",
-        Aim::NAME      => "int"
+        Sequence::class => "int",
+        Attack::class   => "int",
+        Defense::class  => "int",
+        Aim::class      => "int"
     ])]
     protected function generateBaseCombatStats(Character $character) : array
     {
         $class = $character->getClass();
         $stats = [];
 
-        foreach($class::getModifiers() as $type => $value) {
-            $name = StatsHelper::$CombatStatTypeToStatName[ $type ];
-
-            $stats[ $name ] = $value;
+        foreach($class::getModifiers() as $class => $value) {
+             $stats[ $class ] = $value;
         }
 
         return $stats;
@@ -99,22 +104,22 @@ class ClassService
      * @return array
      */
     #[ArrayShape([
-        Health::NAME     => "int",
-        PainPoint::NAME  => "int",
-        SkillPoint::NAME => "int",
-        PsyPoints::NAME  => "int",
-        Mana::NAME       => "int"
+        Health::class     => "int",
+        PainPoint::class  => "int",
+        SkillPoint::class => "int",
+        PsyPoints::class  => "int",
+        Mana::class       => "int"
     ])]
     protected function generateGeneralStats(Character $character) : array
     {
         $class = $character->getClass();
 
         return [
-            Health::NAME     => $class::getHpBase(),
-            PainPoint::NAME  => $class::getPpBase(),
-            SkillPoint::NAME => $class::getSkillPointBase(),
-            PsyPoints::NAME  => 0,
-            Mana::NAME       => 0
+            Health::class     => $class::getHpBase(),
+            PainPoint::class  => $class::getPpBase(),
+            SkillPoint::class => $class::getSkillPointBase(),
+            PsyPoints::class  => 0,
+            Mana::class       => 0
         ];
     }
 }

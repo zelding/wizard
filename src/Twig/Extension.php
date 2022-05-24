@@ -10,7 +10,9 @@
 
 namespace App\Twig;
 
+use App\Model\Common\Stats\Combat\BaseCombatStats;
 use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 use Twig\TwigTest;
 
 class Extension extends AbstractExtension
@@ -22,13 +24,49 @@ class Extension extends AbstractExtension
         ];
     }
 
+    public function getFunctions(): array
+    {
+        return [
+            new TwigFunction('cs_names', [$this, 'getCombatStats']),
+            new TwigFunction('call_static', [$this, 'staticHelper'])
+        ];
+    }
+
+    #region Tests
+
     /**
-     * @param mixed  $var
+     * @param object $var
      * @param string $instance
      * @return bool
      */
-    public function isInstanceof($var, string $instance): bool
+    public function isInstanceof(object $var, string $instance): bool
     {
         return $var instanceof $instance;
     }
+
+    #endregion
+
+    #region Functions
+
+    public function getCombatStats(): array
+    {
+        //$data = array_flip(Stats::$CombatStatTypeToStatName);
+
+        return array_keys(BaseCombatStats::$baseStats);
+    }
+
+    public function staticHelper(string $class, string $method, ...$args)
+    {
+        if ( !class_exists($class) ) {
+            throw new \RuntimeException("$class doesn't exists");
+        }
+
+        if (!method_exists($class, $method)) {
+            throw new \RuntimeException("$class::$method doesn't exists");
+        }
+
+        return forward_static_call_array([$class, $method], $args);
+    }
+
+    #endregion
 }

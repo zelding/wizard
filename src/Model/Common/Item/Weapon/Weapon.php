@@ -13,6 +13,7 @@ namespace App\Model\Common\Item\Weapon;
 
 use App\Model\Common\Item\Equippable;
 use App\Model\Common\Item\Item;
+use App\Model\Common\Stats\aStat;
 use App\Model\Mechanics\Dice\D4;
 use App\Model\Mechanics\Dice\DiceRoll;
 
@@ -48,7 +49,7 @@ class Weapon extends Item implements Equippable
     /** @var int base defense bonus */
     protected static int $baseDefense         = 0;
 
-    /** @var int[] base damage range */
+    /** @var array base damage range */
     protected static array $baseDamage          = [[D4::class], 0, 1];
 
     /** @var int Amount of armor ignored */
@@ -57,6 +58,9 @@ class Weapon extends Item implements Equippable
     /** @var int Default price in copper */
     protected static int $basePrice           = 10;
 
+    /**
+     * @var array{aStat::type => int, aStat::type => int, aStat::type => int ...}
+     */
     protected static array $requires          = [];
 
     /** @var string name */

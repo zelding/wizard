@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Model\Common\CharacterClass\Warrior;
-use App\Model\Common\Race\Aun;
+use App\Model\Common\Race\Human;
 use App\Service\CharacterService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,7 +12,7 @@ class DefaultController extends AbstractController
 {
     public function indexAction(CharacterService $characterService) : Response
     {
-        $player = $characterService->generateCharacter(new Aun(), new Warrior());
+        $player = $characterService->generateCharacter(new Human(), new Warrior());
 
         dump($player);
 

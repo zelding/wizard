@@ -7,7 +7,6 @@ namespace App\Service;
 use App\Model\Common\CharacterClass\aClass;
 use App\Model\Common\Race\aRace;
 use App\Model\Common\Skill\aSkill;
-use App\Model\Common\Skill\Combat\WeaponHandling;
 use App\Model\Common\Skill\Science\Psy;
 use App\Model\Common\Skill\Science\PyarronPsy;
 use App\Model\Common\Skill\Social\Language;
@@ -36,7 +35,7 @@ class SkillService
                     $skill->setRelatesTo($langData["for"]);
                 }
             }
-            elseif ( $skill instanceof WeaponHandling && is_array($skillData["relations"]) ) {
+            elseif ( is_array($skillData) && isset($skillData["relations"]) && isset($skillData["mastery"]) ) {
                 // If multiple of the same type are present like weapon handling or language
                 for($i = 0; $i < count($skillData["relations"]); $i++) {
                     $skill = new $class($skillData["mastery"]);

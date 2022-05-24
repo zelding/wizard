@@ -14,8 +14,7 @@ namespace App\Model\Common\CharacterClass;
 use App\Model\Common\Skill\aSkill;
 use App\Model\Common\SkillProvider;
 use App\Model\Common\Stats\aStat;
-use App\Model\Common\Stats\Base\{
-    Astral,
+use App\Model\Common\Stats\Base\{Astral,
     Beauty,
     Dexterity,
     Intelligence,
@@ -27,14 +26,15 @@ use App\Model\Common\Stats\Base\{
     Willpower};
 use App\Model\Common\Stats\Combat\Aim;
 use App\Model\Common\Stats\Combat\Attack;
+use App\Model\Common\Stats\Combat\Damage;
 use App\Model\Common\Stats\Combat\Defense;
 use App\Model\Common\Stats\Combat\Sequence;
 use App\Model\Mechanics\Dice\aDice;
 use App\Model\Mechanics\Dice\D4;
 use App\Model\Mechanics\Dice\D6;
 use App\Model\Mechanics\Dice\DiceRoll;
+use App\Model\Mechanics\LevelUp\CombatStatsPerLevel;
 use JetBrains\PhpStorm\ArrayShape;
-use JetBrains\PhpStorm\Pure;
 
 abstract class aClass implements SkillProvider
 {
@@ -48,41 +48,42 @@ abstract class aClass implements SkillProvider
     protected static string $name      = "";
 
     #[ArrayShape([
-        Sequence::TYPE => "int",
-        Attack::TYPE   => "int",
-        Defense::TYPE  => "int",
-        Aim::TYPE      => "int"
+        Sequence::class => "int",
+        Attack::class   => "int",
+        Defense::class  => "int",
+        Aim::class      => "int",
+        Damage::class   => "array",
     ])]
     protected static array $modifiers = [];
 
     /**
-     * aDice[], modifier, number of rolls (highest counts), allow special training
+     * aDice[], modifier, number of rolls (the highest counts), allow special training
      *
      * @var array[]
      */
     #[ArrayShape([
-        Strength::TYPE     => [DiceRoll::class, "int", "int", "bool"],
-        Stamina::TYPE      => [DiceRoll::class, "int", "int", "bool"],
-        Dexterity::TYPE    => [DiceRoll::class, "int", "int", "bool"],
-        Speed::TYPE        => [DiceRoll::class, "int", "int", "bool"],
-        Vitality::TYPE     => [DiceRoll::class, "int", "int", "bool"],
-        Beauty::TYPE       => [DiceRoll::class, "int", "int", "bool"],
-        Intelligence::TYPE => [DiceRoll::class, "int", "int", "bool"],
-        Willpower::TYPE    => [DiceRoll::class, "int", "int", "bool"],
-        Astral::TYPE       => [DiceRoll::class, "int", "int", "bool"],
-        Perception::TYPE   => [DiceRoll::class, "int", "int", "bool"]
+        Strength::class     => [DiceRoll::class, "int", "int", "bool"],
+        Stamina::class      => [DiceRoll::class, "int", "int", "bool"],
+        Dexterity::class    => [DiceRoll::class, "int", "int", "bool"],
+        Speed::class        => [DiceRoll::class, "int", "int", "bool"],
+        Vitality::class     => [DiceRoll::class, "int", "int", "bool"],
+        Beauty::class       => [DiceRoll::class, "int", "int", "bool"],
+        Intelligence::class => [DiceRoll::class, "int", "int", "bool"],
+        Willpower::class    => [DiceRoll::class, "int", "int", "bool"],
+        Astral::class       => [DiceRoll::class, "int", "int", "bool"],
+        Perception::class   => [DiceRoll::class, "int", "int", "bool"]
     ])]
     protected static array $baseStatRanges = [
-        Strength::TYPE     => [ [D6::class], 0, 1, true ],
-        Stamina::TYPE      => [ [D6::class], 0, 1, true ],
-        Dexterity::TYPE    => [ [D6::class], 0, 1, true ],
-        Speed::TYPE        => [ [D6::class], 0, 1, true ],
-        Vitality::TYPE     => [ [D6::class], 0, 1, true ],
-        Beauty::TYPE       => [ [D6::class], 0, 1, true ],
-        Intelligence::TYPE => [ [D6::class], 0, 1, true ],
-        Willpower::TYPE    => [ [D6::class], 0, 1, true ],
-        Astral::TYPE       => [ [D6::class], 0, 1, true ],
-        Perception::TYPE   => [ [D6::class], 0, 1, true ]
+        Strength::class     => [ [D6::class], 0, 1, true ],
+        Stamina::class      => [ [D6::class], 0, 1, true ],
+        Dexterity::class    => [ [D6::class], 0, 1, true ],
+        Speed::class        => [ [D6::class], 0, 1, true ],
+        Vitality::class     => [ [D6::class], 0, 1, true ],
+        Beauty::class       => [ [D6::class], 0, 1, true ],
+        Intelligence::class => [ [D6::class], 0, 1, true ],
+        Willpower::class    => [ [D6::class], 0, 1, true ],
+        Astral::class       => [ [D6::class], 0, 1, true ],
+        Perception::class   => [ [D6::class], 0, 1, true ]
     ];
 
     protected static int $skillPointBase     = 0;
@@ -93,7 +94,7 @@ abstract class aClass implements SkillProvider
 
     protected static int $ppBase             = 1;
 
-    /** @var int[] min, max */
+    /** @var array min, max */
     #[ArrayShape([
         [aDice::class, aDice::class, aDice::class],   // dices to roll
         "int",                                        // flat modifier
@@ -104,10 +105,10 @@ abstract class aClass implements SkillProvider
     #[ArrayShape([
         0 => "int",                     // points per level
         1 => [                          // mandatory usage per level per stat
-            Sequence::TYPE => "int",
-            Attack::TYPE   => "int",
-            Defense::TYPE  => "int",
-            Aim::TYPE      => "int"
+            Sequence::class => "int",
+            Attack::class   => "int",
+            Defense::class  => "int",
+            Aim::class      => "int"
         ]
     ])]
     protected static array $combatModifiersPerLevel = [0, []];
@@ -193,18 +194,17 @@ abstract class aClass implements SkillProvider
     /**
      * @return DiceRoll
      */
-    #[Pure]
     public static function getPainPointsPerLevel(): DiceRoll
     {
         return new DiceRoll(...static::$painPointsPerLevel);
     }
 
     /**
-     * @return array
+     * @return CombatStatsPerLevel
      */
-    public static function getCombatModifiersPerLevel(): array
+    public static function getCombatModifiersPerLevel()
     {
-        return static::$combatModifiersPerLevel;
+        return new CombatStatsPerLevel(static::$combatModifiersPerLevel);
     }
 
     /**

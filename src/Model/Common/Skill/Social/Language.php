@@ -31,10 +31,10 @@ class Language extends aSkill
     /** @var int */
     protected int $level   = 1;
 
-    public function getName() : string
+    /*public function getName() : string
     {
         return self::$name.": ".$this->getRelatesTo()." (".$this->getLevel().")";
-    }
+    }*/
 
     public function setMastery(string $mastery): aSkill
     {

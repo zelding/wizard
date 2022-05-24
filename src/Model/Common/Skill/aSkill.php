@@ -12,7 +12,10 @@ namespace App\Model\Common\Skill;
 
 
 use App\Model\Common\Stats\Combat\Aim;
+use App\Model\Common\Stats\Combat\Armor;
+use App\Model\Common\Stats\Combat\ArmorPenetration;
 use App\Model\Common\Stats\Combat\Attack;
+use App\Model\Common\Stats\Combat\Damage;
 use App\Model\Common\Stats\Combat\Defense;
 use App\Model\Common\Stats\Combat\Sequence;
 use JetBrains\PhpStorm\ArrayShape;
@@ -48,16 +51,22 @@ abstract class aSkill
      */
     #[ArrayShape([
         self::MASTERY_BASIC  => [
-            Sequence::TYPE => "int",
-            Attack::TYPE   => "int",
-            Defense::TYPE  => "int",
-            Aim::TYPE      => "int"
+            Sequence::TYPE         => "int",
+            Attack::TYPE           => "int",
+            Defense::TYPE          => "int",
+            Aim::TYPE              => "int",
+            Damage::TYPE           => "array", //  [[D6::class], 0, 1],
+            Armor::TYPE            => "int",
+            ArmorPenetration::TYPE => "int"
         ],
         self::MASTERY_MASTER => [
-            Sequence::TYPE => "int",
-            Attack::TYPE   => "int",
-            Defense::TYPE  => "int",
-            Aim::TYPE      => "int"
+            Sequence::TYPE         => "int",
+            Attack::TYPE           => "int",
+            Defense::TYPE          => "int",
+            Aim::TYPE              => "int",
+            Damage::TYPE           => "array", //  [[D6::class], 0, 1],
+            Armor::TYPE            => "int",
+            ArmorPenetration::TYPE => "int"
         ]
     ])]
     protected static array $modifiers = [
@@ -128,7 +137,7 @@ abstract class aSkill
     /**
      * @return string
      */
-    public function getName(): string
+    public static function getName(): string
     {
         return static::$name;
     }

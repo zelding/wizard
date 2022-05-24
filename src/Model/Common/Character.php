@@ -72,8 +72,8 @@ abstract class Character
         $this->race  = $race;
         $this->class = $class;
 
-        //$this->inventory = new Inventory();
-        //$this->equipment = new Equipment();
+        $this->inventory = new Inventory(100);
+        $this->equipment = new Equipment(100, [0, 1, 2, 3]);
     }
 
     /**
@@ -94,10 +94,11 @@ abstract class Character
 
     public function getXpToNextLevel() : int
     {
-
         $table = $this->class::getExperienceTable();
 
-        return $table[ $this->level ] - $this->experience;
+        return !empty($table[ $this->level ]) ?
+            $table[ $this->level ] - $this->experience :
+            $this->class::getXpAfter12() - $this->experience;
     }
 
     public function getPsySkill() : ?Psy
@@ -142,10 +143,10 @@ abstract class Character
 
     public function getMaxCombatModifier() : int
     {
-        [$perLvl, $stats] = $this->class::getCombatModifiersPerLevel();
+        $combatStatsPerLevel = $this->class::getCombatModifiersPerLevel();
 
         // negated the operation so the ide will shut up about operations on arrays
-        return array_sum($stats) * -1 + $perLvl;
+        return $combatStatsPerLevel->getMaximum() * -1 + $combatStatsPerLevel->getTotalPerLevel();
     }
 
     #region Getters/Setters

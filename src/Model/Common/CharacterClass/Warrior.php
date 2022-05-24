@@ -12,24 +12,19 @@ namespace App\Model\Common\CharacterClass;
 
 
 use App\Model\Common\Skill\aSkill;
-use App\Model\Common\Skill\Combat\Leadership;
-use App\Model\Common\Skill\Combat\WeaponHandling;
-use App\Model\Common\Skill\Social\HorsebackRiding;
-use App\Model\Common\Skill\Social\Language;
-use App\Model\Common\Stats\Base\Astral;
-use App\Model\Common\Stats\Base\Beauty;
-use App\Model\Common\Stats\Base\Dexterity;
-use App\Model\Common\Stats\Base\Intelligence;
-use App\Model\Common\Stats\Base\Perception;
-use App\Model\Common\Stats\Base\Speed;
-use App\Model\Common\Stats\Base\Stamina;
-use App\Model\Common\Stats\Base\Strength;
-use App\Model\Common\Stats\Base\Vitality;
-use App\Model\Common\Stats\Base\Willpower;
-use App\Model\Common\Stats\Combat\Aim;
-use App\Model\Common\Stats\Combat\Attack;
-use App\Model\Common\Stats\Combat\Defense;
-use App\Model\Common\Stats\Combat\Sequence;
+use App\Model\Common\Skill\Combat\{Leadership, WeaponHandling};
+use App\Model\Common\Skill\Social\{HorsebackRiding, Language};
+use App\Model\Common\Stats\Base\{Astral,
+    Beauty,
+    Dexterity,
+    Intelligence,
+    Perception,
+    Speed,
+    Stamina,
+    Strength,
+    Vitality,
+    Willpower};
+use App\Model\Common\Stats\Combat\{Aim, Armor, ArmorPenetration, Attack, Damage, Defense, Sequence};
 use App\Model\Mechanics\Dice\D10;
 use App\Model\Mechanics\Dice\D6;
 
@@ -39,10 +34,13 @@ class Warrior extends aClass
     public  const SUB_TYPE = "WAR";
 
     protected static array $modifiers = [
-        Sequence::TYPE =>  9,
-        Attack::TYPE   => 20,
-        Defense::TYPE  => 75,
-        Aim::TYPE      =>  0
+        Sequence::class         =>  9,
+        Attack::class           => 20,
+        Defense::class          => 75,
+        Aim::class              =>  0,
+        Damage::class           => [[D6::class, D6::class], 0, 1],
+        Armor::class            => 0,
+        ArmorPenetration::class => 0
     ];
 
     public static bool $playable = true;
@@ -57,21 +55,21 @@ class Warrior extends aClass
     protected static array $painPointsPerLevel = [[D6::class], 4];
 
     protected static array $combatModifiersPerLevel = [11, [
-        Attack::TYPE  => 3,
-        Defense::TYPE => 3
+        Attack::class  => 3,
+        Defense::class => 3
     ]];
 
     protected static array $baseStatRanges  = [
-        Strength::TYPE     => [ [ D6::class], 12, 1, true ],
-        Stamina::TYPE      => [ [D10::class],  8, 1, true ],
-        Dexterity::TYPE    => [ [D10::class],  8, 1, true ],
-        Speed::TYPE        => [ [D10::class],  8, 1, true ],
-        Vitality::TYPE     => [ [D10::class], 10, 1, false ],
-        Beauty::TYPE       => [ [ D6::class, D6::class, D6::class], 0, 2, false ],
-        Intelligence::TYPE => [ [ D6::class, D6::class, D6::class], 0, 2, false ],
-        Willpower::TYPE    => [ [D10::class],  8, 1, false ],
-        Astral::TYPE       => [ [ D6::class, D6::class, D6::class], 0, 2, false ],
-        Perception::TYPE   => [ [D10::class],  8, 1, false ]
+        Strength::class     => [ [ D6::class], 12, 1, true ],
+        Stamina::class      => [ [D10::class],  8, 1, true ],
+        Dexterity::class    => [ [D10::class],  8, 1, true ],
+        Speed::class        => [ [D10::class],  8, 1, true ],
+        Vitality::class     => [ [D10::class], 10, 1, false ],
+        Beauty::class       => [ [ D6::class, D6::class, D6::class], 0, 2, false ],
+        Intelligence::class => [ [ D6::class, D6::class, D6::class], 0, 2, false ],
+        Willpower::class    => [ [D10::class],  8, 1, false ],
+        Astral::class       => [ [ D6::class, D6::class, D6::class], 0, 2, false ],
+        Perception::class   => [ [D10::class],  8, 1, false ]
     ];
 
     protected static array $baseSkills      = [

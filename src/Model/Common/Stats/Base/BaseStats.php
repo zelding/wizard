@@ -11,6 +11,7 @@ namespace App\Model\Common\Stats\Base;
 use App\Exception\AppException;
 use App\Model\Common\Stats\aStat;
 use App\Model\Common\Stats\Modifier;
+use Traversable;
 
 /**
  * Class BaseStats
@@ -18,41 +19,8 @@ use App\Model\Common\Stats\Modifier;
  * Base stats of a character
  *
  * @package App\Model\Common\Stats
- *
- * @method BaseStats setStrength(int $str)
- * @method BaseStats setStamina(int $sta)
- * @method BaseStats setDexterity(int $dex)
- * @method BaseStats setSpeed(int $spd)
- * @method BaseStats setVitality(int $vit)
- * @method BaseStats setBeauty(int $bea)
- * @method BaseStats setIntelligence(int $int)
- * @method BaseStats setWillpower(int $wil)
- * @method BaseStats setAstral(int $ast)
- * @method BaseStats setPerception(int $per)
- *
- * @method aStat getStrength()
- * @method aStat getStamina()
- * @method aStat getDexterity()
- * @method aStat getSpeed()
- * @method aStat getVitality()
- * @method aStat getBeauty()
- * @method aStat getIntelligence()
- * @method aStat getWillpower()
- * @method aStat getAstral()
- * @method aStat getPerception()
- *
- * @method BaseStats addStrength(int $str, string $description = "")
- * @method BaseStats addStamina(int $sta, string $description = "")
- * @method BaseStats addDexterity(int $dex, string $description = "")
- * @method BaseStats addSpeed(int $spd, string $description = "")
- * @method BaseStats addVitality(int $vit, string $description = "")
- * @method BaseStats addBeauty(int $bea, string $description = "")
- * @method BaseStats addIntelligence(int $int, string $description = "")
- * @method BaseStats addWillpower(int $wil, string $description = "")
- * @method BaseStats addAstral(int $ast, string $description = "")
- * @method BaseStats addPerception(int $per, string $description = "")
  */
-class BaseStats
+class BaseStats implements \IteratorAggregate
 {
     public static array $baseStats = [
         Strength::NAME     => Strength::class,
@@ -67,127 +35,74 @@ class BaseStats
         Perception::NAME   => Perception::class,
     ];
 
+    public function getIterator(): Traversable
+    {
+        $array = [];
+
+        foreach (static::$baseStats as $name => $class) {
+            $array[$name] = $this->getStat($class);
+        }
+
+        return new \ArrayIterator($array);
+    }
+
     /** @var aStat[] */
     protected array $stats = [];
 
     /**
      * BaseStats constructor.
      *
-     * @param aStat[] $stats
+     * @param array{fcn: int} $stats
      */
     public function __construct(array $stats)
     {
-        foreach( $stats as $name => $value) {
-
-            if ( array_key_exists($name, static::$baseStats) ) {
-                $this->{"set{$name}"}($value);
+        foreach( $stats as $class => $value) {
+            if ( in_array($class, static::$baseStats) ) {
+                //$this->{"set$class"}($value);
+                $this->setStat($class, $value);
             }
         }
     }
 
     /**
-     * @param string $name
-     * @param array  $arguments
-     *
-     * @return BaseStats|aStat
-     * @throws AppException
-     */
-    public function __call(string $name, array $arguments)
-    {
-        $method   = substr($name, 0, 3)   ?? "";
-        $statName = ucfirst(substr($name, 3) ?? "");
-
-        if ( "set" === $method ) {
-
-            if ( empty($arguments) || count($arguments) > 1 ) {
-                throw new AppException("Only one argument is allowed for statSetters");
-            }
-
-            $value = reset($arguments);
-
-            if( in_array($statName, array_keys(static::$baseStats)) ) {
-                return $this->setStat($statName, $value);
-            }
-            else {
-                throw new AppException("Invalid stat type: {$statName}");
-            }
-        }
-
-        if( "get" === $method ) {
-            if ( !empty($arguments) ) {
-                throw new AppException("No argument is allowed for statGetters");
-            }
-
-            if( in_array($statName, array_keys(static::$baseStats)) ) {
-                return $this->getStat($statName);
-            }
-            else {
-                throw new AppException("Invalid stat type: {$statName}");
-            }
-        }
-
-        if ( "add" == $method ) {
-            if ( empty($arguments) || count($arguments) > 2 ) {
-                throw new AppException("Max two argument is allowed for statAdders");
-            }
-
-            $value = reset($arguments);
-            $desc  = empty($arguments[1]) ? "" : $arguments[1];
-
-            if( in_array($statName, array_keys(static::$baseStats)) ) {
-                return $this->addModifier($statName, $value, $desc);
-            }
-            else {
-                throw new AppException("Invalid stat type: {$statName}");
-            }
-        }
-
-        throw new AppException("Unknown method: {$name}");
-    }
-
-    /**
-     * @param string $name
-     * @param int $value
+     * @param           $statClass
+     * @param int|array $value
      *
      * @return $this
      * @throws AppException
      */
-    protected function setStat(string $name, int $value) : self
+    public function setStat($statClass, int|array $value) : self
     {
-        $statClass = $this->resolveStatClass($name, $value);
-
-        if ( !array_key_exists($statClass::TYPE, $this->stats) ) {
-            $this->stats[ $statClass::TYPE ] = $statClass;
+        if ( !array_key_exists($statClass, $this->getAllStats()) ) {
+            $this->stats[ $statClass ] = new $statClass($value);
         }
         else {
-            throw new AppException("{$name} is already defined");
+            throw new AppException("{$statClass} is already defined");
         }
 
         return $this;
     }
 
     /**
-     * @param string $name
+     * @param string $statClass
      *
      * @return aStat
      * @throws AppException
      */
-    protected function getStat(string $name) : aStat
+    public function getStat(string $statClass) : aStat
     {
-        $statClass = $this->resolveStatClass($name);
-
-        if ( array_key_exists($statClass::TYPE, $this->stats) ) {
-            return $this->stats[ $statClass::TYPE ];
+        if ( array_key_exists($statClass, $this->getAllStats()) ) {
+            return $this->stats[ $statClass ];
         }
         else {
-            throw new AppException("{$name} is not yet defined");
+            throw new AppException("{$statClass} is not yet defined");
         }
     }
 
     /**
      * Adds a modifier for a stat
      *
-     * @param string $name
+     * @param string $modifierClassName
      * @param int    $value
      * @param string $description
      * @param bool   $permanent
@@ -195,15 +110,16 @@ class BaseStats
      * @return $this
      * @throws AppException
      */
-    protected function addModifier(string $name, int $value, $description = "", bool $permanent = true) : self
+    public function addModifier(string $modifierClassName, int $value, string $description = "", bool $permanent = true) : self
     {
-        $modifierClass = $this->resolveModifierClass($name, $value, $description, $permanent);
+        $modifierClass = new Modifier($value, $description, $permanent);
+        $modifierClass->setModifies($modifierClassName);
 
-        if ( !array_key_exists($modifierClass->getModifies(), $this->stats) ) {
-            throw new AppException("{$name}/".$modifierClass::TYPE." is not yet defined");
+        if ( !key_exists($modifierClassName, $this->getAllStats()) ) {
+            throw new AppException("{$modifierClassName}/".$modifierClass::class." is not yet defined");
         }
 
-        $this->stats[ $modifierClass->getModifies() ]->addModifier($modifierClass);
+        $this->stats[ $modifierClassName ]->addModifier($modifierClass);
 
         return $this;
     }
@@ -216,12 +132,12 @@ class BaseStats
     /**
      * Returns the appropriate class from name
      *
-     * @param string $name
-     * @param int    $value
+     * @param string    $name
+     * @param int|array $value
      *
      * @return aStat
      */
-    protected function resolveStatClass(string $name, int $value = 0) : aStat
+    protected function resolveStatClass(string $name, int|array $value = 0) : aStat
     {
         $statClassName = static::$baseStats[ $name ];
 
@@ -242,7 +158,7 @@ class BaseStats
         $statClassName = static::$baseStats[ $name ];
 
         $modifier = new Modifier($value, $description, $permanent);
-        $modifier->setModifies($statClassName::TYPE);
+        $modifier->setModifies($statClassName::class);
 
         return $modifier;
     }

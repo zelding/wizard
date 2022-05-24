@@ -14,7 +14,7 @@ namespace App\Model\Common\Stats;
 class Modifier extends aStat
 {
     /** @var string */
-    protected string $modifies = Modifier::TYPE;
+    protected string $modifies = Modifier::class;
     /** @var string */
     protected string $description = "";
 
