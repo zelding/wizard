@@ -21,31 +21,20 @@ use App\Model\Common\Skill\Science\Magic;
 use App\Model\Common\Skill\Science\Psy;
 use App\Model\Common\Skill\Science\PyarronPsy;
 use App\Model\Common\Stats\aStat;
-use App\Model\Common\Stats\Base\Astral;
-use App\Model\Common\Stats\Base\Dexterity;
-use App\Model\Common\Stats\Base\Intelligence;
-use App\Model\Common\Stats\Base\Perception;
-use App\Model\Common\Stats\Base\Speed;
-use App\Model\Common\Stats\Base\Stamina;
-use App\Model\Common\Stats\Base\Strength;
-use App\Model\Common\Stats\Base\Vitality;
-use App\Model\Common\Stats\Base\Willpower;
-use App\Model\Common\Stats\Combat\Aim;
-use App\Model\Common\Stats\Combat\Attack;
-use App\Model\Common\Stats\Combat\Damage;
-use App\Model\Common\Stats\Combat\Defense;
-use App\Model\Common\Stats\Combat\Sequence;
-use App\Model\Common\Stats\General\Health;
-use App\Model\Common\Stats\General\Mana;
-use App\Model\Common\Stats\General\PainPoint;
-use App\Model\Common\Stats\General\PsyPoints;
-use App\Model\Common\Stats\General\SkillPoint;
-use App\Model\Common\Stats\Magic\AstralMagicResist;
-use App\Model\Common\Stats\Magic\MagicResist;
-use App\Model\Common\Stats\Magic\MentalMagicResist;
+use App\Model\Common\Stats\Base\{Astral,
+    Dexterity,
+    Intelligence,
+    Perception,
+    Speed,
+    Stamina,
+    Strength,
+    Vitality,
+    Willpower};
+use App\Model\Common\Stats\Combat\{Aim, Attack, Damage, Defense, Sequence};
+use App\Model\Common\Stats\General\{Health, Mana, PainPoint, PsyPoints, SkillPoint};
+use App\Model\Common\Stats\Magic\{AstralMagicResist, MagicResist, MentalMagicResist};
 use App\Model\Common\Stats\Modifier;
-use App\Model\Mechanics\Dice\D100;
-use App\Model\Mechanics\Dice\DiceRoll;
+use App\Model\Mechanics\Dice\{D100, DiceRoll};
 use App\Model\PC\PlayerCharacter;
 
 /**
@@ -113,6 +102,9 @@ class CharacterService
         return $character;
     }
 
+    /**
+     * @throws AppException
+     */
     public function regenerateCharacter(Character $character) : self
     {
         $character->setCurrentHP($character->getGeneralStats()->getStat(Health::class)->getValue())
@@ -159,6 +151,9 @@ class CharacterService
         return $statValues;
     }
 
+    /**
+     * @throws AppException
+     */
     protected function applySpecialTraining(Character $character, array $applyTo = []): void
     {
         $statRanges = $character->getClass()::getBaseStatRanges();
@@ -166,7 +161,6 @@ class CharacterService
         foreach( $applyTo as $statClass ) {
             $roll = new DiceRoll(...$statRanges[ $statClass ]);
 
-            /** @var aStat $stat */
             $stat = $character->getBaseStats()->getStat($statClass);
 
             // if allowed for special training
@@ -306,7 +300,7 @@ class CharacterService
             $generalStats->setStat(Mana::class, $magicSkill->getBasePoints());
         }
 
-        $this->classService->setCombatModifiers($character, 1);
+        $this->classService->setCombatModifiers($character);
 
         if ( $character->getLevel() > 1 ) {
             $painPointRoll = $character->getClass()::getPainPointsPerLevel();
@@ -316,12 +310,12 @@ class CharacterService
                     //the first level is already given
                     $generalStats->addModifier(PainPoint::class,
                         $painPointRoll->execute(),
-                        "Extra PainPoint on lvl {$i}"
+                        "Extra PainPoint on lvl $i"
                     );
 
                     $generalStats->addModifier(SkillPoint::class,
                         $character->getClass()::getSkillPointPerLevel(),
-                        "Extra SkillPoint on lvl {$i}"
+                        "Extra SkillPoint on lvl $i"
                     );
                 }
 
@@ -329,13 +323,13 @@ class CharacterService
                     if ( $i + 1 < $psySkill->getUpgradedAt() ) {
                         $generalStats->addModifier(PsyPoints::class,
                             $psySkill::$pointsPerLevel,
-                            "Extra psy on lvl {$i}"
+                            "Extra psy on lvl $i"
                         );
                     }
                     else {
                         $generalStats->addModifier(PsyPoints::class,
                             $psySkill->getPointsPerLevel(),
-                            "Extra psy on lvl {$i}");
+                            "Extra psy on lvl $i");
                     }
                 }
 
@@ -500,7 +494,7 @@ class CharacterService
         $skills = $character->getSkills();
 
         if ( !empty($skills) ) {
-            foreach ($skills as $cat => $skillGroup) {
+            foreach ($skills as $skillGroup) {
                 foreach($skillGroup as $skill) {
                     /** @var aSkill $skill */
                     if (get_class($skill) === get_class($newSkill)) {
