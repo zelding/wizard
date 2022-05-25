@@ -284,15 +284,19 @@ class CharacterService
 
         if ( $psySkill instanceof Psy ) {
             if ( $psySkill instanceof PyarronPsy && $psySkill->getLearnedAt() === 1 ) {
-                $generalStats->setStat(PsyPoints::class,
+                $generalStats->addModifier(PsyPoints::class,
                     // if it was upgraded, then we need to just use the basic mastery stats
                     $psySkill->getUpgradedAt() === 0 ?
                         $psySkill->getBasePoints() :
-                        $psySkill::$basePoints
+                        $psySkill::$basePoints,
+                    "Base Pyarron Psy points"
                 );
             }
             else {
-                $generalStats->setStat(PsyPoints::class, $psySkill->getBasePoints());
+                $generalStats->addModifier(PsyPoints::class,
+                    $psySkill->getBasePoints(),
+                    "Base Psy points"
+                );
             }
         }
 

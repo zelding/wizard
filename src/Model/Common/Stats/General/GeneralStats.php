@@ -33,8 +33,6 @@ class GeneralStats extends BaseStats
 
     public function getStat(string $statClass) : aStat
     {
-        //die("<pre>".print_r($this->stats, true));
-
         if ( array_key_exists($statClass, $this->getAllStats()) ) {
             return $this->stats[ $statClass ];
         }

@@ -13,6 +13,7 @@ namespace App\Model\Common\CharacterClass;
 
 use App\Model\Common\Skill\aSkill;
 use App\Model\Common\Skill\Combat\{Leadership, WeaponHandling};
+use App\Model\Common\Skill\Science\PyarronPsy;
 use App\Model\Common\Skill\Social\{HorsebackRiding, Language};
 use App\Model\Common\Stats\Base\{Astral,
     Beauty,
@@ -86,10 +87,12 @@ class Warrior extends aClass
             "for"     => "Common",
             "mastery" => aSkill::MASTERY_BASIC,
             "level"   => 3
-        ]]
+        ]],
+        PyarronPsy::class => aSkill::MASTERY_BASIC
     ];
 
     protected static array $lateSkills      = [
+        4 => [PyarronPsy::class => aSkill::MASTERY_MASTER],
         6 => [Leadership::class => aSkill::MASTERY_BASIC]
     ];
 

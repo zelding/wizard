@@ -11,9 +11,7 @@
 namespace App\Model\Common\CharacterClass;
 
 use App\Model\Common\Skill\aSkill;
-use App\Model\Common\Skill\Combat\Leadership;
-use App\Model\Common\Skill\Combat\WeaponHandling;
-use App\Model\Common\Skill\Combat\WeaponThrowing;
+use App\Model\Common\Skill\Combat\{Leadership, WeaponHandling, WeaponThrowing};
 use App\Model\Common\Skill\Social\HorsebackRiding;
 use App\Model\Common\Skill\Social\Language;
 use App\Model\Common\Stats\Base\{Astral,

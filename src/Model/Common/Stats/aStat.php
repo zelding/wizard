@@ -55,7 +55,11 @@ abstract class aStat implements \Stringable
         return $this->baseValue instanceof DiceRoll ?  (string) $this->baseValue : $this->baseValue;
     }
 
-    /** @return string[] */
+    /**
+     * @see templates/App/Macro/stats.twig
+     *
+     * @return string[]
+     */
     public function getModifierTexts(): array
     {
         /** @see DiceRoll::__ToString
@@ -66,7 +70,9 @@ abstract class aStat implements \Stringable
         $strings = [];
 
         foreach($this->getModifiers() as $modifier) {
-            $strings[] = "+".str_pad($modifier->getValue(), 2, pad_type: STR_PAD_LEFT)." {$modifier->getDescription()}";
+            $strings[] = ($modifier->getValue() < 0 ? "" : "+").
+                         str_pad($modifier->getValue(), 2, pad_type: STR_PAD_LEFT).
+                         " {$modifier->getDescription()}";
         }
 
         return $strings;

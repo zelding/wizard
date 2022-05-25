@@ -24,15 +24,8 @@ use App\Model\Common\Stats\Base\{Astral,
     Strength,
     Vitality,
     Willpower};
-use App\Model\Common\Stats\Combat\Aim;
-use App\Model\Common\Stats\Combat\Attack;
-use App\Model\Common\Stats\Combat\Damage;
-use App\Model\Common\Stats\Combat\Defense;
-use App\Model\Common\Stats\Combat\Sequence;
-use App\Model\Mechanics\Dice\aDice;
-use App\Model\Mechanics\Dice\D4;
-use App\Model\Mechanics\Dice\D6;
-use App\Model\Mechanics\Dice\DiceRoll;
+use App\Model\Common\Stats\Combat\{Aim, Attack, Damage, Defense, Sequence};
+use App\Model\Mechanics\Dice\{aDice, D4, D6, DiceRoll};
 use App\Model\Mechanics\LevelUp\CombatStatsPerLevel;
 use JetBrains\PhpStorm\ArrayShape;
 

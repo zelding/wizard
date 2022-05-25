@@ -9,4 +9,6 @@ code.character {
   background-color: #337ab7;
   text-decoration: underline;
   line-height: normal;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

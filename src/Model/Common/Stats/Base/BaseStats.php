@@ -23,24 +23,24 @@ use Traversable;
 class BaseStats implements \IteratorAggregate
 {
     public static array $baseStats = [
-        Strength::NAME     => Strength::class,
-        Stamina::NAME      => Stamina::class,
-        Dexterity::NAME    => Dexterity::class,
-        Speed::NAME        => Speed::class,
-        Vitality::NAME     => Vitality::class,
-        Beauty::NAME       => Beauty::class,
-        Intelligence::NAME => Intelligence::class,
-        Willpower::NAME    => Willpower::class,
-        Astral::NAME       => Astral::class,
-        Perception::NAME   => Perception::class,
+        Strength::class,
+        Stamina::class,
+        Dexterity::class,
+        Speed::class,
+        Vitality::class,
+        Beauty::class,
+        Intelligence::class,
+        Willpower::class,
+        Astral::class,
+        Perception::class
     ];
 
     public function getIterator(): Traversable
     {
         $array = [];
 
-        foreach (static::$baseStats as $name => $class) {
-            $array[$name] = $this->getStat($class);
+        foreach (static::$baseStats as $class) {
+            $array[$class] = $this->getStat($class);
         }
 
         return new \ArrayIterator($array);
@@ -58,20 +58,19 @@ class BaseStats implements \IteratorAggregate
     {
         foreach( $stats as $class => $value) {
             if ( in_array($class, static::$baseStats) ) {
-                //$this->{"set$class"}($value);
                 $this->setStat($class, $value);
             }
         }
     }
 
     /**
-     * @param           $statClass
+     * @param string    $statClass
      * @param int|array $value
      *
      * @return $this
      * @throws AppException
      */
-    public function setStat($statClass, int|array $value) : self
+    public function setStat(string $statClass, int|array $value) : self
     {
         if ( !array_key_exists($statClass, $this->getAllStats()) ) {
             $this->stats[ $statClass ] = new $statClass($value);
@@ -127,39 +126,5 @@ class BaseStats implements \IteratorAggregate
     public function getAllStats() : array
     {
         return $this->stats;
-    }
-
-    /**
-     * Returns the appropriate class from name
-     *
-     * @param string    $name
-     * @param int|array $value
-     *
-     * @return aStat
-     */
-    protected function resolveStatClass(string $name, int|array $value = 0) : aStat
-    {
-        $statClassName = static::$baseStats[ $name ];
-
-        return new $statClassName($value);
-    }
-
-    /**
-     * @param string $name
-     * @param int    $value
-     * @param string $description
-     * @param bool   $permanent
-     *
-     * @return Modifier
-     */
-    protected function resolveModifierClass(string $name, int $value = 0, $description = "", bool $permanent = true) : Modifier
-    {
-        /** @var aStat $statClassName */
-        $statClassName = static::$baseStats[ $name ];
-
-        $modifier = new Modifier($value, $description, $permanent);
-        $modifier->setModifies($statClassName::class);
-
-        return $modifier;
     }
 }

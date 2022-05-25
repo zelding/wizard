@@ -1,0 +1,10 @@
+{% macro abbr(stat)%}
+    {# @var \App\Model\Common\Stats\aStat stat #}
+    {% if stat.modifiers|length > 0 %}
+    <abbr title="{{ stat.modifierTexts|join('\n') }}">
+        <strong>{{ stat.value }}</strong>
+    </abbr>
+    {% else %}
+        <strong>{{ stat.value }}</strong>
+    {% endif %}
+{% endmacro %}

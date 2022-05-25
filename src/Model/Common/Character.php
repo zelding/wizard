@@ -351,7 +351,7 @@ abstract class Character
         return $this;
     }
 
-    public function addSkill(aSkill $skill)
+    public function addSkill(aSkill $skill): void
     {
         $this->skills[ $skill::$category ][] = $skill;
     }
