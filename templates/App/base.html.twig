@@ -10,8 +10,6 @@
         <link rel="stylesheet" href="{{ asset('css/vendor.css') }}">
         <link rel="stylesheet" href="{{ asset('css/style.css') }}">
         {% block stylesheets %}{% endblock %}
-
-        <script type="application/javascript" src="{{ asset('js/vendor.js') }}"></script>
     </head>
 
     <body lang="en">
@@ -40,6 +38,7 @@
         {% block content %}
         {% endblock %}
 
+        <script type="application/javascript" src="{{ asset('js/vendor.js') }}"></script>
         <script type="application/javascript" src="{{ asset('js/script.js') }}"></script>
 
         {% block javascripts %}

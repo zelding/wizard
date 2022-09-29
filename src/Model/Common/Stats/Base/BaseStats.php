@@ -53,6 +53,8 @@ class BaseStats implements \IteratorAggregate
      * BaseStats constructor.
      *
      * @param array{fcn: int} $stats
+     *
+     * @throws AppException
      */
     public function __construct(array $stats)
     {

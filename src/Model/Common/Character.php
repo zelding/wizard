@@ -26,9 +26,9 @@ use JetBrains\PhpStorm\ArrayShape;
 
 abstract class Character
 {
-    protected string $firstName  = "";
+    protected string $firstName = "";
     /** @var string[] */
-    protected array $otherNames = [];
+    protected array  $otherNames = [];
     protected string $lastName  = "";
 
     protected aRace $race;
@@ -39,11 +39,11 @@ abstract class Character
 
     protected int $experience = 0;
 
-    protected BaseStats $baseStats;
+    protected BaseStats       $baseStats;
     protected BaseCombatStats $baseCombatStats;
-    protected GeneralStats $generalStats;
-    protected Inventory $inventory;
-    protected Equipment $equipment;
+    protected GeneralStats    $generalStats;
+    protected Inventory       $inventory;
+    protected Equipment       $equipment;
 
     protected int $currentHP  = 0;
     protected int $currentPP  = 0;

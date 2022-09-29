@@ -32,6 +32,8 @@
 /.env.*.local
 /config/secrets/prod/prod.decrypt.private.php
 /public/bundles/
+/public/css/
+/public/js/
 /var/
 /phpunit-html
 ###< symfony/framework-bundle ###
