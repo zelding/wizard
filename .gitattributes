@@ -1,0 +1,6 @@
+/public/css/** binary
+/public/js/** binary
+composer.lock binary
+symfony.lock binary
+package-lock.json binary
+**.phar binary
