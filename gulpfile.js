@@ -1,50 +1,47 @@
-const gulp      = require('gulp');
+const { series, parallel, src, dest } = require('gulp');
 const concat    = require('gulp-concat');
 const uglify    = require('gulp-uglify');
 const uglifyCss = require('gulp-uglifycss');
 
-gulp.task('watch', ['build'], () => {
-    gulp.watch('assets/css/**/*.*', ['build']);
-    gulp.watch('assets/js/**/*.*', ['build']);
-});
-
-gulp.task('css', () => {
-    return gulp.src([
+function customCss() {
+    return src([
         "assets/css/*.css",
         "assets/css/**/*.*"
     ]).pipe(uglifyCss())
-        .pipe(concat('style.css'))
-        .pipe(gulp.dest('public/css/'));
-});
+      .pipe(concat('style.css'))
+      .pipe(dest('public/css/'));
+}
 
-gulp.task('js', () => {
-    return gulp.src([
+function customJs() {
+    return src([
         "assets/js/*.js",
         "assets/js/**/*.js"
     ]).pipe(uglify())
       .pipe(concat('script.js'))
-      .pipe(gulp.dest('public/js/'));
-});
+      .pipe(dest('public/js/'));
+}
 
-gulp.task('vendor-js', () => {
-    return gulp.src([
+function vendorJs() {
+    return src([
         "node_modules/jquery/dist/jquery.min.js",
         "node_modules/tether/dist/js/tether.min.js",
         "node_modules/bootstrap/dist/js/bootstrap.min.js"
-    ]).pipe(concat('vendor.js')).pipe(gulp.dest('public/js/'));
-});
+    ]).pipe(concat('vendor.js'))
+      .pipe(dest('public/js/'));
+}
 
-gulp.task('vendor-css', () => {
-    return gulp.src([
+function vendorCss() {
+    return src([
         "node_modules/bootstrap/dist/css/bootstrap.min.css",
         "node_modules/tether/dist/css/tether.min.css",
-    ]).pipe(concat('vendor.css')).pipe(gulp.dest('public/css/'));
-});
+    ]).pipe(concat('vendor.css'))
+      .pipe(dest('public/css/'));
+}
 
-gulp.task('build', ['css', 'js']);
+function build(js, css) {
+    return parallel(js, css);
+}
 
-gulp.task('vendor', ['vendor-css', 'vendor-js']);
-
-gulp.task('default', ['build']);
-
-gulp.task('all', ['vendor', 'build']);
+exports.default = build(customJs, customCss)
+exports.vendor  = build(vendorJs, vendorCss)
+exports.all     = series(build(customJs, customCss), build(vendorJs, vendorCss))
