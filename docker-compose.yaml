@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+    base_image:
+        build:
+            dockerfile: debian.Dockerfile
+            context: build
+
+    php_image:
+        build:
+            dockerfile: php81.Dockerfile
+            context: build
+
+    web:
+        image: wizard_debian_php:latest
+        environment:
+            - APP_ENV=dev
+            - APP_SECRET=${APP_SECRET}
+        working_dir: /data
+        command:
+            - php -S 0.0.0.0:8120 -t public
+        ports:
+            - "8120:8120"
+        volumes:
+            - "./:/data"
+        networks:
+            - wizard_network
+volumes:
+    mysql: {}
+
+networks:
+    wizard_network: {}
