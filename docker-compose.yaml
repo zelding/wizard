@@ -1,0 +1,56 @@
+version: '3.9'
+
+services:
+  #web:
+  #  image: php:8.1
+  #  ports:
+  #    - "8000:80"
+  #  volumes:
+  #    - ./:/var/www/html/
+  #  environment:
+  #    APP_ENV: "dev"
+  #    APP_DEBUG: "1"
+  #    DATABASE_URL: "mysql://root:asdasd@127.0.0.1:33060/stdio?serverVersion=5.7"
+
+## version: '3.5'
+## services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.81
+      args:
+        ALPINE_VERSION: "3.16"
+    environment:
+      PORT: "8080"
+      USERNAME: "php-user"
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./:/var/www/html/
+
+  web:
+    image: nginx:alpine
+    ports:
+      - 8080:80
+    volumes:
+      - ./:/srv/www
+      - ./ngnix.conf:/etc/nginx/conf.d/default.conf
+
+  phpfpm:
+    image: php:fpm-alpine
+    environment:
+      APP_ENV: "dev"
+      APP_DEBUG: "1"
+      DATABASE_URL: "mysql://root:asdasd@127.0.0.1:33060/stdio?serverVersion=5.7"
+    volumes:
+      - ./:/srv/www
+
+
+  php:
+    build:
+      context: .
+      dockerfile: bin/build/Bullseye-81-fpm
+    ports:
+      - "8000:80"
+    volumes:
+      - ./:/var/www/html/
