@@ -38,7 +38,8 @@
 /var/
 /phpunit-html
 ###< symfony/framework-bundle ###
-
+symfony.exe
+/.pnp.*
 ###> symfony/phpunit-bridge ###
 .phpunit.result.cache
 /phpunit.xml
