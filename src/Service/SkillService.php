@@ -92,7 +92,7 @@ class SkillService
 
                         //in case of Pyarron Psy we need to set the level when it was upgraded
                         if ( $skill instanceof PyarronPsy ) {
-                            if ($skill->getMastery() === aSkill::MASTERY_BASIC) {
+                            if ($skill->getMastery()->isBasic()) {
                                 $skill->setLearnedAt($lvl);
                             }
                             elseif ( 0 === $skill->getUpgradedAt() ) {

@@ -29,8 +29,8 @@ abstract class aSkill
     public  const SKILL_TYPE_SOCIAL  = "social";
     public  const SKILL_TYPE_CRIME   = "crime";
 
-    public  const MASTERY_BASIC  = "Basic";
-    public  const MASTERY_MASTER = "Master";
+    public  const MASTERY_BASIC  = Mastery::Basic;
+    public  const MASTERY_MASTER = Mastery::Master;
     /** @var string */
     public static string $category      = self::SKILL_TYPE_COMBAT;
     /** @var int cost of SP to learn the basics*/
@@ -50,7 +50,7 @@ abstract class aSkill
      * @var array
      */
     #[ArrayShape([
-        self::MASTERY_BASIC  => [
+        Mastery::Basic->value  => [
             Sequence::TYPE         => "int",
             Attack::TYPE           => "int",
             Defense::TYPE          => "int",
@@ -59,7 +59,7 @@ abstract class aSkill
             Armor::TYPE            => "int",
             ArmorPenetration::TYPE => "int"
         ],
-        self::MASTERY_MASTER => [
+        Mastery::Master->value => [
             Sequence::TYPE         => "int",
             Attack::TYPE           => "int",
             Defense::TYPE          => "int",
@@ -70,11 +70,14 @@ abstract class aSkill
         ]
     ])]
     protected static array $modifiers = [
-        self::MASTERY_BASIC  => [],
-        self::MASTERY_MASTER => []
+        Mastery::Basic->value  => [],
+        Mastery::Master->value => []
     ];
 
-    protected string $mastery = self::MASTERY_BASIC;
+    /**
+     * @var Mastery
+     */
+    protected Mastery $mastery = Mastery::Basic;
 
     /**
      * Relation to base stats
@@ -142,10 +145,7 @@ abstract class aSkill
         return static::$name;
     }
 
-    /**
-     * @return string
-     */
-    public function getMastery(): string
+    public function getMastery(): Mastery
     {
         return $this->mastery;
     }
@@ -155,7 +155,7 @@ abstract class aSkill
      *
      * @return aSkill
      */
-    public function setMastery(string $mastery): aSkill
+    public function setMastery(Mastery $mastery): aSkill
     {
         $this->mastery = $mastery;
 
