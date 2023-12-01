@@ -14,7 +14,7 @@ class DefaultController extends AbstractController
     {
         $player = $characterService->generateCharacter(new Elf(), new Warrior());
 
-        dump($player);
+        //dump($player);
 
         // replace this example code with whatever you need
         return $this->render('App/Character/character.html.twig', [

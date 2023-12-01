@@ -1,7 +1,7 @@
 FROM debian:bullseye
 
-LABEL wizard.debian.php.version="8.1"
-LABEL wizard.debian.php.description="PHP 8.1"
+LABEL wizard.debian.php.version="8.3"
+LABEL wizard.debian.php.description="PHP 8.3"
 
 RUN set -ex; \
   apt update -q -y; \
@@ -19,10 +19,18 @@ RUN set -ex; \
   zip \
   unzip \
   xz-utils \
-  pkg-config; \
-  wget -q https://github.com/jwilder/dockerize/releases/download/v0.6.1/dockerize-linux-amd64-v0.6.1.tar.gz; \
-  tar -C /usr/local/bin -xzvf dockerize-linux-amd64-v0.6.1.tar.gz; \
-  rm dockerize-linux-amd64-v0.6.1.tar.gz
+  pkg-config
+
+RUN wget -O - https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz | tar xzf - -C /usr/local/bin \
+  rm dockerize-linux-amd64-v0.7.0.tar.gz \
+
+ADD dockerize /usr/local/bin/dockerize
+
+##ENV DOCKERIZE_VERSION v0.7.0
+##
+##RUN wget -q https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz; \
+##    tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz; \
+##    rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
 
 RUN set -ex; \
     apt update -q -y; \
@@ -39,7 +47,7 @@ RUN set -ex; \
     curl -sL https://github.com/fabpot/local-php-security-checker/releases/download/v1.2.0/local-php-security-checker_1.2.0_linux_amd64 -o /bin/local-php-security-checker; \
     chmod +x /bin/local-php-security-checker
 
-ENV PHP_VERSION 8.1
+ENV PHP_VERSION 8.3
 
 RUN set -ex; \
     curl -fsSL https://packages.sury.org/php/apt.gpg | apt-key add -; \
