@@ -6,7 +6,6 @@
   "directories": {
     "test": "tests"
   },
-  "packageManager": "yarn@3.6.3",
   "dependencies": {
     "@popperjs/core": "^2.11.8",
     "@symfony/stimulus-bridge": "^3.2.2",
@@ -51,5 +50,6 @@
     "webpack": "^5.88.2",
     "webpack-cli": "^5.1.4",
     "webpack-notifier": "^1.15.0"
-  }
+  },
+  "packageManager": "yarn@3.6.3"
 }
