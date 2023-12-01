@@ -9,6 +9,7 @@
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
         <link rel="stylesheet" href="{{ asset('css/vendor.css') }}">
         <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+        <script type="application/javascript" src="{{ asset('build/main.css') }}"></script>
         {% block stylesheets %}{% endblock %}
     </head>
 
@@ -38,8 +39,10 @@
         {% block content %}
         {% endblock %}
 
-        <script type="application/javascript" src="{{ asset('js/vendor.js') }}"></script>
-        <script type="application/javascript" src="{{ asset('js/script.js') }}"></script>
+       <!--<script type="application/javascript" src="{{ asset('js/vendor.js') }}"></script>
+        <script type="application/javascript" src="{{ asset('js/script.js') }}"></script>-->
+
+        <script type="application/javascript" src="{{ asset('build/main.js') }}"></script>
 
         {% block javascripts %}
         {% endblock %}

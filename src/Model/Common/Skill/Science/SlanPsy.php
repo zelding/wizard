@@ -12,6 +12,7 @@ namespace App\Model\Common\Skill\Science;
 
 
 use App\Model\Common\Skill\aSkill;
+use App\Model\Common\Skill\Mastery;
 
 class SlanPsy extends Psy
 {
@@ -27,14 +28,14 @@ class SlanPsy extends Psy
 
     protected static string $name = "Psy (Slan)";
 
-    public function getMastery(): string
+    public function getMastery(): Mastery
     {
-        return self::MASTERY_MASTER;
+        return Mastery::Master();
     }
 
-    public function setMastery(string $mastery): aSkill
+    public function setMastery(Mastery $mastery): aSkill
     {
-        $this->mastery = self::MASTERY_MASTER;
+        $this->mastery = $mastery::Master();
 
         return $this;
     }
