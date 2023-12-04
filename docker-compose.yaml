@@ -10,9 +10,11 @@ services:
             - APP_SECRET=${APP_SECRET}
         working_dir: /data
         command:
+            - dockerize -template /etc/php/template.d/php-fpm.tmpl:/etc/php-fpm.conf -template /etc/php/template.d/vhost.tmpl:/etc/nginx/nginx.conf
             - php -S 127.0.0.1:8120 -t public
         ports:
             - "8120:8120"
+            - "9000:8081"
         volumes:
             - "./:/data"
         networks:

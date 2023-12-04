@@ -21,10 +21,12 @@ RUN set -ex; \
   xz-utils \
   pkg-config
 
-RUN wget -O - https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz | tar xzf - -C /usr/local/bin \
-  rm dockerize-linux-amd64-v0.7.0.tar.gz \
+ENV DOCKERIZE_VERSION v0.7.0
 
-ADD dockerize /usr/local/bin/dockerize
+RUN wget -O - https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz | tar xzf - -C /usr/local/bin
+##  rm ./dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz;
+
+##ADD dockerize "/usr/local/bin/dockerize"
 
 ##ENV DOCKERIZE_VERSION v0.7.0
 ##
@@ -71,9 +73,10 @@ RUN set -ex; \
     php${PHP_VERSION}-xml \
     php${PHP_VERSION}-zip \
     php${PHP_VERSION}-mbstring \
-    php${PHP_VERSION}-imagick \
-    php${PHP_VERSION}-xdebug; \
-    rm -rf /var/lib/apt/lists/*; \
+    php${PHP_VERSION}-imagick
+    ##php${PHP_VERSION}-xdebug
+
+RUN rm -rf /var/lib/apt/lists/*; \
     ln -s /usr/sbin/php-fpm${PHP_VERSION} /usr/sbin/php-fpm; \
     update-alternatives --set php /usr/bin/php${PHP_VERSION}; \
     wget http://browscap.org/stream?q=Lite_PHP_BrowsCapINI -O /etc/php/browscap.ini; \
@@ -81,6 +84,7 @@ RUN set -ex; \
     rm -rf conf.d; \
     ln -s ../fpm/conf.d; \
     mkdir /etc/php/template.d; \
+    mkdir /etc/nginx; \
     mkdir -p /var/socks/php/${PHP_VERSION}; \
     mkdir -p /data; \
     mkdir -p /run/php; \
@@ -92,9 +96,12 @@ ADD ./templates /etc/php/template.d
 
 # Install Composer
 RUN set -ex; \
-    /install-composer.sh
+    ./install-composer.sh
 
 WORKDIR /data
+
+EXPOSE 8120
+EXPOSE 9000
 
 STOPSIGNAL SIGTERM
 
