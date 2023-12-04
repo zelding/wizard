@@ -1,7 +1,4 @@
 {
-    "composer/package-versions-deprecated": {
-        "version": "1.x-dev"
-    },
     "composer/semver": {
         "version": "3.x-dev"
     },
