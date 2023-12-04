@@ -6,27 +6,35 @@
     <div class="container-fluid">
 
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-4">
                 <div class="row">
 
                     <!-- Base stats -->
-                    <div class="col-xs-12">
-                        <div class="panel panel-primary">
-                            <div class="panel-heading">
-                                <h3 class="panel-title">Base stats</h3>
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header text-bg-primary">
+                                <h3 class="card-title">Base stats</h3>
                             </div>
 
-                            <div class="panel-body">
+                            <div class="card-body">
                                 <ul class="list-unstyled">
                                 {% for stat in char.baseStats.allStats %}
                                     {# @var stat \App\Model\Common\Stats\aStat #}
                                     {% set mod = stat.modifierValue != 0 %}
                                     <li>
                                         <div class="row">
-                                            <div class="col-xs-2">{{ stat.name }}:</div>
-                                            <div class="col-xs-1 text-right">{{ macros_stats.abbr(stat)|raw }}</div>
+                                            <div class="col-2">{{ stat.name }}:</div>
+                                            <div class="col-1 text-right">{{ macros_stats.abbr(stat)|raw }}</div>
                                             {% if stat.rollModifierValue %}
-                                                <div class="col-xs-1 text-right">+{{ stat.rollModifierValue }}</div>
+                                                <div class="col-1 text-right">+{{ stat.rollModifierValue }}</div>
+                                                <div class="col-8">
+                                                    {% for modifier in stat.modifiers %}
+                                                        {{ macros_stats.mod_list(modifier) }}
+                                                        {% if not loop.last %}
+                                                            <br />
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </div>
                                             {% endif %}
                                         </div>
                                     </li>
@@ -38,10 +46,10 @@
                     </div>
 
                     <!-- magic resists -->
-                    <div class="col-xs-12">
-                        <div class="panel panel-primary">
-                            <div class="panel-heading">
-                                <h3 class="panel-title">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header text-bg-primary">
+                                <h3 class="card-title">
                                     Magic resists
                                     <span class="pull-right">
                                         A: {{ char.magicResist.currentTotal(true, char.level)  }},
@@ -50,9 +58,9 @@
                                 </h3>
                             </div>
 
-                            <div class="panel-body">
+                            <div class="card-body">
                                 <div class="row">
-                                    <div class="col-xs-4">
+                                    <div class="col-4">
                                         <ul class="list-unstyled">
                                             <li>&nbsp;</li>
                                             <li>Static</li>
@@ -63,7 +71,7 @@
                                         </ul>
                                     </div>
 
-                                    <div class="col-xs-4">
+                                    <div class="col-4">
                                         <ul class="list-unstyled">
                                             <li>Mental</li>
                                             <li>{{ char.magicResist('Mental').static  }}</li>
@@ -74,7 +82,7 @@
                                         </ul>
                                     </div>
 
-                                    <div class="col-xs-4">
+                                    <div class="col-4">
                                         <ul class="list-unstyled">
                                             <li>Astral</li>
                                             <li>{{ char.magicResist.static  }}</li>
@@ -86,28 +94,27 @@
                                     </div>
 
                                 </div>
-                            </div>
 
-                            <div class="panel-footer">
                                 <div class="row">
-                                    <div class="col-xs-2">
+                                    <div class="col-2">
                                         <button class="btn btn-sm btn-primary">Fill shields</button>
                                     </div>
                                 </div>
                             </div>
+
                         </div>
                     </div>
 
                     <!-- Combat stats -->
-                    <div class="col-xs-12">
-                        <div class="panel panel-primary">
-                            <div class="panel-heading">
-                                <h3 class="panel-title">Combat stats</h3>
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header text-bg-primary">
+                                <h3 class="card-title">Combat stats</h3>
                             </div>
 
-                            <div class="panel-body">
+                            <div class="card-body">
                                 <div class="row">
-                                    <div class="col-xs-3">
+                                    <div class="col-3">
                                         <ul class="list-unstyled">
                                             <li>&nbsp;</li>
                                         {% for name in cs_names()%}
@@ -116,44 +123,41 @@
                                         </ul>
                                     </div>
 
-                                    <div class="col-xs-3">
+                                    <div class="col-3">
                                         <ul class="list-unstyled">
                                             <li>Base</li>
-                                            {%for stat in char.baseCombatStats %}
+                                            {% for stat in char.baseCombatStats %}
                                             <li>{{ stat }}</li>
-                                            {%endfor%}
+                                            {% endfor %}
                                         </ul>
                                     </div>
 
-                                    <div class="col-xs-3">
+                                    <div class="col-3">
                                         <ul class="list-unstyled">
                                             <li>Bonuses</li>
-                                            {%for stat in char.baseCombatStats %}
+                                            {% for stat in char.baseCombatStats %}
                                                 <li>+{{ stat.modifierValue }}</li>
-                                            {%endfor%}
+                                            {% endfor %}
                                         </ul>
                                     </div>
 
-                                    <div class="col-xs-3">
+                                    <div class="col-3">
                                         <ul class="list-unstyled">
                                             <li><strong>Total</strong></li>
                                             {% for stat in char.baseCombatStats %}
                                                 <li>{{ macros_stats.abbr(stat)|raw }}</li>
-                                            {%endfor%}
+                                            {% endfor %}
                                         </ul>
                                     </div>
                                 </div>
+
+                                <blockquote class="blockquote mb-0">
+                                    <p>Combat modifiers available:</p>
+                                    <footer class="blockquote-footer">
+                                        {{ char.getAvailableCombatModifier }} ({{ char.getMaxCombatModifier }})
+                                    </footer>
+                                </blockquote>
                             </div>
-
-                            <div class="row">
-                                <div class="col-xs-8">Combat modifiers available:</div>
-
-                                <div class="col-xs-8 col-xs-offset-4">
-                                    {{ char.getAvailableCombatModifier }} ({{ char.getMaxCombatModifier }})
-                                </div>
-                            </div>
-
-                            <div class="panel-footer">Panel footer</div>
                         </div>
                     </div>
 
@@ -161,17 +165,17 @@
             </div>
 
             <!-- Mid -->
-            <div class="col-md-4">
+            <div class="col-4">
                 <div class="row">
 
                     <!-- Character Info -->
-                    <div class="col-xs-12">
-                        <div class="panel panel-primary">
-                            <div class="panel-heading">
-                                <h3 class="panel-title">Character info</h3>
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header text-bg-primary">
+                                <h3 class="card-title">Character info</h3>
                             </div>
 
-                            <div class="panel-body">
+                            <div class="card-body">
                                 <ul class="list-unstyled">
                                     <li>Name:<span class="pull-right">{{ char.fullName }}</span></li>
                                     <li>Origin:<span class="pull-right"></span></li>
@@ -184,7 +188,7 @@
 
                                 <!-- XP -->
                                 <div class="row">
-                                    <div class="col-xs-6 col-xs-offset-3">
+                                    <div class="col-6 offset-xs-3">
                                         <ul class="list-unstyled">
                                             <li>Level:<strong class="pull-right">{{ char.level }}</strong></li>
                                             <li>XP:<span class="pull-right">{{ char.experience }}</span></li>
@@ -197,13 +201,13 @@
 
                                 <!-- HP -->
                                 <div class="row">
-                                    <div class="col-xs-6">
+                                    <div class="col-6">
                                         <ul class="list-unstyled">
                                         {% for class, stat in char.generalStats %}
                                             <li>
                                                 <div class="row">
-                                                    <div class="col-xs-4">{{ stat.name }}:</div>
-                                                    <div class="col-xs-3 text-right">
+                                                    <div class="col-4">{{ stat.name }}:</div>
+                                                    <div class="col-3 text-right">
                                                         {{- char.generalStats.stat(class).value -}}/{{- macros_stats.abbr(stat)|raw -}}
                                                     </div>
                                                 </div>
@@ -212,7 +216,7 @@
                                         </ul>
                                     </div>
 
-                                    <div class="col-xs-4 col-xs-offset-2">
+                                    <div class="col-4 offset-xs-2">
                                         <ul class="list-unstyled">
                                             <li>&nbsp;</li>
                                             <li>Per level<span class="pull-right">{{ char.class.painPointsPerLevel.min }} - {{ char.class.painPointsPerLevel.max }}</span></li>
@@ -230,7 +234,7 @@
                     </div>
 
                     <!-- Skills -->
-                    <div class="col-xs-12">
+                    <div class="col-12">
                         {% include 'App/Common/skill_panel.html.twig' with {
                             skills: char.skills,
                             lateSkills: char.class.lateSkills,
@@ -243,11 +247,11 @@
             </div>
 
             <!-- Inventory Info -->
-            <div class="col-md-4">
+            <div class="col-4">
 
                 <div class="row">
 
-                    <div class="col-xs-12">
+                    <div class="col-12">
                         {% include 'App/Common/inventory_panel.html.twig' with {
                             inventory: char.inventory
                         } %}
@@ -260,5 +264,4 @@
 
     </div>
 
-    <div id="test_div" class="hidden-xs hidden-sm hidden-md hidden-lg hidden-print">test_text</div>
 {% endblock %}

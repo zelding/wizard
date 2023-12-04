@@ -1,31 +1,31 @@
-<div class="panel panel-primary">
-    <div class="panel-heading">
-        <h3 class="panel-title">Inventory</h3>
+<div class="card">
+    <div class="card-header text-bg-primary">
+        <h3 class="card-title">Inventory</h3>
     </div>
 
-    <div class="panel-body">
+    <div class="card-body">
         <div class="row">
-            <div class="col-xs-2">
+            <div class="col-2">
                 <strong class="hidden-xs">Name</strong>
                 <strong class="visible-xs">Name</strong>
             </div>
-            <div class="col-xs-2">
+            <div class="col-2">
                 <strong class="hidden-xs">Category</strong>
                 <strong class="visible-xs">Cat</strong>
             </div>
-            <div class="col-xs-2">
+            <div class="col-2">
                 <strong class="hidden-xs">Quantity</strong>
                 <strong class="visible-xs">Qnt</strong>
             </div>
-            <div class="col-xs-2">
+            <div class="col-2">
                 <strong class="hidden-xs">Weight</strong>
                 <strong class="visible-xs">W</strong>
             </div>
-            <div class="col-xs-2">
+            <div class="col-2">
                 <strong class="hidden-xs">Value</strong>
                 <strong class="visible-xs">Val</strong>
             </div>
-            <div class="col-xs-2">
+            <div class="col-2">
                 <strong class="hidden-xs">Equipped</strong>
                 <strong class="visible-xs">Eq?</strong>
             </div>
@@ -37,31 +37,34 @@
                     {# @var item App\Model\Common\Item\Item #}
 
                     <div class="row">
-                        <div class="col-xs-2">{{ item.name }}</div>
-                        <div class="col-xs-2">{{ catName }}/{{ subCatName }}</div>
-                        <div class="col-xs-2">{{ item.quantity }}</div>
-                        <div class="col-xs-2">{{ item.weight }}</div>
-                        <div class="col-xs-2">{{ item.price }}</div>
-                        <div class="col-xs-2">no</div>
+                        <div class="col-2">{{ item.name }}</div>
+                        <div class="col-2">{{ catName }}/{{ subCatName }}</div>
+                        <div class="col-2">{{ item.quantity }}</div>
+                        <div class="col-2">{{ item.weight }}</div>
+                        <div class="col-2">{{ item.price }}</div>
+                        <div class="col-2">no</div>
                     </div>
 
                     {% if item is instanceof('App\\Model\\Common\\Item\\Equippable') %}
                         <div class="row">
-                            <div class="col-xs-2">{{ item.baseSequence }}</div>
-                            <div class="col-xs-2">{{ item.baseAttacksPerRound }}</div>
-                            <div class="col-xs-2">{{ item.baseAttack }}</div>
-                            <div class="col-xs-2">{{ item.baseDefense }}</div>
-                            <div class="col-xs-2">{{ item.baseDamage }}</div>
-                            <div class="col-xs-2"></div>
+                            <div class="col-2">{{ item.baseSequence }}</div>
+                            <div class="col-2">{{ item.baseAttacksPerRound }}</div>
+                            <div class="col-2">{{ item.baseAttack }}</div>
+                            <div class="col-2">{{ item.baseDefense }}</div>
+                            <div class="col-2">{{ item.baseDamage }}</div>
+                            <div class="col-2"></div>
                         </div>
                     {% endif %}
 
                 {% endfor %}
             {% endfor %}
         {% endfor %}
-    </div>
 
-    <div class="panel-footer">
-        Weight: {{ inventory.totalWeight }} / {{ inventory.maxWeight }}.
+        <blockquote class="blockquote mb-0">
+            <p>&nbsp;</p>
+            <footer class="blockquote-footer">
+                Weight: {{ inventory.totalWeight }} / {{ inventory.maxWeight }}.
+            </footer>
+        </blockquote>
     </div>
 </div>

@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+    web:
+        build:
+            dockerfile: ./php83.Dockerfile
+            context:  ./build/
+        environment:
+            - APP_ENV=dev
+            - APP_SECRET=${APP_SECRET}
+        working_dir: /data
+        command:
+            - php -S 127.0.0.1:8120 -t public
+        ports:
+            - "8120:8120"
+        volumes:
+            - "./:/data"
+        networks:
+            - wizard_network
+volumes:
+    mysql: {}
+
+networks:
+    wizard_network: {}
+

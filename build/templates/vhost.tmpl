@@ -1,0 +1,14 @@
+[www]
+listen = 9000
+user = {{ default .Env.PHP_UID "www-data"}}
+group = www-data
+access.log = /proc/self/fd/2
+access.format = %t %{REMOTE_ADDR}e %R " %m %r%Q%q " %s %f %{mili}d %{kilo}M %C%%
+clear_env = no
+catch_workers_output = yes
+pm = dynamic
+pm.max_children = {{ default .Env.PHP_MAXCHILDREN "150" }}
+pm.start_servers = {{ default .Env.PHP_STARTSERVER "3" }}
+pm.min_spare_servers = {{ default .Env.PHP_MINSPARESERVER "3" }}
+pm.max_spare_servers = {{ default .Env.PHP_MAXSPARESERVER "5" }}
+pm.max_requests = {{ default .Env.PHP_MAXREQUESTS "500" }}

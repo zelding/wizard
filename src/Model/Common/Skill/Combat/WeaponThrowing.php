@@ -11,6 +11,7 @@
 namespace App\Model\Common\Skill\Combat;
 
 use App\Model\Common\Skill\aSkill;
+use App\Model\Common\Skill\Mastery;
 use App\Model\Common\Stats\Combat\Aim;
 use App\Model\Common\Stats\Combat\Attack;
 use App\Model\Common\Stats\Combat\Defense;
@@ -27,8 +28,8 @@ class WeaponThrowing extends aSkill
     public static bool $allowMultiple = true;
 
     protected static array $modifiers = [
-        self::MASTERY_BASIC  => [],
-        self::MASTERY_MASTER => [
+        Mastery::Basic->value  => [],
+        Mastery::Master->value => [
             Sequence::TYPE => 0,
             Attack::TYPE   => 10,
             Defense::TYPE  => 0,

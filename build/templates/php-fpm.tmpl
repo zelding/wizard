@@ -1,0 +1,4 @@
+[global]
+error_log = /proc/self/fd/2
+daemonize = no
+include=/etc/php/{{ .Env.PHP_VERSION }}/fpm/pool.d/*.conf

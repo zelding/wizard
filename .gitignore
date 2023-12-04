@@ -1,7 +1,6 @@
 /.idea/
 /.web-server-pid
-/app/config/parameters.yml
-/build/
+/config/parameters.yml
 /phpunit.xml
 !/var/cache
 /var/cache/*
@@ -32,8 +31,17 @@
 /.env.*.local
 /config/secrets/prod/prod.decrypt.private.php
 /public/bundles/
+/public/build/
 /public/css/
 /public/js/
 /var/
 /phpunit-html
 ###< symfony/framework-bundle ###
+symfony.exe
+/.pnp.*
+###> symfony/phpunit-bridge ###
+.phpunit.result.cache
+/phpunit.xml
+###< symfony/phpunit-bridge ###
+.yarn
+assets/vendor

@@ -1,3 +1,10 @@
-$(function () {
-    console.log('asd');
-});
+
+import 'bootstrap';
+
+import '../css/main.scss';
+
+( ()=> {
+
+    console.log("ASDASD");
+
+})();

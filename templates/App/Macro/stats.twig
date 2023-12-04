@@ -8,3 +8,10 @@
         <strong>{{ stat.value }}</strong>
     {% endif %}
 {% endmacro %}
+
+{% macro mod_list(modifier)%}
+    {# @var \App\Model\Common\Stats\Modifier modifier #}
+    <span class="{{ modifier.permanent ? 'text-primary' : '' }}">
+        {{ modifier.value > 0 ? "+" : "" }}{{ modifier.value != 0 ? modifier.value : '' }} {{ modifier.description }}
+    </span>
+{% endmacro %}

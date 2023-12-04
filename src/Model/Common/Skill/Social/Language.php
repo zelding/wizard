@@ -12,6 +12,7 @@ namespace App\Model\Common\Skill\Social;
 
 
 use App\Model\Common\Skill\aSkill;
+use App\Model\Common\Skill\Mastery;
 
 class Language extends aSkill
 {
@@ -36,11 +37,11 @@ class Language extends aSkill
         return self::$name.": ".$this->getRelatesTo()." (".$this->getLevel().")";
     }*/
 
-    public function setMastery(string $mastery): aSkill
+    public function setMastery(Mastery $mastery): aSkill
     {
         $this->mastery = $mastery;
 
-        if ( $mastery === self::MASTERY_MASTER ) {
+        if ( $mastery->isMaster() ) {
             $this->setLevel(5);
         }
 
