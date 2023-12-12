@@ -28,12 +28,6 @@ RUN wget -O - https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_
 
 ##ADD dockerize "/usr/local/bin/dockerize"
 
-##ENV DOCKERIZE_VERSION v0.7.0
-##
-##RUN wget -q https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz; \
-##    tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz; \
-##    rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
-
 RUN set -ex; \
     apt update -q -y; \
     DEBIAN_FRONTEND=noninteractive apt install -y \

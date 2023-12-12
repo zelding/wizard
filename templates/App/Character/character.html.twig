@@ -259,9 +259,32 @@
 
                 </div>
 
+                <div class="row">
+                    <div class="col-6">
+                        <div class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with button groups">
+                            <div class="btn-group me-2" role="group" aria-label="First group">
+                                <button type="button" class="btn btn-outline-secondary">1</button>
+                                <button type="button" class="btn btn-outline-secondary">2</button>
+                                <button type="button" class="btn btn-outline-secondary">3</button>
+                                <button type="button" class="btn btn-outline-secondary">4</button>
+                            </div>
+                            <div class="input-group">
+                                <button type="button" class="btn btn-outline-secondary">&minus;</button>
+                                <input id="test_input" value="12" type="text" class="form-control" aria-label="amount">
+                                <button type="button" class="btn btn-outline-secondary">&plus;</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
 
     </div>
 
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+<script type="application/javascript" src="{{ asset('build/counter.js') }}"></script>
 {% endblock %}
