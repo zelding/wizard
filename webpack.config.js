@@ -76,6 +76,12 @@ Encore
 //.autoProvidejQuery()
 
     .configureDevServerOptions(options => {
+        options.server = {
+            type: 'https',
+            options: {
+                pfx: path.join(process.env.HOME, '.symfony5/certs/default.p12'),
+            }
+        };
         options.allowedHosts  = 'all';
         options.liveReload = true;
         options.static = {
