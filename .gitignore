@@ -45,3 +45,5 @@ symfony.exe
 ###< symfony/phpunit-bridge ###
 .yarn
 assets/vendor
+.symfony.local.yaml
+/php.ini
