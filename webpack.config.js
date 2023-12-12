@@ -1,5 +1,6 @@
 const Encore = require('@symfony/webpack-encore');
 const PnpWebpackPlugin = require(`pnp-webpack-plugin`);
+const path = require('path');
 
 // Manually configure the runtime environment if not already configured yet by the "encore" command.
 // It's useful when you use tools that rely on webpack.config.js file.
@@ -73,6 +74,17 @@ Encore
 
 // uncomment if you're having problems with a jQuery plugin
 //.autoProvidejQuery()
+
+    .configureDevServerOptions(options => {
+        options.allowedHosts  = 'all';
+        options.liveReload = true;
+        options.static = {
+            watch: false
+        };
+        options.watchFiles = {
+            paths: ['src/**/*.php', 'templates/**/*', 'assets/css/*', 'assets/js/*'],
+        };
+    })
 ;
 module.exports = {
     resolve: {

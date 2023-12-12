@@ -39,6 +39,7 @@
         "symfony/serializer": "6.4.*",
         "symfony/twig-bundle": "6.4.*",
         "symfony/validator": "6.4.*",
+        "symfony/webpack-encore-bundle": "2.x-dev",
         "symfony/yaml": "6.4.*",
         "twig/twig": "^3.1"
     },

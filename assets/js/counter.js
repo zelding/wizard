@@ -5,3 +5,7 @@ export const Counter = ()=> {
         $("#test_input").val()
     );
 };
+
+export const Ping = (p) =>{console.info(p+"asdasd")};
+
+export default Counter;
