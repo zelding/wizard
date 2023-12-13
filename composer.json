@@ -1,5 +1,5 @@
 {
-    "name": "symfony/framework-standard-edition",
+    "name": "zelding/wizard",
     "license": "MIT",
     "type": "project",
     "description": "The \"Symfony Standard Edition\" distribution",
@@ -39,9 +39,9 @@
         "symfony/serializer": "6.4.*",
         "symfony/twig-bundle": "6.4.*",
         "symfony/validator": "6.4.*",
-        "symfony/webpack-encore-bundle": "2.x-dev",
+        "symfony/webpack-encore-bundle": "2.*",
         "symfony/yaml": "6.4.*",
-        "twig/twig": "^3.1"
+        "twig/twig": "3.*"
     },
     "require-dev": {
         "phpunit/phpunit": "10.*",
@@ -88,5 +88,5 @@
             "file": "config/parameters.yml"
         }
     },
-    "minimum-stability": "dev"
+    "minimum-stability": "stable"
 }
